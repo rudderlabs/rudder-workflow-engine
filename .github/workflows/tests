@@ -3,7 +3,7 @@ name: tests
 on:
   pull_request:
     branches:
-      - main
+      - "*"
 
 jobs:
   install-and-test:
