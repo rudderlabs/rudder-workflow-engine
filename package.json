@@ -25,6 +25,13 @@
   },
   "homepage": "https://github.com/rudderlabs/rudder-workflow-engine#readme",
   "devDependencies": {
+    "@types/node": "^18.7.18",
     "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "jsonata": "^1.8.6",
+    "lodash": "^4.17.21",
+    "path": "^0.12.7"
   }
 }
