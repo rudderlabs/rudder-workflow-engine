@@ -2,9 +2,10 @@
   "name": "rudder-workflow-engine",
   "version": "0.0.0",
   "description": "A generic workflow execution engine library",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/rudderlabs/rudder-workflow-engine/issues"
   },
-  "homepage": "https://github.com/rudderlabs/rudder-workflow-engine#readme"
+  "homepage": "https://github.com/rudderlabs/rudder-workflow-engine#readme",
+  "devDependencies": {
+    "typescript": "^4.8.3"
+  }
 }
