@@ -18,21 +18,21 @@
 
 ---
 
-# \*\*Repo Name\*\*
+# rudder-workflow-engine
 
-\*\*Repo description\*\*
+A generic workflow execution engine library.
 
 ## Overview
 
-\*\*Describe what the software does.\*\*
+TODO
 
 ## Features
 
-\*\*Describe the key features, if necessary.\*\*
+TODO
 
 ## Getting started
 
-\*\*Describe how to use the software.\*\*
+TODO
 
 ## Contribute
 
