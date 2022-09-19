@@ -1,0 +1,15 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "plugins": ["prettier"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "parser": "@babel/eslint-parser",
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "rules": {}
+}
