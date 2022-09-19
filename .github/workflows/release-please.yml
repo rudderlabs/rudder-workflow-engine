@@ -15,7 +15,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         id: release
         with:
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ github.token }}
           pull-request-title-pattern: "chore: release ${version}"
           release-type: node
           package-name: rudder-workflow-engine
