@@ -25,12 +25,29 @@ export class WorkflowEngine {
   // bindings will be resolved relative to root path
   readonly rootPath: string;
   constructor(workflow: Workflow, rootPath: string) {
-    if (!WorkflowUtils.isValidWorkflow(workflow)) {
-      throw new Error('invalid workflow');
-    }
+    this.validateWorkflow(workflow);
     this.rootPath = rootPath;
     this.workflow = this.prepareWorkflow(workflow);
     this.prepareBindings(this.workflow);
+  }
+
+  private validateWorkflow(workflow: Workflow) {
+    if (workflow.steps.length === 0) {
+      throw new Error('Workflow should at least one step');
+    }
+    for (const step of workflow.steps) {
+      this.validateStep(step);
+    }
+  }
+
+  private validateStep(step: Step) {
+    if (step.onComplete === StepExitAction.Return && !step.condition) {
+      throw new CustomError(
+        'onComplete = return should be used in a step with condition',
+        400,
+        step.name,
+      );
+    }
   }
 
   getWorkflow(): WorkflowInternal {
