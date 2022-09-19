@@ -1,0 +1,26 @@
+{
+  "name": "rudder-workflow-engine",
+  "version": "0.0.0",
+  "description": "A generic workflow execution engine library",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudderlabs/rudder-workflow-engine.git"
+  },
+  "keywords": [
+    "rudder",
+    "rudderstack",
+    "cdp",
+    "workflow",
+    "engine"
+  ],
+  "author": "RudderStack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rudderlabs/rudder-workflow-engine/issues"
+  },
+  "homepage": "https://github.com/rudderlabs/rudder-workflow-engine#readme"
+}
