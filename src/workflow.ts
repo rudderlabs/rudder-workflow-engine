@@ -89,7 +89,7 @@ export class WorkflowEngine {
       step.externalWorkflowEngine = new WorkflowEngine(externalWorkflow, externalWorkflowRootPath);
     }
     if (step.templatePath) {
-      step.template = readFileSync(join(__dirname, step.templatePath), 'utf-8');
+      step.template = readFileSync(join(this.rootPath, step.templatePath), 'utf-8');
     }
     if (step.template) {
       step.templateExpression = jsonata(step.template);
@@ -189,9 +189,7 @@ export class WorkflowEngine {
       return step.externalWorkflowEngine.execute(input, { context: bindings.context });
     }
     if (step.functionName) {
-      return {
-        output: await bindings[step.functionName](input.data, allBindings),
-      };
+      return await allBindings[step.functionName](input, allBindings);
     } else if (step.templateExpression) {
       return {
         output: await WorkflowUtils.jsonataPromise(step.templateExpression, input, allBindings),
