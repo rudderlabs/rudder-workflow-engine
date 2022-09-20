@@ -33,7 +33,7 @@ export class WorkflowEngine {
 
   private validateWorkflow(workflow: Workflow) {
     if (workflow.steps.length === 0) {
-      throw new Error('Workflow should at least one step');
+      throw new CustomError('Workflow should contain at least one step', 400);
     }
     for (const step of workflow.steps) {
       this.validateStep(step);
@@ -43,7 +43,7 @@ export class WorkflowEngine {
   private validateStep(step: Step) {
     if (step.onComplete === StepExitAction.Return && !step.condition) {
       throw new CustomError(
-        'onComplete = return should be used in a step with condition',
+        '"onComplete = return" should be used in a step with condition',
         400,
         step.name,
       );
