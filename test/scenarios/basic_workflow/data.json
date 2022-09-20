@@ -1,0 +1,58 @@
+[
+    {
+        "input" : {
+            "a": 10,
+            "b": 2,
+            "op": "+"
+        },
+        "output": 12
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 2,
+            "op": "-"
+        },
+        "output": 8
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 2,
+            "op": "*"
+        },
+        "output": 20
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 2,
+            "op": "/"
+        },
+        "output": 5
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 2,
+            "op": "/"
+        },
+        "output": 5
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 0,
+            "op": "/"
+        },
+        "error": "division by zero is not allowed"
+    },
+    {
+        "input" : {
+            "a": 10,
+            "b": 0,
+            "op": "^"
+        },
+        "error": "unsupported operation"
+    }
+]
