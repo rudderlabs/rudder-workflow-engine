@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.0...v0.1.1) (2022-09-20)
+
+
+### Bug Fixes
+
+* release-please GitHub action ([de1ed21](https://github.com/rudderlabs/rudder-workflow-engine/commit/de1ed21c429e5e9e76048cebec1b54b12982e684))
+
 ## 0.1.0 (2022-09-20)
 
 
