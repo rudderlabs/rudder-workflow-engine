@@ -1,0 +1,16 @@
+steps:
+  - name: checkIfProcessed
+    condition: $exists(output)
+    template: |
+      output
+    onComplete: return
+  - name: validateInput
+    template: |
+      $assert($not($exists(bad_data)), "bad data found")
+  - name: ignoreErrors
+    template: |
+      $error("I simply fail")
+    onError: continue
+  - name: process
+    template: |
+      { "hello": "world" }
