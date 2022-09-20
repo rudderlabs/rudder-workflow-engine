@@ -27,10 +27,6 @@ export class WorkflowUtils {
     }
   }
 
-  static isValidWorkflow(workflow: Workflow): boolean {
-    return true;
-  }
-
   static isWorkflowStep(step: Step): boolean {
     try {
       const workflowStep = step as WorkflowStep;
