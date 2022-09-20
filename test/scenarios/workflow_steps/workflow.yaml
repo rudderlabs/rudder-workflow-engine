@@ -1,0 +1,28 @@
+steps:
+  - name: validateInput
+    workflowPath: ./validation_workflow_step.yaml
+  - name: operations
+    description: Do operations using workflow step
+    bindings:
+      - path: functions
+    steps:
+      - name: add
+        description: Do addition
+        condition: op = "+"
+        template: |
+          $add(a, b)
+      - name: subtract
+        description: Do subtraction
+        condition: op = "-"
+        template: |
+          $subtract(a, b)
+      - name: multiply
+        description: Do multiplication
+        condition: op = "*"
+        template: |
+          $multiply(a, b)
+      - name: divide
+        description: Do division
+        condition: op = "/"
+        template: |
+          $divide(a, b)

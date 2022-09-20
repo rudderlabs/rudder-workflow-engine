@@ -97,7 +97,7 @@ export class WorkflowEngine {
   }
 
   private prepareStepsForWorkflow(workflowPath: string): WorkflowStepInternal {
-    const workflowStepsData: string = readFileSync(join(__dirname, workflowPath), 'utf-8');
+    const workflowStepsData: string = readFileSync(join(this.rootPath, workflowPath), 'utf-8');
     return yaml.load(workflowStepsData) as WorkflowStepInternal;
   }
 
