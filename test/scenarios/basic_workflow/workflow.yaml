@@ -26,4 +26,3 @@ steps:
         $assert( b != 0, "division by zero is not allowed");
         a / b 
       )
-
