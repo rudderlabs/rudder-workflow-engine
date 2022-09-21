@@ -115,8 +115,8 @@ export class WorkflowEngine {
     if (step.condition) {
       step.conditionExpression = jsonata(step.condition);
     }
-    if (step.workflowPath) {
-      const newWorkflowStep = this.prepareStepsForWorkflow(step.workflowPath);
+    if (step.workflowStepPath) {
+      const newWorkflowStep = this.prepareStepsForWorkflow(step.workflowStepPath);
       step.bindings = Object.assign({}, newWorkflowStep.bindings, step.bindings);
       step.steps = newWorkflowStep.steps;
     }

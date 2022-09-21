@@ -30,7 +30,7 @@ export class WorkflowUtils {
   static isWorkflowStep(step: Step): boolean {
     try {
       const workflowStep = step as WorkflowStep;
-      return !!workflowStep.steps?.length || !!workflowStep.workflowPath;
+      return !!workflowStep.steps?.length || !!workflowStep.workflowStepPath;
     } catch {
       return false;
     }

@@ -1,6 +1,6 @@
 steps:
   - name: validateInput
-    workflowPath: ./validation_workflow_step.yaml
+    workflowStepPath: ./validation_workflow_step.yaml
   - name: operations
     description: Do operations using workflow step
     bindings:

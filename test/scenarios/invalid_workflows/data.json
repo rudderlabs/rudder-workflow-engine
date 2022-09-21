@@ -1,5 +1,25 @@
 [
     {
+        "workflowPath": "blank_externalworkflow_step.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "blank_function_step.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "blank_template_path_step.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "blank_template_step.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "blank_workflow_path_step.yaml",
+        "error": "Invalid step"
+    },
+    {
         "workflowPath": "empty_workflow.yaml",
         "error": "Workflow should contain at least one step"
     },
