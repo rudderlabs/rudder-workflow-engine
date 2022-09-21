@@ -30,13 +30,25 @@ export class WorkflowUtils {
     }
   }
 
+  /**
+   * Mutually exclusive condition
+   * Ref: https://www.howtocreate.co.uk/xor.html
+   *
+   * @param cond1
+   * @param cond2
+   * @returns
+   */
+  static xor(cond1: boolean, cond2: boolean) {
+    return Boolean((cond1 ? 1 : 0) ^ (cond2 ? 1 : 0));
+  }
+
   static isWorkflowStep(step: Step): boolean {
     try {
       const workflowStep = step as WorkflowStep;
-      return (
-        (Array.isArray(workflowStep.steps) && !isEmpty(workflowStep.steps)) ||
-        workflowStep.workflowPath !== undefined
-      );
+      const isStepsPresent = Array.isArray(workflowStep.steps) && !isEmpty(workflowStep.steps);
+      const isWorkflowPathPresent = workflowStep.workflowPath !== undefined;
+      const isWorkflowStep = WorkflowUtils.xor(isStepsPresent, isWorkflowPathPresent);
+      return isWorkflowStep;
     } catch {
       return false;
     }

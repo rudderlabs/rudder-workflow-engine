@@ -1,7 +1,7 @@
 import jsonata from 'jsonata';
 import { SimpleStep, Step } from '../types';
 import { WorkflowUtils } from '../utils';
-const { isSimpleStep, isWorkflowStep, isAssertError, jsonataPromise } = WorkflowUtils;
+const { isSimpleStep, isWorkflowStep, isAssertError, jsonataPromise, xor } = WorkflowUtils;
 
 describe('Cases for isSimpleStep', () => {
   const isSimpleStepCases = [
@@ -38,7 +38,8 @@ describe('Cases for isSimpleStep', () => {
       expectedOutput: true,
     },
     {
-      caseName: 'should return false when workflowPath is provided',
+      caseName:
+        'should return false when only unrecognised field(s) are provided(workflowPath in this case)',
       caseInput: {
         name: 'template_step',
         workflowPath: 'my_workflow/path.yaml',
@@ -82,6 +83,37 @@ describe('Cases for isWorkflowStep', () => {
       } as Step,
       expectedOutput: false,
     },
+    {
+      caseName: 'should return false when steps is provided as object',
+      caseInput: {
+        name: 'template_step',
+        steps: {
+          someKey: 'value',
+        },
+      } as Step,
+      expectedOutput: false,
+    },
+    {
+      caseName: 'should return false when steps and workflowPath are provided',
+      caseInput: {
+        name: 'template_step',
+        steps: [
+          {
+            name: 'step_1',
+            templatePath: 'my_step/template/path.yaml',
+          } as SimpleStep,
+        ],
+        workflowPath: 'template/path.yaml',
+      } as Step,
+      expectedOutput: false,
+    },
+    {
+      caseName: 'should return false when steps and workflowPath are not provided',
+      caseInput: {
+        name: 'template_step',
+      } as Step,
+      expectedOutput: false,
+    },
   ];
 
   test.each(isWorkflowStepCases)('$caseName', ({ caseInput, expectedOutput }) => {
@@ -89,7 +121,35 @@ describe('Cases for isWorkflowStep', () => {
   });
 });
 
-describe('Cases for isWorkflowStep', () => {
+describe('Cases for xor', () => {
+  const xorCases = [
+    {
+      cond1: true,
+      cond2: true,
+      expectedOut: false,
+    },
+    {
+      cond1: true,
+      cond2: false,
+      expectedOut: true,
+    },
+    {
+      cond1: false,
+      cond2: true,
+      expectedOut: true,
+    },
+    {
+      cond1: false,
+      cond2: false,
+      expectedOut: false,
+    },
+  ];
+  test.each(xorCases)('xor($cond1, $cond2)===$expectedOut', ({ cond1, cond2, expectedOut }) => {
+    expect(xor(cond1, cond2)).toBe(expectedOut);
+  });
+});
+
+describe('Cases for isAssertError', () => {
   const isAssertErrorCases = [
     {
       caseName: 'should return true',
@@ -271,6 +331,38 @@ describe('Cases for jsonataPromise', () => {
     };
     const expression = jsonata(`$getCosine(angle * $pi/180)`);
     await expect(jsonataPromise(expression, inputPayload, bindings)).resolves.toBe(0.5);
+  });
+  test('should return a value when evaluated with async user-defined binding functions', async () => {
+    const bindings = {
+      asyncAdd: (a, b) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(a + b);
+          }, 100);
+        });
+      },
+    };
+    const inputPayload = {
+      angle: 70,
+      val1: 12,
+      val2: 145,
+    };
+    const expression = jsonata(`
+      (
+        $a:=$asyncAdd(val1, val2);
+        $b:=$asyncAdd($a,val2);
+        {
+          "angle": angle,
+          "total": $a,
+          "cumTotal": $b
+        }
+      )
+    `);
+    await expect(jsonataPromise(expression, inputPayload, bindings)).resolves.toMatchObject({
+      total: 157,
+      angle: 70,
+      cumTotal: 302,
+    });
   });
 
   test('should return a valid object when evaluated with joins(kind-of) use-case', async () => {
