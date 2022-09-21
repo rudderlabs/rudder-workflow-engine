@@ -326,7 +326,7 @@ describe('Cases for jsonataPromise', () => {
     });
   });
 
-  test('should reject the promise when binding throws an error', async () => {
+  test('should reject the promise when async binding rejects with an error', async () => {
     const extFailMockAPI = () => {
       return new Promise((_resolve, reject) => {
         setTimeout(() => {
