@@ -1,9 +1,12 @@
 import yaml from 'js-yaml';
 import { readFileSync } from 'fs';
+import { isEmpty } from 'lodash';
 import jsonata from 'jsonata';
 import { SimpleStep, Step, WorkflowStep, Workflow } from './types';
 
 export class WorkflowUtils {
+  // Ref: https://github.com/rudderlabs/rudder-transformer-cdk/pull/50#discussion_r882441319
+  // TODO: should we make this async ? & also remove the above comment
   static createFromFilePath(workflowYamlPath: string): Workflow {
     const workflowYaml = readFileSync(workflowYamlPath, { encoding: 'utf-8' });
     return yaml.load(workflowYaml) as Workflow;
@@ -30,7 +33,10 @@ export class WorkflowUtils {
   static isWorkflowStep(step: Step): boolean {
     try {
       const workflowStep = step as WorkflowStep;
-      return workflowStep.steps !== undefined || workflowStep.workflowPath !== undefined;
+      return (
+        (Array.isArray(workflowStep.steps) && !isEmpty(workflowStep.steps)) ||
+        workflowStep.workflowPath !== undefined
+      );
     } catch {
       return false;
     }
