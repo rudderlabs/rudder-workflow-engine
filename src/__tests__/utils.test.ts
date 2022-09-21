@@ -384,4 +384,53 @@ describe('Cases for jsonataPromise', () => {
       expect.arrayContaining(expectedOutputs),
     );
   });
+
+  test('should reject the promise when expression throws an error', async () => {
+    const inputPayload = {
+      Order: [
+        {
+          Price: 100,
+          Quantity: 1,
+        },
+      ],
+    };
+    const expression = jsonata(`($assert(Order[0].Price < 40, 'Too Expensive'); Order[0].Price)`);
+    expect.assertions(1);
+    await expect(jsonataPromise(expression, inputPayload, {})).rejects.toMatchObject({
+      code: 'D3141',
+      message: 'Too Expensive',
+    });
+  });
+
+  test('should reject the promise when binding throws an error', async () => {
+    const extFailMockAPI = () => {
+      return new Promise((_resolve, reject) => {
+        setTimeout(() => {
+          reject({
+            data: 'Failed to obtain data',
+            statusCode: 400,
+          });
+        }, 100);
+      });
+    };
+    const bindings = {
+      extAPICall: extFailMockAPI,
+    };
+    const inputPayload = {
+      payKey: 'value',
+    };
+    const expr = jsonata(
+      `$a := $extAPICall()
+      {
+        a: $a,
+        key: payKey
+      }
+    `,
+    );
+    expect.assertions(1);
+    await expect(jsonataPromise(expr, inputPayload, bindings)).rejects.toMatchObject({
+      data: 'Failed to obtain data',
+      statusCode: 400,
+    });
+  });
 });
