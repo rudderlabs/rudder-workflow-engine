@@ -1,4 +1,5 @@
 import jsonata from 'jsonata';
+import { doReturn } from '../bindings';
 import { SimpleStep, Step } from '../types';
 import { WorkflowUtils } from '../utils';
 const { isSimpleStep, isWorkflowStep, isAssertError, jsonataPromise, xor } = WorkflowUtils;
@@ -409,6 +410,28 @@ describe('Cases for jsonataPromise', () => {
     await expect(jsonataPromise(expr, inputPayload, bindings)).rejects.toThrowError(
       'unknown failure in api call',
     );
+  });
+  test('should pass when async binding throws an error but is caught in promise', async () => {
+    const extFailMockAPI = () => {
+      doReturn('doReturn error');
+    };
+    const bindings = {
+      extAPICall: extFailMockAPI,
+    };
+    const inputPayload = {
+      payKey: 'value',
+    };
+    const expr = jsonata(
+      `(
+        $a := $extAPICall();
+        {
+          "a": $a,
+          "key": payKey
+        }
+      )
+    `,
+    );
+    await expect(jsonataPromise(expr, inputPayload, bindings)).resolves.toEqual('doReturn error');
   });
   test('should pass even when data is missing', async () => {
     const extAPICall = () => {
