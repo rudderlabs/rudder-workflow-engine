@@ -276,19 +276,6 @@ describe('Cases for jsonataPromise', () => {
     });
   });
 
-  test('should return a value when evaluated with user-defined binding functions', async () => {
-    const bindings = {
-      pi: Math.PI,
-      getCosine: (num) => {
-        return Number(Math.cos(num).toFixed(2));
-      },
-    };
-    const inputPayload = {
-      angle: 60,
-    };
-    const expression = jsonata(`$getCosine(angle * $pi/180)`);
-    await expect(jsonataPromise(expression, inputPayload, bindings)).resolves.toBe(0.5);
-  });
   test('should return a value when evaluated with async user-defined binding functions', async () => {
     const bindings = {
       asyncAdd: (a, b) => {
@@ -320,118 +307,6 @@ describe('Cases for jsonataPromise', () => {
       angle: 70,
       cumTotal: 302,
     });
-  });
-
-  test('should return a valid object when evaluated with joins(kind-of) use-case', async () => {
-    // Note: This test-case and the expression is a good use-case for kind of joins in jsonata
-    const inputPayload = {
-      library: {
-        books: [
-          {
-            title: 'Structure and Interpretation of Computer Programs',
-            authors: ['Abelson', 'Sussman'],
-            isbn: '9780262510875',
-            price: 38.9,
-            copies: 2,
-          },
-          {
-            title: 'The C Programming Language',
-            authors: ['Kernighan', 'Richie'],
-            isbn: '9780131103627',
-            price: 33.59,
-            copies: 3,
-          },
-          {
-            title: 'The AWK Programming Language',
-            authors: ['Aho', 'Kernighan', 'Weinberger'],
-            isbn: '9780201079814',
-            copies: 1,
-          },
-          {
-            title: 'Compilers: Principles, Techniques, and Tools',
-            authors: ['Aho', 'Lam', 'Sethi', 'Ullman'],
-            isbn: '9780201100884',
-            price: 23.38,
-            copies: 1,
-          },
-        ],
-        loans: [
-          {
-            customer: '10001',
-            isbn: '9780262510875',
-            return: '2016-12-05',
-          },
-          {
-            customer: '10003',
-            isbn: '9780201100884',
-            return: '2016-10-22',
-          },
-          {
-            customer: '10003',
-            isbn: '9780262510875',
-            return: '2016-12-22',
-          },
-        ],
-        customers: [
-          {
-            id: '10001',
-            name: 'Joe Doe',
-            address: {
-              street: '2 Long Road',
-              city: 'Winchester',
-              postcode: 'SO22 5PU',
-            },
-          },
-          {
-            id: '10002',
-            name: 'Fred Bloggs',
-            address: {
-              street: '56 Letsby Avenue',
-              city: 'Winchester',
-              postcode: 'SO22 4WD',
-            },
-          },
-          {
-            id: '10003',
-            name: 'Jason Arthur',
-            address: {
-              street: '1 Preddy Gate',
-              city: 'Southampton',
-              postcode: 'SO14 0MG',
-            },
-          },
-        ],
-      },
-    };
-    const expression = jsonata(
-      `library.loans@$L.books@$B[$L.isbn=$B.isbn].customers[$L.customer=id].{
-        'customer': name,
-        'book': $B.title,
-        'due': $L.return
-      }`,
-    );
-
-    const expectedOutputs = [
-      {
-        customer: 'Joe Doe',
-        book: 'Structure and Interpretation of Computer Programs',
-        due: '2016-12-05',
-      },
-      {
-        customer: 'Jason Arthur',
-        book: 'Compilers: Principles, Techniques, and Tools',
-        due: '2016-10-22',
-      },
-      {
-        customer: 'Jason Arthur',
-        book: 'Structure and Interpretation of Computer Programs',
-        due: '2016-12-22',
-      },
-    ];
-
-    await expect(jsonataPromise(expression, inputPayload, {})).resolves.toEqual(
-      expect.arrayContaining(expectedOutputs),
-    );
   });
 
   test('should reject the promise when expression throws an error', async () => {
