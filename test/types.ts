@@ -1,5 +1,6 @@
 export type Sceanario = {
-    input: any,
+    input?: any,
+    workflowPath?: string,
     output?: any,
     error?: string
 }

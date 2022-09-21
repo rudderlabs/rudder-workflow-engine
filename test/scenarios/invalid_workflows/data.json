@@ -1,0 +1,38 @@
+[
+    {
+        "workflowPath": "empty_workflow.yaml",
+        "error": "Workflow should contain at least one step"
+    },
+    {
+        "workflowPath": "empty_steps.yaml",
+        "error": "Workflow should contain at least one step"
+    },
+    {
+        "workflowPath": "invalid_workflowstep.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "invalid_function_step.yaml",
+        "error": "Invalid functionName"
+    },
+    {
+        "workflowPath": "invalid_step_nobody.yaml",
+        "error": "Invalid step"
+    },
+    {
+        "workflowPath": "invalid_step_noname.yaml",
+        "error": "step should have a name"
+    },
+    {
+        "workflowPath": "invalid_template.yaml",
+        "error": "The symbol \")\" cannot be used as a unary operator"
+    },
+    {
+        "workflowPath": "invalid_binding.yaml",
+        "error": "Cannot find module"
+    },
+    {
+        "workflowPath": "invalid_usage_oncomplete.yaml",
+        "error": "\"onComplete = return\" should be used in a step with condition"
+    }
+]

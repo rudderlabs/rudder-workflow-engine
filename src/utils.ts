@@ -17,10 +17,10 @@ export class WorkflowUtils {
     try {
       const simpleStep = step as SimpleStep;
       return (
-        simpleStep.template !== undefined ||
-        simpleStep.templatePath !== undefined ||
-        simpleStep.functionName !== undefined ||
-        simpleStep.externalWorkflow !== undefined
+        !!simpleStep.template ||
+        !!simpleStep.templatePath ||
+        !!simpleStep.functionName ||
+        !!simpleStep.externalWorkflow
       );
     } catch {
       return false;
@@ -30,7 +30,7 @@ export class WorkflowUtils {
   static isWorkflowStep(step: Step): boolean {
     try {
       const workflowStep = step as WorkflowStep;
-      return workflowStep.steps !== undefined || workflowStep.workflowPath !== undefined;
+      return !!workflowStep.steps?.length || !!workflowStep.workflowPath;
     } catch {
       return false;
     }

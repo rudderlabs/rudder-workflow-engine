@@ -1,0 +1,7 @@
+steps:
+  - name: returnEarly
+    template:
+      (
+        returnCustomOutput ? $doReturn(customOutput);
+        defaultOutput
+      )

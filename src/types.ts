@@ -74,6 +74,7 @@ export type SimpleStepInternal = SimpleStep &
   StepInternalCommon & {
     templateExpression?: jsonata.Expression;
     externalWorkflowEngine?: WorkflowEngine;
+    function?: StepFunction;
   };
 
 export type WorkflowStepInternal = WorkflowStep &
