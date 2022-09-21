@@ -47,8 +47,7 @@ export class WorkflowUtils {
       const workflowStep = step as WorkflowStep;
       const isStepsPresent = Array.isArray(workflowStep.steps) && !isEmpty(workflowStep.steps);
       const isWorkflowPathPresent = workflowStep.workflowPath !== undefined;
-      const isWorkflowStep = WorkflowUtils.xor(isStepsPresent, isWorkflowPathPresent);
-      return isWorkflowStep;
+      return WorkflowUtils.xor(isStepsPresent, isWorkflowPathPresent);
     } catch {
       return false;
     }

@@ -357,4 +357,29 @@ describe('Cases for jsonataPromise', () => {
       statusCode: 400,
     });
   });
+
+  test('should fail when the binding provided is not present', async () => {
+    const bindings = {
+      // binding is provided but not present
+      extAPICall: undefined,
+    };
+    const inputPayload = {
+      payKey: 'value',
+    };
+    const expr = jsonata(
+      `$a := $extAPICall()
+      {
+        a: $a,
+        key: payKey
+      }
+    `,
+    );
+    expect.assertions(1);
+    await expect(jsonataPromise(expr, inputPayload, bindings)).rejects.toMatchObject({
+      code: 'T1006',
+      message: 'Attempted to invoke a non-function',
+      position: 18,
+      token: 'extAPICall',
+    });
+  });
 });
