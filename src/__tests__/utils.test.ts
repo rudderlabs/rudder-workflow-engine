@@ -3,6 +3,23 @@ import { SimpleStep, Step } from '../types';
 import { WorkflowUtils } from '../utils';
 const { isSimpleStep, isWorkflowStep, isAssertError, jsonataPromise, xor } = WorkflowUtils;
 
+// IMP NOTES:
+// - About error thrown from jsonata
+//    error also contains stack with all stack-trace
+//    But for simplicity this has not been captured through test-case
+
+const commonStepCases = [
+  {
+    caseName: 'should return false when no field(s) are provided',
+    caseInput: {} as Step,
+    expectedOutput: false,
+  },
+  {
+    caseName: 'should return false when null is sent as step',
+    caseInput: null,
+    expectedOutput: false,
+  },
+];
 describe('Cases for isSimpleStep', () => {
   const isSimpleStepCases = [
     {
@@ -46,8 +63,17 @@ describe('Cases for isSimpleStep', () => {
       } as Step,
       expectedOutput: false,
     },
+    {
+      caseName: 'should return false when no recognised field(s) are provided',
+      caseInput: {
+        name: 'template_step',
+      } as Step,
+      expectedOutput: false,
+    },
+    ...commonStepCases,
   ];
   test.each(isSimpleStepCases)('$caseName', ({ caseInput, expectedOutput }) => {
+    // @ts-ignore
     expect(isSimpleStep(caseInput)).toBe(expectedOutput);
   });
 });
@@ -114,9 +140,11 @@ describe('Cases for isWorkflowStep', () => {
       } as Step,
       expectedOutput: false,
     },
+    ...commonStepCases,
   ];
 
   test.each(isWorkflowStepCases)('$caseName', ({ caseInput, expectedOutput }) => {
+    // @ts-ignore
     expect(isWorkflowStep(caseInput)).toBe(expectedOutput);
   });
 });
@@ -356,6 +384,87 @@ describe('Cases for jsonataPromise', () => {
       data: 'Failed to obtain data',
       statusCode: 400,
     });
+  });
+  test('should fail when async binding throws an error', async () => {
+    const extFailMockAPI = () => {
+      return new Promise((_resolve, _reject) => {
+        throw new Error('unknown failure in api call');
+      });
+    };
+    const bindings = {
+      extAPICall: extFailMockAPI,
+    };
+    const inputPayload = {
+      payKey: 'value',
+    };
+    const expr = jsonata(
+      `$a := $extAPICall()
+      {
+        a: $a,
+        key: payKey
+      }
+    `,
+    );
+    expect.assertions(1);
+    await expect(jsonataPromise(expr, inputPayload, bindings)).rejects.toThrowError(
+      'unknown failure in api call',
+    );
+  });
+  test('should pass even when data is missing', async () => {
+    const extAPICall = () => {
+      return new Promise((resolve, _reject) => {
+        setTimeout(() => {
+          resolve({
+            k1: 'v1',
+            k2: 'v2',
+          });
+        });
+      });
+    };
+    const bindings = {
+      extAPICall,
+    };
+    const expr = jsonata(
+      `(
+        $a := $extAPICall();
+        {
+          "a": $a
+        }
+      )
+    `,
+    );
+    await expect(jsonataPromise(expr, null, bindings)).resolves.toMatchObject({
+      a: {
+        k1: 'v1',
+        k2: 'v2',
+      },
+    });
+  });
+  test('should fail when empty expression is provided', async () => {
+    try {
+      const extAPICall = () => {
+        return new Promise((resolve, _reject) => {
+          setTimeout(() => {
+            resolve({
+              k1: 'v1',
+              k2: 'v2',
+            });
+          });
+        });
+      };
+      const bindings = {
+        extAPICall,
+      };
+      const expr = jsonata(``);
+      await jsonataPromise(expr, null, bindings);
+    } catch (error) {
+      expect(error).toMatchObject({
+        code: 'S0207',
+        position: 0,
+        token: '(end)',
+        message: 'Unexpected end of expression',
+      });
+    }
   });
 
   test('should fail when the binding provided is not present', async () => {
