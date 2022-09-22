@@ -1,8 +1,17 @@
 import jsonata from 'jsonata';
+import { join } from 'path';
 import { doReturn } from '../bindings';
 import { SimpleStep, Step } from '../types';
 import { WorkflowUtils } from '../utils';
-const { isSimpleStep, isWorkflowStep, isAssertError, jsonataPromise, xor } = WorkflowUtils;
+const {
+  createFromYaml,
+  createFromFilePath,
+  isSimpleStep,
+  isWorkflowStep,
+  isAssertError,
+  jsonataPromise,
+  xor,
+} = WorkflowUtils;
 
 // IMP NOTES:
 // - About error thrown from jsonata
@@ -508,5 +517,131 @@ describe('Cases for jsonataPromise', () => {
       position: 18,
       token: 'extAPICall',
     });
+  });
+});
+
+describe('Cases for createFromFilePath', () => {
+  // invalid file path cases
+  const invalidFilePathCases = [
+    {
+      filePath: '/data/not_exist.yaml',
+      expectedErrMsg: `ENOENT: no such file or directory, open '${join(
+        __dirname,
+        '/data/not_exist.yaml',
+      )}'`,
+    },
+    {
+      filePath: null,
+      expectedErrMsg:
+        'The "path" argument must be of type string or an instance of Buffer or URL. Received null',
+    },
+    {
+      filePath: undefined,
+      expectedErrMsg:
+        'The "path" argument must be of type string or an instance of Buffer or URL. Received undefined',
+    },
+    {
+      filePath: '',
+      expectedErrMsg: 'ENOENT: no such file or directory, open',
+    },
+  ];
+  test.each(invalidFilePathCases)(
+    'should fail when filePath = "$filePath"',
+    ({ filePath, expectedErrMsg }) => {
+      // Ref: https://stackoverflow.com/questions/46042613/how-to-test-the-type-of-a-thrown-exception-in-jest
+      expect(() => {
+        if (filePath) {
+          filePath = join(__dirname, filePath);
+        }
+        // @ts-ignore
+        createFromFilePath(filePath);
+      }).toThrow(expectedErrMsg);
+    },
+  );
+  // Valid test-cases
+  const validTestCases = [
+    {
+      caseName: 'should pass when an existing file is provided',
+      filePath: '/data/createFromFilePath/only_bindings_no_steps.yaml',
+      expectedOutput: {
+        bindings: [
+          {
+            name: 'plus',
+            path: './ops',
+          },
+          {
+            name: 'ops',
+            path: './ops',
+            exportAll: true,
+          },
+          {
+            path: './functions',
+          },
+        ],
+      },
+    },
+    {
+      caseName: 'should pass when an existing json file is provided instead of yaml',
+      filePath: '/data/createFromFilePath/some.json',
+      expectedOutput: { something: 'here' },
+    },
+    {
+      caseName:
+        'should pass when an existing text file(containing json text) is provided instead of yaml',
+      filePath: '/data/createFromFilePath/text_file_in_json_structure.txt',
+      expectedOutput: {
+        bindings: [
+          {
+            path: './limp/index.js',
+            name: 'limp',
+          },
+        ],
+      },
+    },
+    {
+      caseName:
+        'should pass when an existing text file(containing yaml text) is provided instead of yaml',
+      filePath: '/data/createFromFilePath/text_file_in_yaml_structure.txt',
+      expectedOutput: {
+        bindings: [
+          {
+            path: './yaml/index.js',
+            name: 'yaml',
+          },
+        ],
+      },
+    },
+  ];
+
+  test.each(validTestCases)('$caseName', ({ filePath, expectedOutput }) => {
+    const joinedFile = join(__dirname, filePath);
+    const actual = createFromFilePath(joinedFile);
+    expect(actual).toEqual(expectedOutput);
+  });
+});
+
+describe('Cases for createFromYaml', () => {
+  test('should return undefined when empty string is provided', () => {
+    expect(createFromYaml('')).toBe(undefined);
+  });
+  test('should return text that was provided', () => {
+    expect(
+      createFromYaml(`
+      I am text file
+      you can't load yaml
+    `),
+    ).toBe("I am text file you can't load yaml");
+  });
+  test('should return "undefined" when undefined is provided', () => {
+    // @ts-ignore
+    expect(createFromYaml(undefined)).toBe('undefined');
+  });
+  test('should return null when null is provided', () => {
+    // @ts-ignore
+    expect(createFromYaml(null)).toBe(null);
+  });
+  test('should return number when a number(48) is provided', () => {
+    // @ts-ignore
+    expect(createFromYaml(48)).toBe(48);
   });
 });
