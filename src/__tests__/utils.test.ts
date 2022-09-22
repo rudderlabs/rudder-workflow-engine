@@ -480,13 +480,8 @@ describe('Cases for jsonataPromise', () => {
       };
       const expr = jsonata(``);
       await jsonataPromise(expr, null, bindings);
-    } catch (error) {
-      expect(error).toMatchObject({
-        code: 'S0207',
-        position: 0,
-        token: '(end)',
-        message: 'Unexpected end of expression',
-      });
+    } catch (error: any) {
+      expect(error.message).toEqual('Unexpected end of expression');
     }
   });
 
