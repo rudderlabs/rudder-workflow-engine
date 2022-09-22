@@ -1,0 +1,6 @@
+bindings:
+  - path: iDontExist
+steps:
+  - name: someStep
+    template: |
+      ()

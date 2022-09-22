@@ -1,0 +1,18 @@
+bindings:
+  - name: add
+    path: bindings
+steps:
+  - name: functionStepToAdd
+    condition: op = "+"
+    functionName: add
+  - name: templateStepToSubtract
+    condition: op = "-"
+    template: |
+      ( a - b )
+  - name: templatePathToMultiply
+    condition: op = "*"
+    templatePath: ./multiply.jsonata
+  - name: externalWorkflowToDivide
+    condition: op = "/"
+    externalWorkflow: 
+      path: ./divide_workflow.yaml

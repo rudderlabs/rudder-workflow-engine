@@ -1,0 +1,9 @@
+steps:
+  - name: InvalidOnComplete
+    description: onComplete = return should be used only in a conditional step
+    template: |
+      { "foo": "bar" }
+    onComplete: return
+  - name: someOtherStep
+    template: |
+      { "hello": "bar" }

@@ -21,18 +21,16 @@ import { CustomError } from './errors';
 import * as commonBindings from './bindings';
 
 export class WorkflowEngine {
-  readonly workflow: WorkflowInternal;
+  private workflow: WorkflowInternal;
   // bindings will be resolved relative to root path
   readonly rootPath: string;
   constructor(workflow: Workflow, rootPath: string) {
-    this.validateWorkflow(workflow);
     this.rootPath = rootPath;
     this.workflow = this.prepareWorkflow(workflow);
-    this.prepareBindings(this.workflow);
   }
 
   private validateWorkflow(workflow: Workflow) {
-    if (workflow.steps.length === 0) {
+    if (!workflow || !workflow.steps || workflow.steps.length === 0) {
       throw new CustomError('Workflow should contain at least one step', 400);
     }
     for (const step of workflow.steps) {
@@ -41,6 +39,9 @@ export class WorkflowEngine {
   }
 
   private validateStep(step: Step) {
+    if (!step.name) {
+      throw new CustomError('step should have a name', 400);
+    }
     if (step.onComplete === StepExitAction.Return && !step.condition) {
       throw new CustomError(
         '"onComplete = return" should be used in a step with condition',
@@ -74,10 +75,13 @@ export class WorkflowEngine {
     if (WorkflowUtils.isWorkflowStep(step)) {
       return StepType.Workflow;
     }
-    return StepType.Simple;
+    if (WorkflowUtils.isSimpleStep(step)) {
+      return StepType.Simple;
+    }
+    throw new CustomError("Invalid step", 400, step.name)
   }
 
-  private populateSimpleStep(step: SimpleStepInternal) {
+  private populateSimpleStep(step: SimpleStepInternal, bindings: Record<string, any> = {}) {
     if (step.condition) {
       step.conditionExpression = jsonata(step.condition);
     }
@@ -89,15 +93,21 @@ export class WorkflowEngine {
       step.externalWorkflowEngine = new WorkflowEngine(externalWorkflow, externalWorkflowRootPath);
     }
     if (step.templatePath) {
-      step.template = readFileSync(join(__dirname, step.templatePath), 'utf-8');
+      step.template = readFileSync(join(this.rootPath, step.templatePath), 'utf-8');
     }
     if (step.template) {
       step.templateExpression = jsonata(step.template);
     }
+    if (step.functionName) {
+      step.function = bindings[step.functionName];
+      if (typeof step.function !== "function") {
+        throw new CustomError("Invalid functionName", 400, step.name);
+      }
+    }
   }
 
   private prepareStepsForWorkflow(workflowPath: string): WorkflowStepInternal {
-    const workflowStepsData: string = readFileSync(join(__dirname, workflowPath), 'utf-8');
+    const workflowStepsData: string = readFileSync(join(this.rootPath, workflowPath), 'utf-8');
     return yaml.load(workflowStepsData) as WorkflowStepInternal;
   }
 
@@ -105,15 +115,15 @@ export class WorkflowEngine {
     if (step.condition) {
       step.conditionExpression = jsonata(step.condition);
     }
-    if (step.workflowPath) {
-      const newWorkflowStep = this.prepareStepsForWorkflow(step.workflowPath);
+    if (step.workflowStepPath) {
+      const newWorkflowStep = this.prepareStepsForWorkflow(step.workflowStepPath);
       step.bindings = Object.assign({}, newWorkflowStep.bindings, step.bindings);
       step.steps = newWorkflowStep.steps;
     }
     if (step.steps) {
       for (const subStep of step.steps) {
         subStep.type = StepType.Simple;
-        this.populateSimpleStep(subStep);
+        this.populateSimpleStep(subStep, step.bindings);
       }
     }
   }
@@ -124,15 +134,17 @@ export class WorkflowEngine {
       step.inputTemplateExpression = jsonata(step.inputTemplate);
     }
     if (step.type === StepType.Simple) {
-      this.populateSimpleStep(step);
+      this.populateSimpleStep(step, this.workflow.bindingsInternal);
     } else if (step.type === StepType.Workflow) {
       this.populateWorkflowStep(step);
     }
   }
 
   private prepareWorkflow(workflow: Workflow): WorkflowInternal {
-    const newWorkflow = cloneDeep(workflow) as WorkflowInternal;
-    for (const step of newWorkflow.steps) {
+    this.validateWorkflow(workflow);
+    this.workflow = cloneDeep(workflow) as WorkflowInternal;
+    this.prepareBindings(this.workflow);
+    for (const step of this.workflow.steps) {
       try {
         this.populateStep(step);
       } catch (e) {
@@ -140,7 +152,7 @@ export class WorkflowEngine {
         throw e;
       }
     }
-    return newWorkflow;
+    return this.workflow;
   }
 
   private prepareBindings(workflow: WorkflowInternal) {
@@ -188,10 +200,8 @@ export class WorkflowEngine {
     if (step.externalWorkflowEngine) {
       return step.externalWorkflowEngine.execute(input, { context: bindings.context });
     }
-    if (step.functionName) {
-      return {
-        output: await bindings[step.functionName](input.data, allBindings),
-      };
+    if (step.function) {
+      return step.function(input, allBindings);
     } else if (step.templateExpression) {
       return {
         output: await WorkflowUtils.jsonataPromise(step.templateExpression, input, allBindings),
@@ -205,15 +215,12 @@ export class WorkflowEngine {
     input: any,
     bindings: Record<string, any> = {},
   ): Promise<StepOutput> {
-    if (!workflowStep.steps) {
-      throw new CustomError('Invalid workflow step configuration', 500, workflowStep.name);
-    }
     if (this.shouldSkipStep(workflowStep, input, workflowStep.bindingsInternal)) {
       return { skipped: true };
     }
     bindings.outputs[workflowStep.name] = {};
     let finalOutput: any;
-    for (const simpleStep of workflowStep.steps) {
+    for (const simpleStep of workflowStep.steps as SimpleStepInternal[]) {
       const allBindings = Object.assign({}, workflowStep.bindingsInternal, bindings);
       const { skipped, output } = await this.executeStepInternal(simpleStep, input, allBindings);
       if (!skipped) {
