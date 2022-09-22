@@ -1,6 +1,11 @@
 jest.mock('pino');
 const Pino = require('pino');
-const fakeLogger = { warn: jest.fn(), error: jest.fn(), debug: jest.fn() };
+const fakeLogger = {
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+};
 Pino.mockImplementation(() => fakeLogger);
 
 import { readdirSync, readFileSync, existsSync } from 'fs';
@@ -43,10 +48,11 @@ describe('Scenarios tests', () => {
             expect(fakeLogger.debug.mock.calls.length).toBeGreaterThanOrEqual(
               test.logger.debug || 0,
             );
+            expect(fakeLogger.info.mock.calls.length).toBeGreaterThanOrEqual(test.logger.info || 0);
+            expect(fakeLogger.warn.mock.calls.length).toBeGreaterThanOrEqual(test.logger.warn || 0);
             expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(
               test.logger.error || 0,
             );
-            expect(fakeLogger.warn.mock.calls.length).toBeGreaterThanOrEqual(test.logger.warn || 0);
           }
         });
       });
