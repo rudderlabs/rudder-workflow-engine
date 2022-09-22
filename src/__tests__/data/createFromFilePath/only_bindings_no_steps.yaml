@@ -1,0 +1,7 @@
+bindings:
+- name: plus
+  path: ./ops
+- name: ops
+  path: ./ops
+  exportAll: true
+- path: ./functions
