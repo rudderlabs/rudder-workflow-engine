@@ -1,0 +1,8 @@
+steps:
+  - name: validateOp
+    template: |
+      $assert(op in ["+", "-", "*", "/"], "unsupported operation")
+  - name: validateForDivide
+    condition: op = "/"
+    template: |
+      $assert( b != 0, "division by zero is not allowed")

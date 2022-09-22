@@ -1,0 +1,28 @@
+steps:
+  - name: unsupported
+    condition: $not(op in ["+", "-", "*", "/"])
+    template: |
+      $error("unsupported operation")
+  - name: add
+    description: Do addition
+    condition: op = "+"
+    template: |
+      ( a + b )
+  - name: subtract
+    description: Do subtraction
+    condition: op = "-"
+    template: |
+      ( a - b )
+  - name: multiply
+    description: Do multiplication
+    condition: op = "*"
+    template: |
+      ( a * b )
+  - name: divide
+    description: Do division
+    condition: op = "/"
+    template: |
+      ( 
+        $assert( b != 0, "division by zero is not allowed");
+        a / b 
+      )

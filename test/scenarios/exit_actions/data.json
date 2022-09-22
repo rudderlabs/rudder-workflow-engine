@@ -1,0 +1,24 @@
+[
+    {
+        "input": {
+            "output": {
+                "foo": "bar"
+            }
+        },
+        "output": {
+            "foo": "bar"
+        }
+    },
+    {
+        "input": {},
+        "output": {
+            "hello": "world"
+        }
+    },
+    {
+        "input": {
+            "bad_data": "I am very very bad"
+        },
+        "error": "bad data found"
+    }
+]

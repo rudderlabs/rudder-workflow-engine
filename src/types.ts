@@ -59,9 +59,9 @@ export type SimpleStep = StepCommon & {
 export type WorkflowStep = StepCommon & {
   bindings?: Binding[];
   // One of the template, templatePath, Function are required for simple steps
-  // One of the steps, workflowPath are required for workflow steps
+  // One of the steps, workflowStepPath are required for workflow steps
   steps?: SimpleStep[];
-  workflowPath?: string;
+  workflowStepPath?: string;
 };
 
 export type StepInternalCommon = {
@@ -74,6 +74,7 @@ export type SimpleStepInternal = SimpleStep &
   StepInternalCommon & {
     templateExpression?: jsonata.Expression;
     externalWorkflowEngine?: WorkflowEngine;
+    function?: StepFunction;
   };
 
 export type WorkflowStepInternal = WorkflowStep &

@@ -1,0 +1,7 @@
+steps:
+  - name: validateInput
+    template:
+      $assert( b != 0, "division by zero is not allowed")
+  - name: division
+    template: |
+      ( a / b )
