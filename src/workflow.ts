@@ -82,7 +82,7 @@ export class WorkflowEngine {
     if (WorkflowUtils.isSimpleStep(step)) {
       return StepType.Simple;
     }
-    throw new CustomError('Invalid step', 400, step.name);
+    throw new CustomError("Invalid step", 400, step.name)
   }
 
   private populateSimpleStep(step: SimpleStepInternal, bindings: Record<string, any> = {}) {
@@ -104,8 +104,8 @@ export class WorkflowEngine {
     }
     if (step.functionName) {
       step.function = bindings[step.functionName];
-      if (typeof step.function !== 'function') {
-        throw new CustomError('Invalid functionName', 400, step.name);
+      if (typeof step.function !== "function") {
+        throw new CustomError("Invalid functionName", 400, step.name);
       }
     }
   }
