@@ -19,12 +19,16 @@ import { WorkflowUtils } from './utils';
 import jsonata from 'jsonata';
 import { CustomError } from './errors';
 import * as commonBindings from './bindings';
+import { Logger } from 'pino';
+import { getLogger } from './logger';
 
 export class WorkflowEngine {
   private workflow: WorkflowInternal;
   // bindings will be resolved relative to root path
   readonly rootPath: string;
+  readonly logger: Logger;
   constructor(workflow: Workflow, rootPath: string) {
+    this.logger = getLogger(workflow?.name || 'Workflow');
     this.rootPath = rootPath;
     this.workflow = this.prepareWorkflow(workflow);
   }
@@ -78,7 +82,7 @@ export class WorkflowEngine {
     if (WorkflowUtils.isSimpleStep(step)) {
       return StepType.Simple;
     }
-    throw new CustomError("Invalid step", 400, step.name)
+    throw new CustomError('Invalid step', 400, step.name);
   }
 
   private populateSimpleStep(step: SimpleStepInternal, bindings: Record<string, any> = {}) {
@@ -100,8 +104,8 @@ export class WorkflowEngine {
     }
     if (step.functionName) {
       step.function = bindings[step.functionName];
-      if (typeof step.function !== "function") {
-        throw new CustomError("Invalid functionName", 400, step.name);
+      if (typeof step.function !== 'function') {
+        throw new CustomError('Invalid functionName', 400, step.name);
       }
     }
   }
@@ -148,7 +152,7 @@ export class WorkflowEngine {
       try {
         this.populateStep(step);
       } catch (e) {
-        console.error(`${step.name} is failed to populate`);
+        this.logger.error(`${step.name} is failed to populate`);
         throw e;
       }
     }
@@ -160,6 +164,7 @@ export class WorkflowEngine {
       {},
       commonBindings,
       this.extractBindings(workflow.bindings),
+      { log: this.logger.info },
     );
     for (const step of this.workflow.steps) {
       if (WorkflowUtils.isWorkflowStep(step)) {
@@ -256,14 +261,20 @@ export class WorkflowEngine {
     bindings: Record<string, any> = {},
   ): Promise<StepOutput> {
     let stepInput = input;
+    if (step.debug) {
+      this.logger.debug('Workflow Input', input);
+      this.logger.debug('Step bindings', bindings);
+    }
     if (step.inputTemplateExpression) {
       stepInput = await WorkflowUtils.jsonataPromise(step.inputTemplateExpression, input, bindings);
     }
+
+    let stepOutput: StepOutput = {};
     if (step.loopOverInput) {
       if (!Array.isArray(stepInput)) {
         throw new CustomError('loopOverInput is not supported for non-array input', 500, step.name);
       }
-      const output = await Promise.all(
+      const results = await Promise.all(
         stepInput.map(async (inputElement) => {
           try {
             return await this.executeStepIteration(step, inputElement, bindings);
@@ -277,11 +288,14 @@ export class WorkflowEngine {
           }
         }),
       );
-      // output: [{output, error, skipped}]
-      return { output };
+      stepOutput.output = results;
     } else {
-      return this.executeStepIteration(step, stepInput, bindings);
+      stepOutput = await this.executeStepIteration(step, stepInput, bindings);
     }
+    if (step.debug) {
+      this.logger.debug('Step output', stepOutput);
+    }
+    return stepOutput;
   }
 
   getStep(stepName: string, subStepName?: string): StepInternal {
@@ -325,7 +339,7 @@ export class WorkflowEngine {
         }
       } catch (error) {
         if (step.onError === StepExitAction.Continue) {
-          console.error(`step: ${step.name} failed`, error);
+          this.logger.error(`step: ${step.name} failed`, error);
           continue;
         }
         return this.handleError(error, step.name);

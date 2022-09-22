@@ -1,0 +1,6 @@
+name: debug_example
+steps:
+  - name: debugStep
+    debug: true
+    template: |
+      ()

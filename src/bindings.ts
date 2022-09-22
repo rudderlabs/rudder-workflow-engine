@@ -2,7 +2,6 @@ import jsonata from 'jsonata';
 import { ReturnResultError } from './errors';
 
 export { chunk } from 'lodash';
-export const log = console.log;
 export function getByPaths(obj: any, paths: string | string[]): any {
   if (obj === undefined || paths === undefined) {
     return undefined;
