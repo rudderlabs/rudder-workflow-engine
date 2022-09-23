@@ -56,19 +56,13 @@ export class WorkflowUtils {
       stepInternal.inputTemplateExpression = jsonata(step.inputTemplate);
     }
     if (stepType === StepType.Simple) {
-      stepInternal = new SimpleStepExecutor(step.name, rootPath);
+      stepInternal = new SimpleStepExecutor(step, rootPath);
     } else if (stepType === StepType.Workflow) {
-      stepInternal = new WorkflowStepExecutor(step.name, rootPath);
-    } else {
-      // Invalid workflow configuration has been provided
-      return;
+      stepInternal = new WorkflowStepExecutor(step, rootPath);
     }
 
     const isNotEmpty = !isEmpty(stepInternal);
     if (isNotEmpty) {
-      for (let prop in step) {
-        stepInternal[prop] = step[prop];
-      }
       stepInternal.init(step, bindings);
       return stepInternal;
     }

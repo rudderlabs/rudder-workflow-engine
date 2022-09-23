@@ -23,9 +23,15 @@ export class WorkflowStepExecutor implements WorkflowStepInternal {
   onError?: StepExitAction | undefined;
   debug?: boolean | undefined;
 
-  constructor(stepName: string, rootPath: string) {
-    this.name = stepName;
+  constructor(step: WorkflowStep, rootPath: string) {
+    this.name = step.name;
     this.rootPath = rootPath;
+    // step properties
+    this.description = step.description;
+    this.debug = step.debug;
+    this.loopOverInput = step.loopOverInput;
+    this.onComplete = step.onComplete;
+    this.onError = step.onError;
   }
 
   bindings?: Dictionary<any> | undefined;

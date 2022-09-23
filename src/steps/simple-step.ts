@@ -33,9 +33,15 @@ export class SimpleStepExecutor implements SimpleStepInternal {
   externalWorkflowEngine?: WorkflowEngine | undefined;
   function?: StepFunction | undefined;
 
-  constructor(stepName: string, rootPath: string) {
-    this.name = stepName;
+  constructor(step: SimpleStep, rootPath: string) {
+    this.name = step.name;
     this.rootPath = rootPath;
+    // step properties
+    this.description = step.description;
+    this.loopOverInput = step.loopOverInput;
+    this.onComplete = step.onComplete;
+    this.onError = step.onError;
+    this.debug = step.debug;
   }
 
   init(step: SimpleStep, bindings: Record<string, any> = {}) {
