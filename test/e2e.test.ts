@@ -10,7 +10,7 @@ Pino.mockImplementation(() => fakeLogger);
 
 import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
-import { WorkflowUtils, WorkflowEngine } from '../src';
+import { WorkflowUtils, WorkflowEngine, Workflow } from '../src';
 import { Sceanario } from './types';
 
 describe('Scenarios tests', () => {
@@ -24,7 +24,7 @@ describe('Scenarios tests', () => {
       let defaultWorkflowEngine: WorkflowEngine;
       if (existsSync(defaultWorkflowPath)) {
         defaultWorkflowEngine = new WorkflowEngine(
-          WorkflowUtils.createFromFilePath(defaultWorkflowPath),
+          WorkflowUtils.createFromFilePath<Workflow>(defaultWorkflowPath),
           scenarioDir,
         );
       }
@@ -35,7 +35,7 @@ describe('Scenarios tests', () => {
             if (test.workflowPath) {
               const workflowPath = join(scenarioDir, test.workflowPath);
               workflowEngine = new WorkflowEngine(
-                WorkflowUtils.createFromFilePath(workflowPath),
+                WorkflowUtils.createFromFilePath<Workflow>(workflowPath),
                 scenarioDir,
               );
             }
