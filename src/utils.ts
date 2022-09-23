@@ -48,9 +48,8 @@ export class WorkflowUtils {
     return new Promise(function (resolve, reject) {
       expr.evaluate(data, bindings, function (error, response) {
         if (error) {
-          const anyError = error as any;
-          if (anyError.result) {
-            return resolve(anyError.result);
+          if (error.token === "doReturn") {
+            return resolve((error as any).result);
           }
           return reject(error);
         }

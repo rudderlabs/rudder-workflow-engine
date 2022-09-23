@@ -8,6 +8,11 @@
     },
     {
         "input": {
+            "returnCustomOutput": true
+        }
+    },
+    {
+        "input": {
             "defaultOutput": {"hello": "world"}
         },
         "output": {"hello": "world"}
