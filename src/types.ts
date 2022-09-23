@@ -41,6 +41,7 @@ export type StepCommon = {
   loopOverInput?: boolean;
   onComplete?: StepExitAction;
   onError?: StepExitAction;
+  debug?: boolean;
 };
 
 export type SimpleStep = StepCommon & {
@@ -87,6 +88,7 @@ export type Step = SimpleStep | WorkflowStep;
 export type StepInternal = SimpleStepInternal | WorkflowStepInternal;
 
 export type Workflow = {
+  name?: string;
   bindings?: Binding[];
   steps: Step[];
 };
