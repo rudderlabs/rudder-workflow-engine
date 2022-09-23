@@ -7,11 +7,8 @@ import {
   Workflow,
   StepType,
   WorkflowInternal,
-  SimpleStepInternal,
-  WorkflowStepInternal,
   StepInternal,
   WorkflowOutput,
-  Binding,
   StepOutput,
   StepExitAction,
 } from './types';
@@ -30,59 +27,11 @@ export class WorkflowEngine {
   constructor(workflow: Workflow, rootPath: string) {
     this.logger = getLogger(workflow?.name || 'Workflow');
     this.rootPath = rootPath;
-    this.workflow = this.prepareWorkflow(workflow);
-  }
-
-  private validateWorkflow(workflow: Workflow) {
-    if (!workflow || !workflow.steps || workflow.steps.length === 0) {
-      throw new CustomError('Workflow should contain at least one step', 400);
-    }
-    for (const step of workflow.steps) {
-      this.validateStep(step);
-    }
-  }
-
-  private validateStep(step: Step) {
-    if (!step.name) {
-      throw new CustomError('step should have a name', 400);
-    }
-    if (step.onComplete === StepExitAction.Return && !step.condition) {
-      throw new CustomError(
-        '"onComplete = return" should be used in a step with condition',
-        400,
-        step.name,
-      );
-    }
+    this.workflow = WorkflowUtils.createInternalWorkflow(workflow);
   }
 
   getWorkflow(): WorkflowInternal {
     return this.workflow;
-  }
-
-  private extractBindings(bindings?: Binding[]): Record<string, any> {
-    if (!bindings?.length) {
-      return {};
-    }
-    let bindingsObj: Record<string, any> = {};
-    for (const binding of bindings) {
-      const bindingSource = require(join(this.rootPath, binding.path || 'bindings'));
-      if (binding.name) {
-        bindingsObj[binding.name] = binding.exportAll ? bindingSource : bindingSource[binding.name];
-      } else {
-        bindingsObj = Object.assign(bindingsObj, bindingSource);
-      }
-    }
-    return bindingsObj;
-  }
-
-  getStepType(step: Step): StepType {
-    if (WorkflowUtils.isWorkflowStep(step)) {
-      return StepType.Workflow;
-    }
-    if (WorkflowUtils.isSimpleStep(step)) {
-      return StepType.Simple;
-    }
-    throw new CustomError("Invalid step", 400, step.name)
   }
 
   private populateSimpleStep(step: SimpleStepInternal, bindings: Record<string, any> = {}) {
@@ -133,7 +82,7 @@ export class WorkflowEngine {
   }
 
   private populateStep(step: StepInternal) {
-    step.type = step.type || this.getStepType(step);
+    step.type = step.type || WorkflowUtils.getStepType(step);
     if (step.inputTemplate) {
       step.inputTemplateExpression = jsonata(step.inputTemplate);
     }
@@ -145,7 +94,7 @@ export class WorkflowEngine {
   }
 
   private prepareWorkflow(workflow: Workflow): WorkflowInternal {
-    this.validateWorkflow(workflow);
+    WorkflowUtils.validateWorkflow(workflow);
     this.workflow = cloneDeep(workflow) as WorkflowInternal;
     this.prepareBindings(this.workflow);
     for (const step of this.workflow.steps) {
@@ -163,19 +112,22 @@ export class WorkflowEngine {
     workflow.bindingsInternal = Object.assign(
       {},
       commonBindings,
-      this.extractBindings(workflow.bindings),
+      WorkflowUtils.extractBindings(this.rootPath, workflow.bindings),
       { log: this.logger.info },
     );
     for (const step of this.workflow.steps) {
       if (WorkflowUtils.isWorkflowStep(step)) {
         const workflowStep = step as WorkflowStepInternal;
-        workflowStep.bindingsInternal = this.extractBindings(workflowStep.bindings);
+        workflowStep.bindingsInternal = WorkflowUtils.extractBindings(this.rootPath, workflowStep.bindings);
       }
     }
   }
 
   shouldSkipStep(step: StepInternal, input: any, bindings: Record<string, any> = {}): boolean {
-    const allBindings = Object.assign({}, this.workflow.bindingsInternal, bindings);
+    const allBindings = Object.assign({}, 
+      this.workflow.bindingsInternal, 
+      (step as WorkflowStepInternal).bindingsInternal,
+      bindings);
     return !!step.conditionExpression && !step.conditionExpression.evaluate(input, allBindings);
   }
 
@@ -192,9 +144,6 @@ export class WorkflowEngine {
     input: any,
     bindings: Record<string, any> = {},
   ): Promise<StepOutput> {
-    if (this.shouldSkipStep(step, input, bindings)) {
-      return { skipped: true };
-    }
     bindings.context = bindings.context || {};
     const allBindings = Object.assign(
       {},
@@ -220,9 +169,6 @@ export class WorkflowEngine {
     input: any,
     bindings: Record<string, any> = {},
   ): Promise<StepOutput> {
-    if (this.shouldSkipStep(workflowStep, input, workflowStep.bindingsInternal)) {
-      return { skipped: true };
-    }
     bindings.outputs[workflowStep.name] = {};
     let finalOutput: any;
     for (const simpleStep of workflowStep.steps as SimpleStepInternal[]) {
@@ -265,6 +211,10 @@ export class WorkflowEngine {
       this.logger.debug('Workflow Input', input);
       this.logger.debug('Step bindings', bindings);
     }
+    if (this.shouldSkipStep(step, input, bindings)) {
+      return { skipped: true };
+    }
+
     if (step.inputTemplateExpression) {
       stepInput = await WorkflowUtils.jsonataPromise(step.inputTemplateExpression, input, bindings);
     }

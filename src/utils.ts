@@ -1,7 +1,12 @@
 import yaml from 'js-yaml';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 import jsonata from 'jsonata';
-import { SimpleStep, Step, WorkflowStep, Workflow } from './types';
+import {
+  SimpleStep, Step, WorkflowStep,
+  StepExitAction, Workflow, Binding, StepType, StepInternal
+} from './types';
+import { CustomError } from "./errors";
 
 export class WorkflowUtils {
   static createFromFilePath(workflowYamlPath: string): Workflow {
@@ -34,6 +39,54 @@ export class WorkflowUtils {
     } catch {
       return false;
     }
+  }
+
+  static validateWorkflow(workflow: Workflow) {
+    if (!workflow || !workflow.steps || workflow.steps.length === 0) {
+      throw new CustomError('Workflow should contain at least one step', 400);
+    }
+    for (const step of workflow.steps) {
+      WorkflowUtils.validateStep(step);
+    }
+  }
+
+  static validateStep(step: Step) {
+    if (!step.name) {
+      throw new CustomError('step should have a name', 400);
+    }
+    if (step.onComplete === StepExitAction.Return && !step.condition) {
+      throw new CustomError(
+        '"onComplete = return" should be used in a step with condition',
+        400,
+        step.name,
+      );
+    }
+  }
+
+  static getStepType(step: Step): StepType {
+    if (WorkflowUtils.isWorkflowStep(step)) {
+      return StepType.Workflow;
+    }
+    if (WorkflowUtils.isSimpleStep(step)) {
+      return StepType.Simple;
+    }
+    throw new CustomError("Invalid step", 400, step.name)
+  }
+
+  static extractBindings(rootPath: string, bindings?: Binding[]): Record<string, any> {
+    if (!bindings?.length) {
+      return {};
+    }
+    let bindingsObj: Record<string, any> = {};
+    for (const binding of bindings) {
+      const bindingSource = require(join(rootPath, binding.path || 'bindings'));
+      if (binding.name) {
+        bindingsObj[binding.name] = binding.exportAll ? bindingSource : bindingSource[binding.name];
+      } else {
+        bindingsObj = Object.assign(bindingsObj, bindingSource);
+      }
+    }
+    return bindingsObj;
   }
 
   static isAssertError(error: any) {

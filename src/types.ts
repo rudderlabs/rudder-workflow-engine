@@ -1,5 +1,8 @@
 import jsonata from 'jsonata';
+import { StepExecutor } from './steps/step';
 import { WorkflowEngine } from './workflow';
+
+export type Dictionary<T> = Record<string, T>;
 
 export type StatusError = {
   status: number;
@@ -9,18 +12,19 @@ export type StepOutput = {
   error?: StatusError;
   skipped?: boolean;
   output?: any;
-  outputs?: Record<any, string>;
+  outputs?: Dictionary<any>;
 };
 
 export enum StepType {
   Simple = 'simple',
   Workflow = 'workflow',
 }
+
 export enum StepExitAction {
   Return = 'return',
   Continue = 'continue',
 }
-export type StepFunction = (input: any, bindings: Record<string, any>) => StepOutput;
+export type StepFunction = (input: any, bindings: Dictionary<any>) => StepOutput;
 
 export type Binding = {
   // exported value's name in bindings
@@ -57,6 +61,7 @@ export type SimpleStep = StepCommon & {
   // Function must be passed using bindings
   functionName?: string;
 };
+
 export type WorkflowStep = StepCommon & {
   bindings?: Binding[];
   // One of the template, templatePath, Function are required for simple steps
@@ -65,26 +70,32 @@ export type WorkflowStep = StepCommon & {
   workflowStepPath?: string;
 };
 
+export type Step = SimpleStep | WorkflowStep;
+
 export type StepInternalCommon = {
+  name: string,
+  description?: string
   type?: StepType;
   conditionExpression?: jsonata.Expression;
   inputTemplateExpression?: jsonata.Expression;
-};
+  loopOverInput?: boolean;
+  onComplete?: StepExitAction;
+  onError?: StepExitAction;
+  debug?: boolean;
+}
 
-export type SimpleStepInternal = SimpleStep &
-  StepInternalCommon & {
-    templateExpression?: jsonata.Expression;
-    externalWorkflowEngine?: WorkflowEngine;
-    function?: StepFunction;
-  };
+export type SimpleStepInternal = StepInternalCommon & {
+  parent?: WorkflowStepInternal,
+  templateExpression?: jsonata.Expression;
+  externalWorkflowEngine?: WorkflowEngine;
+  function?: StepFunction;
+}
 
-export type WorkflowStepInternal = WorkflowStep &
-  StepInternalCommon & {
-    bindingsInternal?: Record<string, any>;
-    steps?: SimpleStepInternal[];
-  };
+export type WorkflowStepInternal = StepInternalCommon & {
+  bindings?: Dictionary<any>;
+  steps?: SimpleStepInternal[] 
+}
 
-export type Step = SimpleStep | WorkflowStep;
 export type StepInternal = SimpleStepInternal | WorkflowStepInternal;
 
 export type Workflow = {
@@ -94,14 +105,14 @@ export type Workflow = {
 };
 
 export type WorkflowInternal = {
-  bindings?: Binding[];
-  bindingsInternal?: Record<string, any>;
+  name?: string
+  bindings?: Dictionary<any>;
   steps: StepInternal[];
 };
 
 export type WorkflowOutput = {
   output?: any;
-  outputs?: Record<string, any>;
+  outputs?: Dictionary<any>;
   status?: number;
   error?: any;
 };
