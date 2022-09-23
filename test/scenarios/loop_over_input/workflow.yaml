@@ -1,0 +1,8 @@
+steps:
+  - name: loopOverInput
+    loopOverInput: true
+    template: |
+      (
+        $exists(error) ? $error(error);
+        $exists(output) ? output : { "foo": "bar" }
+      )
