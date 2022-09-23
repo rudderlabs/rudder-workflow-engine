@@ -87,12 +87,16 @@ export class SimpleStepExecutor implements SimpleStepInternal {
       bindings,
       WorkflowUtils.getContextFunctions(bindings.context),
     );
+
     if (this.externalWorkflowEngine) {
       return this.externalWorkflowEngine.execute(input, { context: bindings.context });
     }
+
     if (this.function) {
       return this.function(input, allBindings);
-    } else if (this.templateExpression) {
+    }
+
+    if (this.templateExpression) {
       const tempExprOut = await WorkflowUtils.jsonataPromise(
         this.templateExpression,
         input,
