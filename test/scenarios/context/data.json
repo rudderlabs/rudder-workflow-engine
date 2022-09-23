@@ -1,0 +1,17 @@
+[
+  {
+    "input": {
+      "foo": true
+    },
+    "output": "foo"
+  },
+  {
+    "input": {
+      "bar": true
+    },
+    "output": "bar"
+  },
+  {
+    "output": "default"
+  }
+]

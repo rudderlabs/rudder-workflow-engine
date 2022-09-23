@@ -10,7 +10,6 @@ import {
   StepExitAction,
   StepOutput,
   WorkflowStepInternal,
-  SimpleStepInternal,
   StepType,
 } from './types';
 import { WorkflowUtils } from './utils';
@@ -97,6 +96,10 @@ export class WorkflowEngine {
     return this.workflow;
   }
 
+  private findStep(steps, stepName): StepInternal | undefined {
+    return steps.find((step) => step.name === stepName);
+  }
+
   getWorkflow(): WorkflowInternal {
     return this.workflow;
   }
@@ -146,6 +149,20 @@ export class WorkflowEngine {
       this.logger.debug('Step output', stepOutput);
     }
     return stepOutput;
+  }
+
+  getStep(stepName: string, subStepName?: string): StepInternal {
+    let step = this.findStep(this.workflow.steps, stepName);
+    if (step === undefined) {
+      throw new Error(`step: ${stepName} does not exist`);
+    }
+    if (subStepName && step.type === StepType.Workflow) {
+      step = this.findStep((step as WorkflowStepInternal).steps, subStepName);
+      if (step === undefined) {
+        throw new Error(`step: ${stepName} with subStep: ${subStepName} does not exist`);
+      }
+    }
+    return step;
   }
 
   async execute(input: any, bindings: Record<string, any> = {}): Promise<WorkflowOutput> {

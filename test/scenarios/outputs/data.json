@@ -1,0 +1,42 @@
+[
+  {
+    "input": {
+      "description": "a + b + c",
+      "a": "10",
+      "b": "2",
+      "c": "1",
+      "op": "+"
+    },
+    "output": 13
+  },
+  {
+    "input": {
+      "description": "a - b + c",
+      "a": "10",
+      "b": "2",
+      "c": "1",
+      "op": "-"
+    },
+    "output": 9
+  },
+  {
+    "input": {
+      "description": "a * b + c",
+      "a": "10",
+      "b": "2",
+      "c": "1",
+      "op": "*"
+    },
+    "output": 21
+  },
+  {
+    "input": {
+      "description": "a / b + c",
+      "a": "10",
+      "b": "2",
+      "c": "1",
+      "op": "/"
+    },
+    "output": 6
+  }
+]

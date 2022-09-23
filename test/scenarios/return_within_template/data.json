@@ -1,0 +1,15 @@
+[
+  {
+    "input": {
+      "returnCustomOutput": true,
+      "customOutput": { "foo": "bar" }
+    },
+    "output": { "foo": "bar" }
+  },
+  {
+    "input": {
+      "defaultOutput": { "hello": "world" }
+    },
+    "output": { "hello": "world" }
+  }
+]
