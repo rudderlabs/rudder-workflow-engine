@@ -1,0 +1,15 @@
+steps:
+  - name: setDefaultContext
+    template: |
+      $setContext("something", "default")
+  - name: setContextForFoo
+    condition: $exists(foo)
+    template: |
+      $setContext("something", "foo")
+  - name: setContextForB
+    condition: $exists(bar)
+    template: |
+      $setContext("something", "bar")
+  - name: returnContext
+    template: |
+      $context.something
