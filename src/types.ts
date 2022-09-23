@@ -1,5 +1,4 @@
 import jsonata from 'jsonata';
-import { StepExecutor } from './steps/step';
 import { WorkflowEngine } from './workflow';
 
 export type Dictionary<T> = Record<string, T>;
