@@ -1,0 +1,39 @@
+# a op b + c
+steps:
+  - name: a
+    description: Converts to a number
+    template: |
+      ($number(a))
+  - name: b
+    description: Converts to a number
+    template: |
+      ($number(b))
+  - name: operation
+    description: a op b + c
+    steps:
+      - name: c
+        description: Converts to a number
+        template: |
+          ($number(c))
+      - name: add
+        description: Do addition
+        condition: op = "+"
+        template: |
+          ( $outputs.a + $outputs.b + $outputs.operation.c)
+      - name: subtract
+        description: Do subtraction
+        condition: op = "-"
+        template: |
+          ( $outputs.a - $outputs.b + $outputs.operation.c)
+      - name: multiply
+        description: Do multiplication
+        condition: op = "*"
+        template: |
+          ( ($outputs.a * $outputs.b) + $outputs.operation.c)
+      - name: divide
+        description: Do division
+        condition: op = "/"
+        template: |
+          ( ($outputs.a / $outputs.b) + $outputs.operation.c)
+    
+
