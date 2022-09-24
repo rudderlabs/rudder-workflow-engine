@@ -5,6 +5,7 @@ const fakeLogger = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
+  child: () => fakeLogger
 };
 Pino.mockImplementation(() => fakeLogger);
 

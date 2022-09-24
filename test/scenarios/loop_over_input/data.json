@@ -3,7 +3,7 @@
     "input": {
       "description": "I am not array so I will fail"
     },
-    "error": "loopOverInput is not supported for non-array input"
+    "error": "loopOverInput requires array input"
   },
   {
     "input": [

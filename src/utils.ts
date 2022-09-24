@@ -2,7 +2,6 @@ import yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import jsonata from 'jsonata';
-import { isEmpty } from 'lodash';
 import {
   SimpleStep,
   Step,
@@ -11,14 +10,9 @@ import {
   Workflow,
   Binding,
   StepType,
-  StepInternal,
-  StepInternalCommon,
   Dictionary,
-  SimpleStepInternal,
 } from './types';
 import { CustomError } from './errors';
-import { SimpleStepExecutor } from './steps/simple-step';
-import { WorkflowStepExecutor } from './steps/workflow-step';
 
 export type GetStepInternalParams = {
   step: SimpleStep;
@@ -27,48 +21,9 @@ export type GetStepInternalParams = {
   bindings?: Dictionary<any>;
 };
 export class WorkflowUtils {
-  static createFromFilePath<T>(workflowYamlPath: string): T {
-    const workflowYaml = readFileSync(workflowYamlPath, { encoding: 'utf-8' });
-    return yaml.load(workflowYaml) as T;
-  }
-
-  static getContextFunctions(context: Record<string, any> = {}) {
-    return {
-      setContext: (key, value) => {
-        context[key] = value;
-      },
-    };
-  }
-
-  static shouldSkipStep(
-    step: StepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): boolean {
-    return !!step.conditionExpression && !step.conditionExpression.evaluate(input, bindings);
-  }
-
-  static getStepInternal(params: GetStepInternalParams): StepInternal | undefined {
-    const { stepType, step, rootPath, bindings } = params;
-    let stepInternal: StepInternal = {} as StepInternal;
-    // can this be placed here ?
-    if (step.inputTemplate) {
-      stepInternal.inputTemplateExpression = jsonata(step.inputTemplate);
-    }
-    if (stepType === StepType.Simple) {
-      stepInternal = new SimpleStepExecutor(step, rootPath);
-    } else if (stepType === StepType.Workflow) {
-      stepInternal = new WorkflowStepExecutor(step, rootPath);
-    }
-
-    const isNotEmpty = !isEmpty(stepInternal);
-    if (isNotEmpty) {
-      stepInternal.init(step, bindings);
-      return stepInternal;
-    }
-
-    // Invalid workflow configuration has been provided
-    return;
+  static createFromFilePath<T>(yamlPath: string): T {
+    const yamlString = readFileSync(yamlPath, { encoding: 'utf-8' });
+    return yaml.load(yamlString) as T;
   }
 
   static createFromYaml(workflowYaml: string): Workflow {
@@ -111,6 +66,7 @@ export class WorkflowUtils {
     if (!step.name) {
       throw new CustomError('step should have a name', 400);
     }
+
     if (step.onComplete === StepExitAction.Return && !step.condition) {
       throw new CustomError(
         '"onComplete = return" should be used in a step with condition',
@@ -130,7 +86,7 @@ export class WorkflowUtils {
     throw new CustomError('Invalid step', 400, step.name);
   }
 
-  static extractBindings(rootPath: string, bindings?: Binding[]): Record<string, any> {
+  static extractBindings(rootPath: string, bindings?: Binding[]): Dictionary<any> {
     if (!bindings?.length) {
       return {};
     }

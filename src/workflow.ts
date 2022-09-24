@@ -1,203 +1,74 @@
-import { cloneDeep } from 'lodash';
-import { Logger } from 'pino';
-import {
-  Step,
-  Workflow,
-  WorkflowInternal,
-  StepInternal,
-  WorkflowOutput,
-  WorkflowStep,
-  StepExitAction,
-  StepOutput,
-  WorkflowStepInternal,
-  StepType,
-} from './types';
-import { WorkflowUtils } from './utils';
-import { CustomError } from './errors';
-import * as commonBindings from './bindings';
-import { getLogger } from './logger';
+import cloneDeep from "lodash/cloneDeep";
+import { Logger } from "pino";
+import { getLogger } from "./logger";
+import { StepExecutorFactory } from "./steps/factory";
+import { StepExecutor } from "./steps/interface";
+import { Dictionary, ExecutionBindings, StepExitAction, Workflow, WorkflowOutput } from "./types";
+import { WorkflowUtils } from "./utils";
+import * as libraryBindings from "./bindings"
+import { CustomError } from "./errors";
 
 export class WorkflowEngine {
-  private workflow: WorkflowInternal;
-  // bindings will be resolved relative to root path
-  readonly rootPath: string;
-  readonly logger: Logger;
-  constructor(workflow: Workflow, rootPath: string) {
-    this.logger = getLogger(workflow?.name || 'Workflow');
-    this.rootPath = rootPath;
-    this.workflow = this.prepareWorkflow(workflow);
-  }
-
-  private prepareBindings(workflow: Workflow) {
-    this.workflow.bindings = Object.assign(
-      {},
-      commonBindings,
-      WorkflowUtils.extractBindings(this.rootPath, workflow.bindings),
-      { log: this.logger.info },
-    );
-
-    // As this is 8*times faster
-    // May be suitable for our use-case
-    // Ref: https://jsbench.me/6dkh13vqrr/1
-    // for (let index=0; index < workflow.steps.length; index++) {
-    //   const step = workflow.steps[index];
-    //   if (WorkflowUtils.isWorkflowStep(step)) {
-    //     const workflowStep = step as WorkflowStep;
-    //     const wfStepInternal = this.workflow.steps[index] as WorkflowStepInternal
-    //     wfStepInternal.bindings = WorkflowUtils.extractBindings(this.rootPath, workflowStep.bindings);
-    //   }
-    // }
-  }
-
-  private populateStep(step: Step): StepInternal | undefined {
-    const stepType = WorkflowUtils.getStepType(step);
-    const stepInternal = WorkflowUtils.getStepInternal({
-      step,
-      stepType,
-      bindings: this.workflow.bindings,
-      rootPath: this.rootPath,
-    });
-    // TODO: Need to think through if this fits here(source-code wise not use-case)
-    // if (step.inputTemplate) {
-    //   stepInternal.inputTemplateExpression = jsonata(step.inputTemplate);
-    // }
-    if (WorkflowUtils.isWorkflowStep(step)) {
-      const workflowStep = step as WorkflowStep;
-      (stepInternal as WorkflowStepInternal).bindings = WorkflowUtils.extractBindings(
-        this.rootPath,
-        workflowStep.bindings,
-      );
+    private readonly steps: StepExecutor[];
+    readonly logger: Logger;
+    readonly bindings: Dictionary<any>;
+    constructor(workflow: Workflow, rootPath: string, ...bindingsPaths: string[]) {
+        WorkflowUtils.validateWorkflow(workflow);
+        this.logger = getLogger(workflow?.name || 'Workflow');
+        this.bindings = this.prepareBindings(
+            WorkflowUtils.extractBindings(rootPath, workflow.bindings),
+            bindingsPaths);
+        this.steps = workflow.steps.map(step =>
+            StepExecutorFactory.create(step, rootPath, this.bindings, this.logger))
     }
-    return stepInternal;
-  }
 
-  private prepareWorkflow(workflow: Workflow): WorkflowInternal {
-    WorkflowUtils.validateWorkflow(workflow);
-    // This is engine-specific
-    this.workflow = cloneDeep(workflow) as WorkflowInternal;
-    this.prepareBindings(workflow);
+    private prepareBindings(workflowBindings: Dictionary<any>, bindingsPaths: string[]) {
+        return Object.assign({},
+            libraryBindings,
+            ...bindingsPaths.map(require),
+            workflowBindings
+        );
+    }
 
-    // As this is 8*times faster
-    // May be suitable for our use-case
-    // Benchmark Ref: https://jsbench.me/6dkh13vqrr/1
-    for (let i = 0; i < workflow.steps.length; i++) {
-      const step = workflow.steps[i];
-      try {
-        const stepInternal = this.populateStep(step);
-        if (!stepInternal) {
-          throw new CustomError('Step is not a supported type', 400, step.name);
+    async execute(input: any, context: Record<string, any> = {}): Promise<WorkflowOutput> {
+        const newContext = cloneDeep(context);
+        const executionBindings: ExecutionBindings = {
+            outputs: {},
+            context: newContext,
+            setContext: (key, value) => {
+                newContext[key] = value;
+            }
         }
-        this.workflow.steps[i] = stepInternal;
-      } catch (e) {
-        this.logger.error(`${step.name} is failed to populate`);
-        throw e;
-      }
-    }
-    return this.workflow;
-  }
 
-  private findStep(steps, stepName): StepInternal | undefined {
-    return steps.find((step) => step.name === stepName);
-  }
-
-  getWorkflow(): WorkflowInternal {
-    return this.workflow;
-  }
-
-  private async executeStepInternal(
-    step: StepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): Promise<StepOutput> {
-    let stepInput = input;
-    if (step.debug) {
-      this.logger.debug('Workflow Input', input);
-      this.logger.debug('Step bindings', bindings);
-    }
-    if (step.inputTemplateExpression) {
-      stepInput = await WorkflowUtils.jsonataPromise(step.inputTemplateExpression, input, bindings);
-    }
-
-    let stepOutput: StepOutput = {};
-    // Can we do this ?
-    const workflowBindings = this.workflow.bindings;
-    bindings = Object.assign({}, workflowBindings, bindings);
-
-    if (step.loopOverInput) {
-      if (!Array.isArray(stepInput)) {
-        throw new CustomError('loopOverInput is not supported for non-array input', 500, step.name);
-      }
-      const results = await Promise.all(
-        stepInput.map(async (inputElement) => {
-          try {
-            return await step.execute(inputElement, bindings);
-          } catch (error: any) {
-            return {
-              error: {
-                status: error.response?.status || 500,
-                message: error.message,
-              },
-            };
-          }
-        }),
-      );
-      stepOutput.output = results;
-    } else {
-      stepOutput = await step.execute(stepInput, bindings);
-    }
-    if (step.debug) {
-      this.logger.debug('Step output', stepOutput);
-    }
-    return stepOutput;
-  }
-
-  getStep(stepName: string, subStepName?: string): StepInternal {
-    let step = this.findStep(this.workflow.steps, stepName);
-    if (step === undefined) {
-      throw new Error(`step: ${stepName} does not exist`);
-    }
-    if (subStepName && step.type === StepType.Workflow) {
-      step = this.findStep((step as WorkflowStepInternal).steps, subStepName);
-      if (step === undefined) {
-        throw new Error(`step: ${stepName} with subStep: ${subStepName} does not exist`);
-      }
-    }
-    return step;
-  }
-
-  async execute(input: any, bindings: Record<string, any> = {}): Promise<WorkflowOutput> {
-    bindings = cloneDeep(bindings);
-    bindings.context = bindings.context || {};
-    bindings.outputs = {};
-
-    let finalOutput: any;
-    for (const step of this.workflow.steps) {
-      try {
-        const { skipped, output } = await this.executeStepInternal(step, input, bindings);
-        if (skipped) {
-          continue;
+        let finalOutput: any;
+        for (const stepExecutor of this.steps) {
+            const step = stepExecutor.getStep();
+            try {
+                const { skipped, output } = await stepExecutor.execute(input, executionBindings);
+                if (skipped) {
+                    continue;
+                }
+                executionBindings.outputs[step.name] = output;
+                finalOutput = output;
+                if (step.onComplete === StepExitAction.Return) {
+                    break;
+                }
+            } catch (error) {
+                if (step.onError === StepExitAction.Continue) {
+                    this.logger.error(`step: ${step.name} failed`, error);
+                    continue;
+                }
+                return this.handleError(error, step.name);
+            }
         }
-        bindings.outputs[step.name] = output;
-        finalOutput = output;
-        if (step.onComplete === StepExitAction.Return) {
-          break;
-        }
-      } catch (error) {
-        if (step.onError === StepExitAction.Continue) {
-          this.logger.error(`step: ${step.name} failed`, error);
-          continue;
-        }
-        return this.handleError(error, step.name);
-      }
+
+        return { output: finalOutput, outputs: executionBindings.outputs };
     }
 
-    return { output: finalOutput, outputs: bindings.outputs };
-  }
-
-  handleError(error: any, stepName: string): WorkflowOutput {
-    const status = WorkflowUtils.isAssertError(error)
-      ? 400
-      : error.response?.status || error.status || 500;
-    throw new CustomError(error.message, status, stepName);
-  }
+    handleError(error: any, stepName: string): WorkflowOutput {
+        const status = WorkflowUtils.isAssertError(error)
+            ? 400
+            : error.response?.status || error.status || 500;
+        throw new CustomError(error.message, status, stepName);
+    }
 }
