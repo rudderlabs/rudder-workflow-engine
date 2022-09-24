@@ -1,0 +1,41 @@
+[
+  {
+    "workflowPath": "using_context.yaml",
+    "input": {
+      "a": "1"
+    },
+    "output": {
+      "aIsLessThan5": true
+    }
+  },
+  {
+    "workflowPath": "using_context.yaml",
+    "input": {
+      "a": "5"
+    },
+    "output": {
+      "aIs5": true
+    }
+  },
+  {
+    "workflowPath": "using_context.yaml",
+    "input": {
+      "a": "10"
+    },
+    "output": {
+      "aIsGreaterThan5": true
+    }
+  },
+  {
+    "workflowPath": "using_outputs.yaml",
+    "output": {
+      "notASimpleCondition": true
+    }
+  },
+  {
+    "workflowPath": "using_outputs.yaml",
+    "output": {
+      "notASimpleCondition": true
+    }
+  }
+]

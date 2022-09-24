@@ -1,0 +1,11 @@
+steps:
+  - name: sum
+    # here input is customized
+    inputTemplate: |
+      {"a": $number(a), "b": $number(b)}
+    template: |
+      (a + b)
+  - name: combineResults
+    # here input is original
+    template: |
+      { "a": a, "b": b, "sum": $outputs.sum }
