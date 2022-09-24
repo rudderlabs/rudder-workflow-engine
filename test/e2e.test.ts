@@ -40,7 +40,10 @@ describe('Scenarios tests', () => {
                 scenarioDir,
               );
             }
-            const result = await workflowEngine.execute(test.input);
+            let result = await workflowEngine.execute(test.input);
+            // JSONata creates immutable arrays and it cause issues
+            // so doing the following makes the comparison successful.
+            result = JSON.parse(JSON.stringify(result));
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
             expect(error.message).toContain(test.error);
