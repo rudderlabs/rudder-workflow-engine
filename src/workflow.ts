@@ -1,22 +1,20 @@
-import yaml from 'js-yaml';
 import { cloneDeep } from 'lodash';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { Logger } from 'pino';
 import {
   Step,
   Workflow,
-  StepType,
   WorkflowInternal,
   StepInternal,
   WorkflowOutput,
-  StepOutput,
+  WorkflowStep,
   StepExitAction,
+  StepOutput,
+  WorkflowStepInternal,
+  StepType,
 } from './types';
 import { WorkflowUtils } from './utils';
-import jsonata from 'jsonata';
 import { CustomError } from './errors';
 import * as commonBindings from './bindings';
-import { Logger } from 'pino';
 import { getLogger } from './logger';
 
 export class WorkflowEngine {
@@ -27,79 +25,69 @@ export class WorkflowEngine {
   constructor(workflow: Workflow, rootPath: string) {
     this.logger = getLogger(workflow?.name || 'Workflow');
     this.rootPath = rootPath;
-    this.workflow = WorkflowUtils.createInternalWorkflow(workflow);
+    this.workflow = this.prepareWorkflow(workflow);
   }
 
-  getWorkflow(): WorkflowInternal {
-    return this.workflow;
+  private prepareBindings(workflow: Workflow) {
+    this.workflow.bindings = Object.assign(
+      {},
+      commonBindings,
+      WorkflowUtils.extractBindings(this.rootPath, workflow.bindings),
+      { log: this.logger.info },
+    );
+
+    // As this is 8*times faster
+    // May be suitable for our use-case
+    // Ref: https://jsbench.me/6dkh13vqrr/1
+    // for (let index=0; index < workflow.steps.length; index++) {
+    //   const step = workflow.steps[index];
+    //   if (WorkflowUtils.isWorkflowStep(step)) {
+    //     const workflowStep = step as WorkflowStep;
+    //     const wfStepInternal = this.workflow.steps[index] as WorkflowStepInternal
+    //     wfStepInternal.bindings = WorkflowUtils.extractBindings(this.rootPath, workflowStep.bindings);
+    //   }
+    // }
   }
 
-  private populateSimpleStep(step: SimpleStepInternal, bindings: Record<string, any> = {}) {
-    if (step.condition) {
-      step.conditionExpression = jsonata(step.condition);
-    }
-    if (step.externalWorkflow) {
-      const externalWorkflow = WorkflowUtils.createFromFilePath(
-        join(this.rootPath, step.externalWorkflow.path),
+  private populateStep(step: Step): StepInternal | undefined {
+    const stepType = WorkflowUtils.getStepType(step);
+    const stepInternal = WorkflowUtils.getStepInternal({
+      step,
+      stepType,
+      bindings: this.workflow.bindings,
+      rootPath: this.rootPath,
+    });
+    // TODO: Need to think through if this fits here(source-code wise not use-case)
+    // if (step.inputTemplate) {
+    //   stepInternal.inputTemplateExpression = jsonata(step.inputTemplate);
+    // }
+    if (WorkflowUtils.isWorkflowStep(step)) {
+      const workflowStep = step as WorkflowStep;
+      (stepInternal as WorkflowStepInternal).bindings = WorkflowUtils.extractBindings(
+        this.rootPath,
+        workflowStep.bindings,
       );
-      const externalWorkflowRootPath = join(this.rootPath, step.externalWorkflow.rootPath || '');
-      step.externalWorkflowEngine = new WorkflowEngine(externalWorkflow, externalWorkflowRootPath);
     }
-    if (step.templatePath) {
-      step.template = readFileSync(join(this.rootPath, step.templatePath), 'utf-8');
-    }
-    if (step.template) {
-      step.templateExpression = jsonata(step.template);
-    }
-    if (step.functionName) {
-      step.function = bindings[step.functionName];
-      if (typeof step.function !== "function") {
-        throw new CustomError("Invalid functionName", 400, step.name);
-      }
-    }
-  }
-
-  private prepareStepsForWorkflow(workflowPath: string): WorkflowStepInternal {
-    const workflowStepsData: string = readFileSync(join(this.rootPath, workflowPath), 'utf-8');
-    return yaml.load(workflowStepsData) as WorkflowStepInternal;
-  }
-
-  private populateWorkflowStep(step: WorkflowStepInternal) {
-    if (step.condition) {
-      step.conditionExpression = jsonata(step.condition);
-    }
-    if (step.workflowStepPath) {
-      const newWorkflowStep = this.prepareStepsForWorkflow(step.workflowStepPath);
-      step.bindings = Object.assign({}, newWorkflowStep.bindings, step.bindings);
-      step.steps = newWorkflowStep.steps;
-    }
-    if (step.steps) {
-      for (const subStep of step.steps) {
-        subStep.type = StepType.Simple;
-        this.populateSimpleStep(subStep, step.bindings);
-      }
-    }
-  }
-
-  private populateStep(step: StepInternal) {
-    step.type = step.type || WorkflowUtils.getStepType(step);
-    if (step.inputTemplate) {
-      step.inputTemplateExpression = jsonata(step.inputTemplate);
-    }
-    if (step.type === StepType.Simple) {
-      this.populateSimpleStep(step, this.workflow.bindingsInternal);
-    } else if (step.type === StepType.Workflow) {
-      this.populateWorkflowStep(step);
-    }
+    return stepInternal;
   }
 
   private prepareWorkflow(workflow: Workflow): WorkflowInternal {
     WorkflowUtils.validateWorkflow(workflow);
+    // This is engine-specific
     this.workflow = cloneDeep(workflow) as WorkflowInternal;
-    this.prepareBindings(this.workflow);
-    for (const step of this.workflow.steps) {
+    this.prepareBindings(workflow);
+
+    // As this is 8*times faster
+    // May be suitable for our use-case
+    // Benchmark Ref: https://jsbench.me/6dkh13vqrr/1
+    for (let i = 0; i < workflow.steps.length; i++) {
+      const step = workflow.steps[i];
       try {
-        this.populateStep(step);
+        const stepInternal = this.populateStep(step);
+        if (!stepInternal) {
+          throw new CustomError('Step is not a supported type', 400, step.name);
+        }
+        this.workflow.steps[i] = stepInternal;
       } catch (e) {
         this.logger.error(`${step.name} is failed to populate`);
         throw e;
@@ -108,97 +96,12 @@ export class WorkflowEngine {
     return this.workflow;
   }
 
-  private prepareBindings(workflow: WorkflowInternal) {
-    workflow.bindingsInternal = Object.assign(
-      {},
-      commonBindings,
-      WorkflowUtils.extractBindings(this.rootPath, workflow.bindings),
-      { log: this.logger.info },
-    );
-    for (const step of this.workflow.steps) {
-      if (WorkflowUtils.isWorkflowStep(step)) {
-        const workflowStep = step as WorkflowStepInternal;
-        workflowStep.bindingsInternal = WorkflowUtils.extractBindings(this.rootPath, workflowStep.bindings);
-      }
-    }
-  }
-
-  shouldSkipStep(step: StepInternal, input: any, bindings: Record<string, any> = {}): boolean {
-    const allBindings = Object.assign({}, 
-      this.workflow.bindingsInternal, 
-      (step as WorkflowStepInternal).bindingsInternal,
-      bindings);
-    return !!step.conditionExpression && !step.conditionExpression.evaluate(input, allBindings);
-  }
-
-  private getContextFunctions(context: Record<string, any> = {}) {
-    return {
-      setContext: (key, value) => {
-        context[key] = value;
-      },
-    };
-  }
-
-  private async executeSimpleStep(
-    step: SimpleStepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): Promise<StepOutput> {
-    bindings.context = bindings.context || {};
-    const allBindings = Object.assign(
-      {},
-      this.workflow.bindingsInternal,
-      bindings,
-      this.getContextFunctions(bindings.context),
-    );
-    if (step.externalWorkflowEngine) {
-      return step.externalWorkflowEngine.execute(input, { context: bindings.context });
-    }
-    if (step.function) {
-      return step.function(input, allBindings);
-    } else if (step.templateExpression) {
-      return {
-        output: await WorkflowUtils.jsonataPromise(step.templateExpression, input, allBindings),
-      };
-    }
-    throw new CustomError('Invalid simple step configuration', 500, step.name);
-  }
-
-  private async executeWorkflowStep(
-    workflowStep: WorkflowStepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): Promise<StepOutput> {
-    bindings.outputs[workflowStep.name] = {};
-    let finalOutput: any;
-    for (const simpleStep of workflowStep.steps as SimpleStepInternal[]) {
-      const allBindings = Object.assign({}, workflowStep.bindingsInternal, bindings);
-      const { skipped, output } = await this.executeStepInternal(simpleStep, input, allBindings);
-      if (!skipped) {
-        bindings.outputs[workflowStep.name][simpleStep.name] = output;
-        finalOutput = output;
-      }
-    }
-
-    return { outputs: bindings.outputs[workflowStep.name], output: finalOutput };
-  }
-
-  private executeStepIteration(
-    step: StepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): Promise<StepOutput> {
-    switch (step.type) {
-      case StepType.Simple:
-        return this.executeSimpleStep(step, input, bindings);
-      case StepType.Workflow:
-        return this.executeWorkflowStep(step, input, bindings);
-    }
-    throw new CustomError('Invalid step configuration', 500, step.name);
-  }
-
   private findStep(steps, stepName): StepInternal | undefined {
     return steps.find((step) => step.name === stepName);
+  }
+
+  getWorkflow(): WorkflowInternal {
+    return this.workflow;
   }
 
   private async executeStepInternal(
@@ -211,15 +114,15 @@ export class WorkflowEngine {
       this.logger.debug('Workflow Input', input);
       this.logger.debug('Step bindings', bindings);
     }
-    if (this.shouldSkipStep(step, input, bindings)) {
-      return { skipped: true };
-    }
-
     if (step.inputTemplateExpression) {
       stepInput = await WorkflowUtils.jsonataPromise(step.inputTemplateExpression, input, bindings);
     }
 
     let stepOutput: StepOutput = {};
+    // Can we do this ?
+    const workflowBindings = this.workflow.bindings;
+    bindings = Object.assign({}, workflowBindings, bindings);
+
     if (step.loopOverInput) {
       if (!Array.isArray(stepInput)) {
         throw new CustomError('loopOverInput is not supported for non-array input', 500, step.name);
@@ -227,7 +130,7 @@ export class WorkflowEngine {
       const results = await Promise.all(
         stepInput.map(async (inputElement) => {
           try {
-            return await this.executeStepIteration(step, inputElement, bindings);
+            return await step.execute(inputElement, bindings);
           } catch (error: any) {
             return {
               error: {
@@ -240,7 +143,7 @@ export class WorkflowEngine {
       );
       stepOutput.output = results;
     } else {
-      stepOutput = await this.executeStepIteration(step, stepInput, bindings);
+      stepOutput = await step.execute(stepInput, bindings);
     }
     if (step.debug) {
       this.logger.debug('Step output', stepOutput);
@@ -260,14 +163,6 @@ export class WorkflowEngine {
       }
     }
     return step;
-  }
-
-  executeStep(
-    step: StepInternal,
-    input: any,
-    bindings: Record<string, any> = {},
-  ): Promise<StepOutput> {
-    return this.executeStepInternal(step, input, cloneDeep(bindings));
   }
 
   async execute(input: any, bindings: Record<string, any> = {}): Promise<WorkflowOutput> {

@@ -1,5 +1,4 @@
 import jsonata from 'jsonata';
-import { StepExecutor } from './steps/step';
 import { WorkflowEngine } from './workflow';
 
 export type Dictionary<T> = Record<string, T>;
@@ -72,42 +71,10 @@ export type WorkflowStep = StepCommon & {
 
 export type Step = SimpleStep | WorkflowStep;
 
-export type StepInternalCommon = {
-  name: string,
-  description?: string
-  type?: StepType;
-  conditionExpression?: jsonata.Expression;
-  inputTemplateExpression?: jsonata.Expression;
-  loopOverInput?: boolean;
-  onComplete?: StepExitAction;
-  onError?: StepExitAction;
-  debug?: boolean;
-}
-
-export type SimpleStepInternal = StepInternalCommon & {
-  parent?: WorkflowStepInternal,
-  templateExpression?: jsonata.Expression;
-  externalWorkflowEngine?: WorkflowEngine;
-  function?: StepFunction;
-}
-
-export type WorkflowStepInternal = StepInternalCommon & {
-  bindings?: Dictionary<any>;
-  steps?: SimpleStepInternal[] 
-}
-
-export type StepInternal = SimpleStepInternal | WorkflowStepInternal;
-
 export type Workflow = {
   name?: string;
   bindings?: Binding[];
   steps: Step[];
-};
-
-export type WorkflowInternal = {
-  name?: string
-  bindings?: Dictionary<any>;
-  steps: StepInternal[];
 };
 
 export type WorkflowOutput = {
@@ -115,4 +82,43 @@ export type WorkflowOutput = {
   outputs?: Dictionary<any>;
   status?: number;
   error?: any;
+};
+
+export type StepInternalCommon = {
+  name: string;
+  // This is workflow's rootPath(provided during initialisation of "WorkflowEngine")
+  rootPath: string;
+  description?: string;
+  conditionExpression?: jsonata.Expression;
+  inputTemplateExpression?: jsonata.Expression;
+  loopOverInput?: boolean;
+  onComplete?: StepExitAction;
+  onError?: StepExitAction;
+  debug?: boolean;
+
+  init(step: Step, bindings?: Record<string, any>): void;
+  execute(input: any, bindings: Dictionary<any>): Promise<StepOutput>;
+  validate(): void;
+};
+
+export type SimpleStepInternal = StepInternalCommon & {
+  type: StepType.Simple;
+  parent?: WorkflowStepInternal;
+  templateExpression?: jsonata.Expression;
+  externalWorkflowEngine?: WorkflowEngine;
+  function?: StepFunction;
+};
+
+export type WorkflowStepInternal = StepInternalCommon & {
+  type: StepType.Workflow;
+  bindings?: Dictionary<any>;
+  steps?: SimpleStepInternal[];
+};
+
+export type StepInternal = SimpleStepInternal | WorkflowStepInternal;
+
+export type WorkflowInternal = {
+  name?: string;
+  bindings?: Dictionary<any>;
+  steps: StepInternal[];
 };
