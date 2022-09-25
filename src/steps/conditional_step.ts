@@ -1,7 +1,7 @@
 import jsonata from "jsonata";
-import { ExecutionBindings, StepOutput } from "../types";
+import { ExecutionBindings } from "../types";
 import { DecoratableStepExecutor } from "./decoratable_step";
-import { StepExecutor } from "./types";
+import { StepExecutor, StepOutput } from "./types";
 
 export class ConditionalStepExecutor extends DecoratableStepExecutor {
     private readonly conditionExpression: jsonata.Expression

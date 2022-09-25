@@ -24,20 +24,25 @@ describe('Scenarios tests', () => {
       const defaultWorkflowPath = join(scenarioDir, 'workflow.yaml');
       let defaultWorkflowEngine: WorkflowEngine;
       if (existsSync(defaultWorkflowPath)) {
-        defaultWorkflowEngine = new WorkflowEngine(
-          WorkflowUtils.createFromFilePath<Workflow>(defaultWorkflowPath),
-          scenarioDir,
-        );
+        try {
+          defaultWorkflowEngine = new WorkflowEngine(
+            WorkflowUtils.createFromFilePath<Workflow>(defaultWorkflowPath),
+            scenarioDir,
+          )
+        } catch(error: any) {
+          console.error(`defaultWorkflowEngine: ${defaultWorkflowPath} create failed`, error.message, error.stepName);
+        }
       }
       tests.forEach((test, index) => {
         it(`Test ${index}`, async () => {
           try {
             let workflowEngine = defaultWorkflowEngine;
-            if (test.workflowPath) {
-              const workflowPath = join(scenarioDir, test.workflowPath);
+            if (test.workflowPath || test.bindingsPaths) {
+              const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
               workflowEngine = new WorkflowEngine(
                 WorkflowUtils.createFromFilePath<Workflow>(workflowPath),
                 scenarioDir,
+                ...(test.bindingsPaths || [])
               );
             }
             let result = await workflowEngine.execute(test.input);

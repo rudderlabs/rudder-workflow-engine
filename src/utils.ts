@@ -2,17 +2,12 @@ import yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import jsonata from 'jsonata';
-import {
-  SimpleStep,
-  Step,
-  WorkflowStep,
-  StepExitAction,
-  Workflow,
-  Binding,
-  StepType,
-  Dictionary,
-} from './types';
+import { Workflow, Binding, Dictionary } from './types';
 import { CustomError } from './errors';
+import {
+  SimpleStep, StepType, Step,
+  WorkflowStep, StepExitAction
+} from './steps/types';
 
 export type GetStepInternalParams = {
   step: SimpleStep;
@@ -26,8 +21,8 @@ export class WorkflowUtils {
     return yaml.load(yamlString) as T;
   }
 
-  static createFromYaml(workflowYaml: string): Workflow {
-    return yaml.load(workflowYaml) as Workflow;
+  static createFromYaml<T>(yamlString: string): T {
+    return yaml.load(yamlString) as T;
   }
 
   static isSimpleStep(step: Step): boolean {
@@ -76,6 +71,12 @@ export class WorkflowUtils {
     }
   }
 
+  static populateStepType(workflow: Workflow) {
+    for (const step of workflow.steps) {
+      step.type = WorkflowUtils.getStepType(step)
+    }
+  }
+
   static getStepType(step: Step): StepType {
     if (WorkflowUtils.isWorkflowStep(step)) {
       return StepType.Workflow;
@@ -84,6 +85,21 @@ export class WorkflowUtils {
       return StepType.Simple;
     }
     throw new CustomError('Invalid step', 400, step.name);
+  }
+
+  static extractBindingsFromPaths(rootPath: string, bindingsPaths?: string[]): Dictionary<any> {
+    if (!bindingsPaths || !bindingsPaths.length) {
+      return {};
+    }
+
+    const bindings = bindingsPaths.map(bindingPath => {
+      try {
+        return require(join(rootPath, bindingPath));
+      } catch {
+        return require(bindingPath);
+      }
+    });
+    return Object.assign({}, ...bindings);
   }
 
   static extractBindings(rootPath: string, bindings?: Binding[]): Dictionary<any> {

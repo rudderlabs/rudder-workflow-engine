@@ -1,0 +1,65 @@
+[
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "+"
+        },
+        "output": 12
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "-"
+        },
+        "output": 8
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "*"
+        },
+        "output": 20
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "/"
+        },
+        "output": 5
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "/"
+        },
+        "output": 5
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 0,
+            "op": "/"
+        },
+        "error": "division by zero is not allowed"
+    },
+    {
+        "bindingsPaths": ["functions", "ops"],
+        "input": {
+            "a": 10,
+            "b": 0,
+            "op": "^"
+        },
+        "error": "unsupported operation"
+    }
+]

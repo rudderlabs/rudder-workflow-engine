@@ -1,11 +1,11 @@
 import { join } from "path";
 import { Logger } from "pino";
 import { CustomError } from "../errors";
-import { Dictionary, ExecutionBindings, StepOutput, WorkflowStep } from "../types";
+import { Dictionary, ExecutionBindings } from "../types";
 import { WorkflowUtils } from "../utils";
 import { BaseStepExector } from "./base_step";
 import { StepExecutorFactory } from "./factory";
-import { StepExecutor } from "./types";
+import { StepExecutor, StepOutput, StepType, WorkflowStep } from "./types";
 
 export class WorkflowStepExecutor extends BaseStepExector {
     private readonly steps: StepExecutor[]
@@ -36,9 +36,14 @@ export class WorkflowStepExecutor extends BaseStepExector {
 
     private prepareSteps(): StepExecutor[] {
         const steps = (this.step as WorkflowStep).steps || [];
+        steps.forEach(step => step.type = StepType.Simple);
         return steps.map(step =>
             StepExecutorFactory.create(step, this.rootPath, this.bindings, this.logger)
         );
+    }
+
+    getStepExecutor(stepName: string): StepExecutor | undefined {
+        return this.steps.find(stepExecutor => stepExecutor.getStepName() === stepName);
     }
 
     async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

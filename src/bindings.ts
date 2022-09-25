@@ -1,7 +1,13 @@
 import jsonata from 'jsonata';
 import { CustomError, ReturnResultError } from './errors';
+import { Dictionary } from './types';
 
 export { chunk } from 'lodash';
+
+export function values(obj: Dictionary<any>): any[] {
+  return Object.values(obj);
+}
+
 export function getByPaths(obj: any, paths: string | string[]): any {
   if (obj === undefined || paths === undefined) {
     return undefined;
@@ -14,6 +20,6 @@ export function doReturn(obj?: any) {
   throw new ReturnResultError(obj);
 }
 
-export function doThrow(message: string, status: number) {
-  throw new CustomError(message, status);
+export function doThrow(message: string, status?: number) {
+  throw new CustomError(message, status || 500);
 }

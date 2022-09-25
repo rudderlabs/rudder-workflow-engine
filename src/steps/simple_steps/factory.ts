@@ -1,7 +1,7 @@
 import { Logger } from "pino";
 import { CustomError } from "../../errors";
-import { Dictionary, SimpleStep } from "../../types";
-import { StepExecutor } from "../types";
+import { Dictionary } from "../../types";
+import { SimpleStep, StepExecutor } from "../types";
 import { ExternalWorkflowStepExecutor } from "./external_workflow";
 import { FunctionStepExecutor } from "./function";
 import { TemplateStepExecutor } from "./template";

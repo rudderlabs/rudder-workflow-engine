@@ -1,28 +1,28 @@
 steps:
   - name: unsupported
-    condition: $not(op in ["+", "-", "*", "/"])
+    condition: $not(op in $values($ops))
     template: |
       $doThrow("unsupported operation")
   - name: add
     description: Do addition
-    condition: op = "+"
+    condition: op = $ops.plus
     template: |
-      ( a + b )
+      $add(a, b)
   - name: subtract
     description: Do subtraction
-    condition: op = "-"
+    condition: op = $ops.minus
     template: |
-      ( a - b )
+      $subtract(a, b)
   - name: multiply
     description: Do multiplication
-    condition: op = "*"
+    condition: op = $ops.multiply
     template: |
-      ( a * b )
+      $multiply(a, b)
   - name: divide
     description: Do division
-    condition: op = "/"
+    condition: op = $ops.divide
     template: |
       ( 
         $assert( b != 0, "division by zero is not allowed");
-        a / b 
+        $divide(a, b)
       )

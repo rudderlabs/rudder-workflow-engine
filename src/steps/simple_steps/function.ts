@@ -1,7 +1,8 @@
 import { Logger } from "pino";
 import { CustomError } from "../../errors";
-import { Dictionary, ExecutionBindings, Step, StepFunction, StepOutput } from "../../types";
+import { Dictionary, ExecutionBindings } from "../../types";
 import { BaseStepExector } from "../base_step";
+import { StepFunction, Step, StepOutput } from "../types";
 
 export class FunctionStepExecutor extends BaseStepExector {
     private readonly fn: StepFunction;

@@ -1,8 +1,8 @@
 import jsonata from "jsonata";
 import { WorkflowUtils } from "../utils";
-import { ExecutionBindings, StepOutput } from "../types";
+import { ExecutionBindings } from "../types";
 import { DecoratableStepExecutor } from "./decoratable_step";
-import { StepExecutor } from "./types";
+import { StepExecutor, StepOutput } from "./types";
 
 export class InputTemplateStepExecutor extends DecoratableStepExecutor {
     private readonly inputTemplateExpression: jsonata.Expression

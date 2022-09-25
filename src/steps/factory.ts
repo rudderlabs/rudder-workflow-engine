@@ -1,18 +1,18 @@
 import { Logger } from "pino";
 import { WorkflowUtils } from "../utils";
 import { CustomError } from "../errors";
-import {  Dictionary, Step, StepType, WorkflowStep } from "../types";
+import {  Dictionary } from "../types";
 import { ConditionalStepExecutor } from "./conditional_step";
 import { InputTemplateStepExecutor } from "./input_template_step";
 import { DebuggableStepExecutor } from "./debuggable_step";
 import { LoopStepExecutor } from "./loop_step";
-import { StepExecutor } from "./types";
+import { Step, StepExecutor, StepType, WorkflowStep } from "./types";
 import { WorkflowStepExecutor } from "./workflow_step";
 import { SimpleStepExecutorFactory } from "./simple_steps/factory";
 
 export class StepExecutorFactory {   
     private static getStepExecutor(step: Step, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): StepExecutor {
-        switch(WorkflowUtils.getStepType(step)) {
+        switch(step.type || WorkflowUtils.getStepType(step)) {
             case StepType.Simple:
                 return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
             case StepType.Workflow:

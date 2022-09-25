@@ -14,5 +14,12 @@
         },
         "error": "some 5xx error",
         "status": 500
+    },
+    {
+        "input": {
+            "error": "some unknown error"
+        },
+        "error": "some unknown error",
+        "status": 500
     }
 ]

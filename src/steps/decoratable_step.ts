@@ -1,6 +1,6 @@
 import { Logger } from "pino";
-import { Dictionary, ExecutionBindings, Step, StepOutput } from "../types";
-import { StepExecutor } from "./types";
+import { Dictionary, ExecutionBindings } from "../types";
+import { Step, StepExecutor, StepOutput } from "./types";
 
 export class DecoratableStepExecutor implements StepExecutor {
     private stepExecutor: StepExecutor;
@@ -9,6 +9,10 @@ export class DecoratableStepExecutor implements StepExecutor {
         this.stepExecutor = stepExecutor;
     }
     
+    getStepType(): string {
+        return this.stepExecutor.getStepType();
+    }
+
     getBindings(): Dictionary<any> {
         return this.stepExecutor.getBindings();
     }

@@ -1,6 +1,6 @@
-import { ExecutionBindings, StepOutput } from '../types';
+import { ExecutionBindings } from '../types';
 import { DecoratableStepExecutor } from './decoratable_step';
-import { StepExecutor } from './types';
+import { StepExecutor, StepOutput } from './types';
 
 /**
  * This is to set the break points when step is using debug flag
