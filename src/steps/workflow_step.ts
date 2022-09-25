@@ -3,11 +3,11 @@ import { Logger } from "pino";
 import { CustomError } from "../errors";
 import { Dictionary, ExecutionBindings, StepOutput, WorkflowStep } from "../types";
 import { WorkflowUtils } from "../utils";
-import { BaseExector } from "./base_step";
+import { BaseStepExector } from "./base_step";
 import { StepExecutorFactory } from "./factory";
-import { StepExecutor } from "./interface";
+import { StepExecutor } from "./types";
 
-export class WorkflowStepExecutor extends BaseExector {
+export class WorkflowStepExecutor extends BaseStepExector {
     private readonly steps: StepExecutor[]
     constructor(step: WorkflowStep,
         rootPath: string,
@@ -17,7 +17,7 @@ export class WorkflowStepExecutor extends BaseExector {
         const bindings = Object.assign({}, workflowBindings,
             WorkflowUtils.extractBindings(rootPath, newStep.bindings));
         super(newStep, rootPath, bindings,
-            parentLogger.child({ workflow_step: step.name }));
+            parentLogger.child({ workflow: step.name }));
         this.steps = this.prepareSteps();
     }
 
@@ -44,10 +44,8 @@ export class WorkflowStepExecutor extends BaseExector {
     async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
         executionBindings.outputs[this.getStepName()] = {};
         let finalOutput: any;
-        const allBindings = Object.assign({}, this.bindings, executionBindings);
-
         for (const simpleStepExecutor of this.steps) {
-            const { skipped, output } = await simpleStepExecutor.execute(input, allBindings);
+            const { skipped, output } = await simpleStepExecutor.execute(input, executionBindings);
             if (!skipped) {
                 executionBindings.outputs[this.getStepName()][simpleStepExecutor.getStepName()] = output;
                 finalOutput = output;

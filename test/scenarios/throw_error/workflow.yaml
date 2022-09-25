@@ -1,0 +1,5 @@
+steps:
+  - name: throwError
+    debug: true
+    template: |
+      $doThrow(error, status)

@@ -4,5 +4,5 @@ steps:
     debug: true
     template: |
       (
-        $log("I will show on the screen")
+        $info("I will show on the screen")
       )

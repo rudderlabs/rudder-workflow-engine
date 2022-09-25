@@ -2,7 +2,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Logger } from "pino";
 import { getLogger } from "./logger";
 import { StepExecutorFactory } from "./steps/factory";
-import { StepExecutor } from "./steps/interface";
+import { StepExecutor } from "./steps/types";
 import { Dictionary, ExecutionBindings, StepExitAction, Workflow, WorkflowOutput } from "./types";
 import { WorkflowUtils } from "./utils";
 import * as libraryBindings from "./bindings"
@@ -58,14 +58,14 @@ export class WorkflowEngine {
                     this.logger.error(`step: ${step.name} failed`, error);
                     continue;
                 }
-                return this.handleError(error, step.name);
+                this.handleError(error, step.name);
             }
         }
 
         return { output: finalOutput, outputs: executionBindings.outputs };
     }
 
-    handleError(error: any, stepName: string): WorkflowOutput {
+    handleError(error: any, stepName: string) {
         const status = WorkflowUtils.isAssertError(error)
             ? 400
             : error.response?.status || error.status || 500;

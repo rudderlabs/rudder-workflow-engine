@@ -1,0 +1,18 @@
+[
+    {
+        "input": {
+            "error": "some 4xx error",
+            "status": 400
+        },
+        "error": "some 4xx error",
+        "status": 400
+    },
+    {
+        "input": {
+            "error": "some 5xx error",
+            "status": 500
+        },
+        "error": "some 5xx error",
+        "status": 500
+    }
+]

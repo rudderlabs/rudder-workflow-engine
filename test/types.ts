@@ -3,6 +3,7 @@ export type Sceanario = {
   workflowPath?: string;
   output?: any;
   error?: string;
+  status?: number;
   logger?: {
     // expected minimum count
     debug?: number;

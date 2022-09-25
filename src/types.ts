@@ -34,6 +34,12 @@ export type Binding = {
   exportAll?: true;
 };
 
+export type ExternalWorkflow = {
+  path: string;
+  // root path for resolving dependencies
+  rootPath?: string;
+};
+
 export type StepCommon = {
   name: string;
   description?: string;
@@ -50,11 +56,7 @@ export type SimpleStep = StepCommon & {
   template?: string;
   templatePath?: string;
   // external workflow is executed independently and we can access only final output
-  externalWorkflow?: {
-    path: string;
-    // root path for resolving dependencies
-    rootPath?: string;
-  };
+  externalWorkflow?: ExternalWorkflow;
   // Function must be passed using bindings
   functionName?: string;
 };

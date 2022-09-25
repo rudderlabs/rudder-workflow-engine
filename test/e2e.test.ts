@@ -47,6 +47,9 @@ describe('Scenarios tests', () => {
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
             expect(error.message).toContain(test.error);
+            if (test.status) {
+              expect(error.status).toEqual(test.status);
+            }
           }
           if (test.logger) {
             expect(fakeLogger.debug.mock.calls.length).toBeGreaterThanOrEqual(

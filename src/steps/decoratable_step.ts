@@ -1,6 +1,6 @@
 import { Logger } from "pino";
-import { ExecutionBindings, Step, StepOutput } from "../types";
-import { StepExecutor } from "./interface";
+import { Dictionary, ExecutionBindings, Step, StepOutput } from "../types";
+import { StepExecutor } from "./types";
 
 export class DecoratableStepExecutor implements StepExecutor {
     private stepExecutor: StepExecutor;
@@ -8,6 +8,11 @@ export class DecoratableStepExecutor implements StepExecutor {
     constructor(stepExecutor: StepExecutor) {
         this.stepExecutor = stepExecutor;
     }
+    
+    getBindings(): Dictionary<any> {
+        return this.stepExecutor.getBindings();
+    }
+
     getLogger(): Logger {
         return this.stepExecutor.getLogger();
     }
@@ -18,14 +23,6 @@ export class DecoratableStepExecutor implements StepExecutor {
 
     getStepName(): string {
         return this.stepExecutor.getStepName();
-    }
-
-    shouldSkip(input: any, executionBindings: ExecutionBindings): boolean {
-        return this.stepExecutor.shouldSkip(input, executionBindings);
-    }
-
-    prepareInput(input: any, executionBindings: ExecutionBindings): Promise<any> {
-        return this.stepExecutor.prepareInput(input, executionBindings);
     }
 
     async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

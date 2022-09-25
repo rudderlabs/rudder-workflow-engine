@@ -1,20 +1,20 @@
 import { Logger } from "pino";
 import { WorkflowUtils } from "../utils";
 import { CustomError } from "../errors";
-import {  Dictionary, SimpleStep, Step, StepType, WorkflowStep } from "../types";
+import {  Dictionary, Step, StepType, WorkflowStep } from "../types";
 import { ConditionalStepExecutor } from "./conditional_step";
-import { CustomInputStepExecutor } from "./custom_input_step";
+import { InputTemplateStepExecutor } from "./input_template_step";
 import { DebuggableStepExecutor } from "./debuggable_step";
 import { LoopStepExecutor } from "./loop_step";
-import { SimpleStepExecutor } from "./simple_step";
-import { StepExecutor } from "./interface";
+import { StepExecutor } from "./types";
 import { WorkflowStepExecutor } from "./workflow_step";
+import { SimpleStepExecutorFactory } from "./simple_steps/factory";
 
 export class StepExecutorFactory {   
     private static getStepExecutor(step: Step, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): StepExecutor {
         switch(WorkflowUtils.getStepType(step)) {
             case StepType.Simple:
-                return new SimpleStepExecutor(step as SimpleStep, rootPath, bindings, parentLogger);
+                return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
             case StepType.Workflow:
                 return new WorkflowStepExecutor(step as WorkflowStep, rootPath, bindings, parentLogger);
             default:
@@ -30,11 +30,11 @@ export class StepExecutorFactory {
         }
 
         if (step.inputTemplate) {
-            stepExecutor = new CustomInputStepExecutor(stepExecutor);
+            stepExecutor = new InputTemplateStepExecutor(step.inputTemplate, stepExecutor);
         }
 
         if (step.condition) {
-            stepExecutor = new ConditionalStepExecutor(stepExecutor);
+            stepExecutor = new ConditionalStepExecutor(step.condition, stepExecutor);
         }
 
         if (step.debug) {
