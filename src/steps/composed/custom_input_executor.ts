@@ -1,14 +1,18 @@
 import jsonata from "jsonata";
-import { WorkflowUtils } from "../utils";
-import { ExecutionBindings } from "../types";
-import { DecoratableStepExecutor } from "./decoratable_step";
-import { StepExecutor, StepOutput } from "./types";
+import { WorkflowUtils } from "../../utils";
+import { ExecutionBindings } from "../../types";
+import { ComposableStepExecutor } from "./composable_executor";
+import { StepExecutor, StepOutput } from "../types";
 
-export class InputTemplateStepExecutor extends DecoratableStepExecutor {
+/**
+ * CustomInputStepExecutor customizes the input the
+ * and then invokes step executor with the custom input
+ */
+export class CustomInputStepExecutor extends ComposableStepExecutor {
     private readonly inputTemplateExpression: jsonata.Expression
 
     constructor(inputTemplate: string, nextExecutor: StepExecutor) {
-        super(nextExecutor);
+        super("custom_input", nextExecutor);
         this.inputTemplateExpression = jsonata(inputTemplate);
     }
 

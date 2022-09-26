@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import jsonata from 'jsonata';
 import { Workflow, Binding, Dictionary } from './types';
-import { CustomError } from './errors';
+import { WorkflowExecutionError } from './errors';
 import {
   SimpleStep, StepType, Step,
   WorkflowStep, StepExitAction
@@ -50,7 +50,7 @@ export class WorkflowUtils {
 
   static validateWorkflow(workflow: Workflow) {
     if (!workflow || !workflow.steps || workflow.steps.length === 0) {
-      throw new CustomError('Workflow should contain at least one step', 400);
+      throw new WorkflowExecutionError('Workflow should contain at least one step', 400);
     }
     for (const step of workflow.steps) {
       WorkflowUtils.validateStep(step);
@@ -59,11 +59,11 @@ export class WorkflowUtils {
 
   static validateStep(step: Step) {
     if (!step.name) {
-      throw new CustomError('step should have a name', 400);
+      throw new WorkflowExecutionError('step should have a name', 400);
     }
 
     if (step.onComplete === StepExitAction.Return && !step.condition) {
-      throw new CustomError(
+      throw new WorkflowExecutionError(
         '"onComplete = return" should be used in a step with condition',
         400,
         step.name,
@@ -84,7 +84,7 @@ export class WorkflowUtils {
     if (WorkflowUtils.isSimpleStep(step)) {
       return StepType.Simple;
     }
-    throw new CustomError('Invalid step', 400, step.name);
+    throw new WorkflowExecutionError('Invalid step', 400, step.name);
   }
 
   static extractBindingsFromPaths(rootPath: string, bindingsPaths?: string[]): Dictionary<any> {

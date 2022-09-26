@@ -2,10 +2,10 @@ import { readFileSync } from "fs";
 import jsonata from "jsonata";
 import { join } from "path";
 import { Logger } from "pino";
-import { WorkflowUtils } from "../../utils";
-import { Dictionary, ExecutionBindings } from "../../types";
-import { BaseStepExector } from "../base_step";
-import { Step, StepOutput, Template } from "../types";
+import { WorkflowUtils } from "../../../utils";
+import { Dictionary, ExecutionBindings } from "../../../types";
+import { BaseStepExector } from "../base_executor";
+import { Step, StepOutput, Template } from "../../types";
 
 export class TemplateStepExecutor extends BaseStepExector {
     private readonly templateExpression: jsonata.Expression

@@ -1,13 +1,14 @@
 import { Logger } from "pino";
-import { CustomError } from "../../errors";
-import { Dictionary } from "../../types";
-import { SimpleStep, StepExecutor } from "../types";
-import { ExternalWorkflowStepExecutor } from "./external_workflow";
-import { FunctionStepExecutor } from "./function";
-import { TemplateStepExecutor } from "./template";
+import { WorkflowExecutionError } from "../../../errors";
+import { Dictionary } from "../../../types";
+import { SimpleStep, StepExecutor } from "../../types";
+import { BaseStepExector } from "../base_executor";
+import { ExternalWorkflowStepExecutor } from "./external_workflow_executor";
+import { FunctionStepExecutor } from "./function_exector";
+import { TemplateStepExecutor } from "./template_executor";
 
 export class SimpleStepExecutorFactory {
-    static create(step: SimpleStep, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): StepExecutor {
+    static create(step: SimpleStep, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): BaseStepExector {
         const simpleStepLogger = parentLogger.child({ step: step.name });
         if (step.externalWorkflow) {
             return new ExternalWorkflowStepExecutor(step.externalWorkflow,
@@ -27,6 +28,6 @@ export class SimpleStepExecutorFactory {
                 step, rootPath, bindings, simpleStepLogger);
         }
 
-        throw new CustomError("Invalid simple step configuration", 400, step.name);
+        throw new WorkflowExecutionError("Invalid simple step configuration", 400, step.name);
     }
 }

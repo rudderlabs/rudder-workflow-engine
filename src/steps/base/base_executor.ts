@@ -1,7 +1,7 @@
 import { Logger } from "pino";
-import { WorkflowUtils } from "../utils";
-import { Dictionary, ExecutionBindings } from "../types";
-import { Step, StepExecutor, StepOutput, StepType } from "./types";
+import { WorkflowUtils } from "../../utils";
+import { Dictionary, ExecutionBindings } from "../../types";
+import { Step, StepExecutor, StepOutput, StepType } from "../types";
 
 export abstract class BaseStepExector implements StepExecutor {
     protected readonly step: Step;

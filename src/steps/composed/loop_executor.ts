@@ -1,16 +1,16 @@
-import { CustomError } from "../errors";
-import { ExecutionBindings } from "../types";
-import { DecoratableStepExecutor } from "./decoratable_step";
-import { StepExecutor, StepOutput } from "./types";
+import { WorkflowExecutionError } from "../../errors";
+import { ExecutionBindings } from "../../types";
+import { ComposableStepExecutor } from "./composable_executor";
+import { StepExecutor, StepOutput } from "../types";
 
-export class LoopStepExecutor extends DecoratableStepExecutor {
+export class LoopStepExecutor extends ComposableStepExecutor {
     constructor(stepExecutor: StepExecutor) {
-        super(stepExecutor);
+        super("loop", stepExecutor);
     }
 
     async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
         if (!Array.isArray(input)) {
-            throw new CustomError("loopOverInput requires array input", 400,)
+            throw new WorkflowExecutionError("loopOverInput requires array input", 400,)
         }
         const output = await Promise.all(input.map(async element => {
             try {

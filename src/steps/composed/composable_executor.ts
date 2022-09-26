@@ -1,15 +1,22 @@
 import { Logger } from "pino";
-import { Dictionary, ExecutionBindings } from "../types";
-import { Step, StepExecutor, StepOutput } from "./types";
+import { Dictionary, ExecutionBindings } from "../../types";
+import { Step, StepExecutor, StepOutput, StepType } from "../types";
 
-export class DecoratableStepExecutor implements StepExecutor {
+/**
+ * ComposableStepExecutor allows compose more logic
+ * on top the given step executor.
+ */
+export class ComposableStepExecutor implements StepExecutor {
+    protected logger: Logger;
     private stepExecutor: StepExecutor;
 
-    constructor(stepExecutor: StepExecutor) {
+    constructor(name: string, stepExecutor: StepExecutor) {
         this.stepExecutor = stepExecutor;
+        // Adding the name executor will be helpful in debugging.
+        this.logger =  this.stepExecutor.getLogger().child({[name]: true})
     }
     
-    getStepType(): string {
+    getStepType(): StepType {
         return this.stepExecutor.getStepType();
     }
 
@@ -18,7 +25,7 @@ export class DecoratableStepExecutor implements StepExecutor {
     }
 
     getLogger(): Logger {
-        return this.stepExecutor.getLogger();
+        return this.logger;
     }
 
     getStep(): Step {

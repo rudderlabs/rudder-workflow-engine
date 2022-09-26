@@ -6,11 +6,11 @@ import { StepExecutor, StepExitAction, StepType } from "./steps/types";
 import { Binding, Dictionary, ExecutionBindings, Workflow, WorkflowOutput } from "./types";
 import { WorkflowUtils } from "./utils";
 import * as libraryBindings from "./bindings"
-import { CustomError } from "./errors";
+import { WorkflowExecutionError } from "./errors";
 import { WorkflowStepExecutor } from "./steps";
 
 export class WorkflowEngine {
-    private readonly steps: StepExecutor[];
+    private readonly stepExecutors: StepExecutor[];
     readonly logger: Logger;
     readonly bindings: Dictionary<any>;
     constructor(workflow: Workflow, rootPath: string, ...bindingsPaths: string[]) {
@@ -18,7 +18,7 @@ export class WorkflowEngine {
         WorkflowUtils.populateStepType(workflow);
         this.logger = getLogger(workflow?.name || 'Workflow');
         this.bindings = this.prepareBindings(rootPath, workflow.bindings, bindingsPaths);
-        this.steps = workflow.steps.map(step =>
+        this.stepExecutors = workflow.steps.map(step =>
             StepExecutorFactory.create(step, rootPath, this.bindings, this.logger))
     }
 
@@ -31,7 +31,7 @@ export class WorkflowEngine {
     }
 
     getStepExecutor(stepName: string, childStepName?: string): StepExecutor | undefined {
-        let stepExecutor = this.steps.find(stepExecutor => stepExecutor.getStepName() === stepName);
+        let stepExecutor = this.stepExecutors.find(stepExecutor => stepExecutor.getStepName() === stepName);
         if(childStepName && stepExecutor?.getStepType() === StepType.Workflow) {
             stepExecutor = (stepExecutor as WorkflowStepExecutor).getStepExecutor(childStepName);
         }
@@ -49,7 +49,7 @@ export class WorkflowEngine {
         }
 
         let finalOutput: any;
-        for (const stepExecutor of this.steps) {
+        for (const stepExecutor of this.stepExecutors) {
             const step = stepExecutor.getStep();
             try {
                 const { skipped, output } = await stepExecutor.execute(input, executionBindings);
@@ -77,6 +77,6 @@ export class WorkflowEngine {
         const status = WorkflowUtils.isAssertError(error)
             ? 400
             : error.response?.status || error.status || 500;
-        throw new CustomError(error.message, status, stepName);
+        throw new WorkflowExecutionError(error.message, status, stepName);
     }
 }

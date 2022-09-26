@@ -2,11 +2,29 @@ import { Logger } from "pino";
 import { Binding, Dictionary, ExecutionBindings } from "../types";
 
 export interface StepExecutor {
+    /**
+     * Returns the name of the step which executor is operating
+     */
     getStepName(): string;
-    getStepType(): string;
+    /**
+     * Returns the type of the step which executor is operating
+     */
+    getStepType(): StepType;
+    /**
+     * Returns the step which executor is operating
+     */
     getStep(): Step;
+    /**
+     * Returns the logger
+     */
     getLogger(): Logger;
+    /**
+     * Returns the step's static bindings
+     */
     getBindings(): Dictionary<any>;
+    /**
+     * Executes the step
+     */
     execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput>
 }
 

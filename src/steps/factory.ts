@@ -1,45 +1,13 @@
 import { Logger } from "pino";
-import { WorkflowUtils } from "../utils";
-import { CustomError } from "../errors";
-import {  Dictionary } from "../types";
-import { ConditionalStepExecutor } from "./conditional_step";
-import { InputTemplateStepExecutor } from "./input_template_step";
-import { DebuggableStepExecutor } from "./debuggable_step";
-import { LoopStepExecutor } from "./loop_step";
-import { Step, StepExecutor, StepType, WorkflowStep } from "./types";
-import { WorkflowStepExecutor } from "./workflow_step";
-import { SimpleStepExecutorFactory } from "./simple_steps/factory";
+import { Dictionary } from "../types";
+import { ComposableExecutorFactory } from "./composed";
+import { Step, StepExecutor } from "./types";
+import { BaseStepExectorFactory } from "./base/factory";
 
-export class StepExecutorFactory {   
-    private static getStepExecutor(step: Step, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): StepExecutor {
-        switch(step.type || WorkflowUtils.getStepType(step)) {
-            case StepType.Simple:
-                return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
-            case StepType.Workflow:
-                return new WorkflowStepExecutor(step as WorkflowStep, rootPath, bindings, parentLogger);
-            default:
-                throw new CustomError("Invalid step type", 400, step.name);
-        }
-    } 
-
+export class StepExecutorFactory {
     static create(step: Step, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger): StepExecutor {
-        let stepExecutor = StepExecutorFactory.getStepExecutor(step, rootPath, bindings, parentLogger);
-        
-        if (step.loopOverInput) {
-            stepExecutor = new LoopStepExecutor(stepExecutor);
-        }
-
-        if (step.inputTemplate) {
-            stepExecutor = new InputTemplateStepExecutor(step.inputTemplate, stepExecutor);
-        }
-
-        if (step.condition) {
-            stepExecutor = new ConditionalStepExecutor(step.condition, stepExecutor);
-        }
-
-        if (step.debug) {
-            stepExecutor = new DebuggableStepExecutor(stepExecutor);
-        }
+        let stepExecutor: StepExecutor = BaseStepExectorFactory.create(step, rootPath, bindings, parentLogger);
+        stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
         return stepExecutor;
     }
 }

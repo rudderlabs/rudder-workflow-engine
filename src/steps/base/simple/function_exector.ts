@@ -1,8 +1,8 @@
 import { Logger } from "pino";
-import { CustomError } from "../../errors";
-import { Dictionary, ExecutionBindings } from "../../types";
-import { BaseStepExector } from "../base_step";
-import { StepFunction, Step, StepOutput } from "../types";
+import { WorkflowExecutionError } from "../../../errors";
+import { Dictionary, ExecutionBindings } from "../../../types";
+import { BaseStepExector } from "../base_executor";
+import { StepFunction, Step, StepOutput } from "../../types";
 
 export class FunctionStepExecutor extends BaseStepExector {
     private readonly fn: StepFunction;
@@ -18,7 +18,7 @@ export class FunctionStepExecutor extends BaseStepExector {
 
     private prepareFunction(functionName: string): StepFunction {
         if (typeof this.bindings[functionName] !== "function") {
-            throw new CustomError("Invalid functionName", 400, this.step.name);
+            throw new WorkflowExecutionError("Invalid functionName", 400, this.step.name);
         }
         return this.bindings[functionName] as StepFunction;
     }

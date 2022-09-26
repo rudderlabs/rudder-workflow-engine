@@ -1,13 +1,13 @@
 import jsonata from "jsonata";
-import { ExecutionBindings } from "../types";
-import { DecoratableStepExecutor } from "./decoratable_step";
-import { StepExecutor, StepOutput } from "./types";
+import { ExecutionBindings } from "../../types";
+import { ComposableStepExecutor } from "./composable_executor";
+import { StepExecutor, StepOutput } from "../types";
 
-export class ConditionalStepExecutor extends DecoratableStepExecutor {
+export class ConditionalStepExecutor extends ComposableStepExecutor {
     private readonly conditionExpression: jsonata.Expression
 
     constructor(condition: string, nextExecutor: StepExecutor) {
-        super(nextExecutor);
+        super("conditional", nextExecutor);
         this.conditionExpression = jsonata(condition);
     }
 
