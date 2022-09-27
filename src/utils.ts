@@ -3,11 +3,8 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import jsonata from 'jsonata';
 import { Workflow, Binding, Dictionary } from './types';
-import { WorkflowExecutionError } from './errors';
-import {
-  SimpleStep, StepType, Step,
-  WorkflowStep, StepExitAction
-} from './steps/types';
+import { WorkflowEngineError } from './errors';
+import { SimpleStep, StepType, Step, WorkflowStep, StepExitAction } from './steps/types';
 
 export type GetStepInternalParams = {
   step: SimpleStep;
@@ -50,7 +47,7 @@ export class WorkflowUtils {
 
   static validateWorkflow(workflow: Workflow) {
     if (!workflow || !workflow.steps || workflow.steps.length === 0) {
-      throw new WorkflowExecutionError('Workflow should contain at least one step', 400);
+      throw new WorkflowEngineError('Workflow should contain at least one step', 400);
     }
     for (const step of workflow.steps) {
       WorkflowUtils.validateStep(step);
@@ -59,11 +56,11 @@ export class WorkflowUtils {
 
   static validateStep(step: Step) {
     if (!step.name) {
-      throw new WorkflowExecutionError('step should have a name', 400);
+      throw new WorkflowEngineError('step should have a name', 400);
     }
 
     if (step.onComplete === StepExitAction.Return && !step.condition) {
-      throw new WorkflowExecutionError(
+      throw new WorkflowEngineError(
         '"onComplete = return" should be used in a step with condition',
         400,
         step.name,
@@ -73,7 +70,7 @@ export class WorkflowUtils {
 
   static populateStepType(workflow: Workflow) {
     for (const step of workflow.steps) {
-      step.type = WorkflowUtils.getStepType(step)
+      step.type = WorkflowUtils.getStepType(step);
     }
   }
 
@@ -84,7 +81,7 @@ export class WorkflowUtils {
     if (WorkflowUtils.isSimpleStep(step)) {
       return StepType.Simple;
     }
-    throw new WorkflowExecutionError('Invalid step', 400, step.name);
+    throw new WorkflowEngineError('Invalid step', 400, step.name);
   }
 
   static extractBindingsFromPaths(rootPath: string, bindingsPaths?: string[]): Dictionary<any> {
@@ -92,7 +89,7 @@ export class WorkflowUtils {
       return {};
     }
 
-    const bindings = bindingsPaths.map(bindingPath => {
+    const bindings = bindingsPaths.map((bindingPath) => {
       try {
         return require(join(rootPath, bindingPath));
       } catch {
@@ -130,7 +127,7 @@ export class WorkflowUtils {
     return new Promise(function (resolve, reject) {
       expr.evaluate(data, bindings, function (error, response) {
         if (error) {
-          if (error.token === "doReturn") {
+          if (error.token === 'doReturn') {
             return resolve((error as any).result);
           }
           return reject(error);

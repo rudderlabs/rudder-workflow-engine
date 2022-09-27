@@ -7,14 +7,14 @@ import { StepExecutor, StepOutput } from '../types';
  * helps to set break points for debugging.
  */
 export class DebuggableStepExecutor extends ComposableStepExecutor {
-  constructor(stepExecutor: StepExecutor) {
-    super("debug", stepExecutor);
+  constructor(nextExecutor: StepExecutor) {
+    super(nextExecutor);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    super.getLogger().debug('input', input);
+    this.getLogger().debug({ input });
     const output = await super.execute(input, executionBindings);
-    super.getLogger().debug('output', output);
+    this.getLogger().debug({ output });
     return output;
   }
 }

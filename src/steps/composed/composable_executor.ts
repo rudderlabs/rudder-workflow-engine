@@ -1,42 +1,40 @@
-import { Logger } from "pino";
-import { Dictionary, ExecutionBindings } from "../../types";
-import { Step, StepExecutor, StepOutput, StepType } from "../types";
+import { Logger } from 'pino';
+import { Dictionary, ExecutionBindings } from '../../types';
+import { BaseStepExecutor } from '../base';
+import { Step, StepExecutor, StepOutput, StepType } from '../types';
 
 /**
  * ComposableStepExecutor allows compose more logic
  * on top the given step executor.
  */
 export class ComposableStepExecutor implements StepExecutor {
-    protected logger: Logger;
-    private stepExecutor: StepExecutor;
+  private stepExecutor: StepExecutor;
 
-    constructor(name: string, stepExecutor: StepExecutor) {
-        this.stepExecutor = stepExecutor;
-        // Adding the name executor will be helpful in debugging.
-        this.logger =  this.stepExecutor.getLogger().child({[name]: true})
-    }
-    
-    getStepType(): StepType {
-        return this.stepExecutor.getStepType();
-    }
+  constructor(stepExecutor: StepExecutor) {
+    this.stepExecutor = stepExecutor;
+  }
 
-    getBindings(): Dictionary<any> {
-        return this.stepExecutor.getBindings();
-    }
+  getStepType(): StepType {
+    return this.stepExecutor.getStepType();
+  }
 
-    getLogger(): Logger {
-        return this.logger;
-    }
+  getBindings(): Dictionary<any> {
+    return this.stepExecutor.getBindings();
+  }
 
-    getStep(): Step {
-        return this.stepExecutor.getStep();
-    }
+  getLogger(): Logger {
+    return this.stepExecutor.getLogger();
+  }
 
-    getStepName(): string {
-        return this.stepExecutor.getStepName();
-    }
+  getStep(): Step {
+    return this.stepExecutor.getStep();
+  }
 
-    async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-        return this.stepExecutor.execute(input, executionBindings)
-    }
+  getStepName(): string {
+    return this.stepExecutor.getStepName();
+  }
+
+  execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
+    return this.stepExecutor.execute(input, executionBindings);
+  }
 }

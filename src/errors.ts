@@ -1,6 +1,6 @@
-export class WorkflowExecutionError extends Error {
-  status: number; 
-  stepName?: string ;
+export class WorkflowEngineError extends Error {
+  status: number;
+  stepName?: string;
   constructor(message: string, status: number, stepName?: string) {
     super(message);
     this.status = +status;

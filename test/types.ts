@@ -1,3 +1,10 @@
+export type LogCounts = {
+  debug?: number;
+  info?: number;
+  warn?: number;
+  error?: number;
+};
+
 export type Sceanario = {
   input?: any;
   workflowPath?: string;
@@ -5,11 +12,5 @@ export type Sceanario = {
   output?: any;
   error?: string;
   status?: number;
-  logger?: {
-    // expected minimum count
-    debug?: number;
-    info?: number;
-    warn?: number;
-    error?: number;
-  };
+  logger?: LogCounts;
 };

@@ -5,14 +5,29 @@ const fakeLogger = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
-  child: () => fakeLogger
+  level: 'info',
+  child: () => fakeLogger,
 };
 Pino.mockImplementation(() => fakeLogger);
 
-import { readdirSync, readFileSync, existsSync } from 'fs';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { WorkflowUtils, WorkflowEngine, Workflow } from '../src';
-import { Sceanario } from './types';
+import { executeScenario } from './utils';
+import { LogCounts, Sceanario } from './types';
+
+function testLogger(logger: LogCounts) {
+  const debugCount = logger.debug || 0;
+  const infoCount = logger.info || 0;
+  const warnCount = logger.warn || 0;
+  const errorCount = logger.error || 0;
+  if (debugCount > 0) {
+    expect(fakeLogger.level).toEqual('debug');
+  }
+  expect(fakeLogger.debug.mock.calls.length).toBeGreaterThanOrEqual(debugCount);
+  expect(fakeLogger.info.mock.calls.length).toBeGreaterThanOrEqual(infoCount);
+  expect(fakeLogger.warn.mock.calls.length).toBeGreaterThanOrEqual(warnCount);
+  expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(errorCount);
+}
 
 describe('Scenarios tests', () => {
   const scenarios = readdirSync(join(__dirname, 'scenarios'));
@@ -21,50 +36,17 @@ describe('Scenarios tests', () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);
       const testsJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
       const tests: Sceanario[] = JSON.parse(testsJSON);
-      const defaultWorkflowPath = join(scenarioDir, 'workflow.yaml');
-      let defaultWorkflowEngine: WorkflowEngine;
-      if (existsSync(defaultWorkflowPath)) {
-        try {
-          defaultWorkflowEngine = new WorkflowEngine(
-            WorkflowUtils.createFromFilePath<Workflow>(defaultWorkflowPath),
-            scenarioDir,
-          )
-        } catch(error: any) {
-          console.error(`defaultWorkflowEngine: ${defaultWorkflowPath} create failed`, error.message, error.stepName);
-        }
-      }
       tests.forEach((test, index) => {
         it(`Test ${index}`, async () => {
           try {
-            let workflowEngine = defaultWorkflowEngine;
-            if (test.workflowPath || test.bindingsPaths) {
-              const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
-              workflowEngine = new WorkflowEngine(
-                WorkflowUtils.createFromFilePath<Workflow>(workflowPath),
-                scenarioDir,
-                ...(test.bindingsPaths || [])
-              );
-            }
-            let result = await workflowEngine.execute(test.input);
-            // JSONata creates immutable arrays and it cause issues
-            // so doing the following makes the comparison successful.
-            result = JSON.parse(JSON.stringify(result));
+            const result = await executeScenario(scenarioDir, test);
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
             expect(error.message).toContain(test.error);
-            if (test.status) {
-              expect(error.status).toEqual(test.status);
-            }
+            expect(error.status).toEqual(test.status || error.status);
           }
           if (test.logger) {
-            expect(fakeLogger.debug.mock.calls.length).toBeGreaterThanOrEqual(
-              test.logger.debug || 0,
-            );
-            expect(fakeLogger.info.mock.calls.length).toBeGreaterThanOrEqual(test.logger.info || 0);
-            expect(fakeLogger.warn.mock.calls.length).toBeGreaterThanOrEqual(test.logger.warn || 0);
-            expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(
-              test.logger.error || 0,
-            );
+            testLogger(test.logger);
           }
         });
       });
