@@ -1,0 +1,32 @@
+[
+    {
+        "input": {
+            "error": "some 4xx error",
+            "status": 400
+        },
+        "error": {
+            "message": "some 4xx error",
+            "status": 400
+        },
+        "errorClass": "StatusError"
+    },
+    {
+        "input": {
+            "error": "some 5xx error",
+            "status": 500
+        },
+        "error": {
+            "message": "some 5xx error",
+            "status": 500
+        }
+    },
+    {
+        "input": {
+            "error": "some unknown error"
+        },
+        "error": {
+            "message": "some unknown error",
+            "status": 500
+        }
+    }
+]

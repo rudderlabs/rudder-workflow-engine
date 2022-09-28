@@ -1,43 +1,47 @@
 [
-    {
-        "input": {
-            "description": "I am not array so I will fail"
-        },
-        "error": "loopOverInput is not supported for non-array input"
+  {
+    "input": {
+      "description": "I am not array so I will fail"
     },
-    {
-        "input": [
-            {
-                "description": "I will return error",
-                "error": "some error"
-            },
-            {
-                "description": "I will return the same output",
-                "output": {
-                    "hello": "world"
-                }
-            },
-            {
-                "description": "I will return custom output"
-            }
-        ],
-        "output": [
-            {
-                "error": {
-                    "message": "some error",
-                    "status": 500
-                }
-            },
-            {
-                "output": {
-                    "hello": "world"
-                }
-            },
-            {
-                "output": {
-                    "foo": "bar"
-                }
-            }
-        ]
+    "error": {
+      "message": "loopOverInput requires array input"
     }
+  },
+  {
+    "input": [
+      {
+        "description": "I will return error",
+        "error": {
+          "message": "some error"
+        }
+      },
+      {
+        "description": "I will return the same output",
+        "output": {
+          "hello": "world"
+        }
+      },
+      {
+        "description": "I will return custom output"
+      }
+    ],
+    "output": [
+      {
+        "error": {
+          "message": "some error",
+          "status": 500
+        }
+      },
+      {
+        "output": {
+          "hello": "world"
+        }
+      },
+      {
+        "output": {
+          "foo": "bar"
+        }
+      }
+    ]
+  }
 ]

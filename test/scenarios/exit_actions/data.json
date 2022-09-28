@@ -19,6 +19,8 @@
         "input": {
             "bad_data": "I am very very bad"
         },
-        "error": "bad data found"
+        "error": {
+            "message": "bad data found"
+        }
     }
 ]

@@ -9,7 +9,7 @@ steps:
       $assert($not($exists(bad_data)), "bad data found")
   - name: ignoreErrors
     template: |
-      $error("I simply fail")
+      $doThrow("I simply fail")
     onError: continue
   - name: process
     template: |

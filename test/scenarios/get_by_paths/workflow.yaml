@@ -1,0 +1,6 @@
+bindings:
+  - name: data # by default picks from ./bindings.(ts|js)
+steps:
+  - name: getByPaths
+    template:
+      $getByPaths($data, $) # $ refers to entire input
