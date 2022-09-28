@@ -7,7 +7,7 @@ import { BaseStepExecutor } from './base_executor';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './workflow_step';
 
-export class BaseStepExectorFactory {
+export class BaseStepExecutorFactory {
   static create(
     step: Step,
     rootPath: string,
