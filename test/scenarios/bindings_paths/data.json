@@ -51,7 +51,9 @@
             "b": 0,
             "op": "/"
         },
-        "error": "division by zero is not allowed"
+        "error":  {
+            "message": "division by zero is not allowed"
+        }
     },
     {
         "bindingsPaths": ["functions", "ops"],
@@ -60,6 +62,8 @@
             "b": 0,
             "op": "^"
         },
-        "error": "unsupported operation"
+        "error": {
+            "message": "unsupported operation"
+        }
     }
 ]

@@ -1,5 +1,5 @@
 import jsonata from 'jsonata';
-import { WorkflowEngineError, ReturnResultError } from './errors';
+import { ReturnResultError, StatusError } from './errors';
 import { Dictionary } from './types';
 
 export { chunk } from 'lodash';
@@ -21,5 +21,5 @@ export function doReturn(obj?: any) {
 }
 
 export function doThrow(message: string, status: number = 500) {
-  throw new WorkflowEngineError(message, +status);
+  throw new StatusError(message, +status);
 }

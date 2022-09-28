@@ -1,4 +1,5 @@
 import { Logger } from "pino";
+import { StatusError } from "src/errors";
 import { Binding, Dictionary, ExecutionBindings } from "../types";
 
 export interface StepExecutor {
@@ -27,11 +28,6 @@ export interface StepExecutor {
      */
     execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput>
 }
-
-export type StatusError = {
-    status: number;
-    message: string;
-};
 
 export type StepOutput = {
     error?: StatusError;

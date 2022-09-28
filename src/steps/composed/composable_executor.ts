@@ -1,6 +1,5 @@
 import { Logger } from 'pino';
 import { Dictionary, ExecutionBindings } from '../../types';
-import { BaseStepExecutor } from '../base';
 import { Step, StepExecutor, StepOutput, StepType } from '../types';
 
 /**

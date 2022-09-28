@@ -10,7 +10,11 @@ export type Sceanario = {
   workflowPath?: string;
   bindingsPaths?: string[];
   output?: any;
-  error?: string;
-  status?: number;
+  error?: {
+    message?: string,
+    status?: string,
+    code?: string
+  },
+  errorClass?: string,
   logger?: LogCounts;
 };

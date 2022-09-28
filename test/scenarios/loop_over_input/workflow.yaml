@@ -3,6 +3,6 @@ steps:
     loopOverInput: true
     template: |
       (
-        $exists(error) ? $doThrow(error, 500);
+        $exists(error) ? $doThrow(error.message, 500);
         $exists(output) ? output : { "foo": "bar" }
       )

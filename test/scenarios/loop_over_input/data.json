@@ -3,13 +3,17 @@
     "input": {
       "description": "I am not array so I will fail"
     },
-    "error": "loopOverInput requires array input"
+    "error": {
+      "message": "loopOverInput requires array input"
+    }
   },
   {
     "input": [
       {
         "description": "I will return error",
-        "error": "some error"
+        "error": {
+          "message": "some error"
+        }
       },
       {
         "description": "I will return the same output",

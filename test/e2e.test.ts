@@ -10,7 +10,7 @@ const fakeLogger = {
 };
 Pino.mockImplementation(() => fakeLogger);
 
-import { existsSync, readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { executeScenario } from './utils';
 import { LogCounts, Sceanario } from './types';
@@ -30,9 +30,12 @@ function testLogger(logger: LogCounts) {
 }
 
 describe('Scenarios tests', () => {
-  const scenarios = readdirSync(join(__dirname, 'scenarios'));
+  let scenarios = (process.env.scenarios || "all").split(/, /)
+  if (scenarios[0] === "all") {
+    scenarios = readdirSync(join(__dirname, 'scenarios'));
+  }
   scenarios.forEach((scenario) => {
-    describe(`${scenario} tests`, () => {
+    describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);
       const testsJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
       const tests: Sceanario[] = JSON.parse(testsJSON);
@@ -42,8 +45,10 @@ describe('Scenarios tests', () => {
             const result = await executeScenario(scenarioDir, test);
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
-            expect(error.message).toContain(test.error);
-            expect(error.status).toEqual(test.status || error.status);
+            expect(error).toEqual(expect.objectContaining(test.error));
+            if(test.errorClass){
+              expect(error.error?.constructor.name).toEqual(test.errorClass);
+            }
           }
           if (test.logger) {
             testLogger(test.logger);

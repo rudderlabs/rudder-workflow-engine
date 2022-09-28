@@ -6,7 +6,7 @@ import { StepExecutor, StepExitAction, StepType } from './steps/types';
 import { Binding, Dictionary, ExecutionBindings, Workflow, WorkflowOutput } from './types';
 import { WorkflowUtils } from './utils';
 import * as libraryBindings from './bindings';
-import { WorkflowEngineError } from './errors';
+import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from './steps';
 
 export class WorkflowEngine {
@@ -82,9 +82,12 @@ export class WorkflowEngine {
   }
 
   handleError(error: any, stepName: string) {
+    if (error instanceof WorkflowExecutionError) {
+      throw error;
+    }
     const status = WorkflowUtils.isAssertError(error)
       ? 400
       : error.response?.status || error.status || 500;
-    throw new WorkflowEngineError(error.message, status, stepName);
+    throw new WorkflowExecutionError(error.message, status, stepName, error);
   }
 }
