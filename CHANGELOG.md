@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.1...v0.1.2) (2022-09-28)
+
+
+### Features
+
+* add end to end tests ([#7](https://github.com/rudderlabs/rudder-workflow-engine/issues/7)) ([3a7e5dc](https://github.com/rudderlabs/rudder-workflow-engine/commit/3a7e5dcfb5cbbca889962057300200c44ef9e50b))
+* add more scenarios ([#11](https://github.com/rudderlabs/rudder-workflow-engine/issues/11)) ([3914f14](https://github.com/rudderlabs/rudder-workflow-engine/commit/3914f14a3d99dd69376578c76a4138c93cf1e477))
+* add support for debugging ([#10](https://github.com/rudderlabs/rudder-workflow-engine/issues/10)) ([e887444](https://github.com/rudderlabs/rudder-workflow-engine/commit/e8874446f5bbd15f9a9df0ec39a8905e63f94b86))
+
+
+### Miscellaneous
+
+* fix pull request template ([2ed1662](https://github.com/rudderlabs/rudder-workflow-engine/commit/2ed16625da0f20e0d2c5d988e066d99e42c8780a))
+* update issue templates ([dc00955](https://github.com/rudderlabs/rudder-workflow-engine/commit/dc00955605a53b02459e4c2e42bd712e13749bf5))
+* workflow engine using step executors ([#13](https://github.com/rudderlabs/rudder-workflow-engine/issues/13)) ([274a9bd](https://github.com/rudderlabs/rudder-workflow-engine/commit/274a9bd50b4716eccd03d541b44904dd7954f9ae))
+
 ## [0.1.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.0...v0.1.1) (2022-09-20)
 
 
