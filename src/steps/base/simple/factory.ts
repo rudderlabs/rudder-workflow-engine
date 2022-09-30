@@ -4,7 +4,7 @@ import { Dictionary } from '../../../types';
 import { SimpleStep, StepExecutor } from '../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { ExternalWorkflowStepExecutor } from './external_workflow_executor';
-import { FunctionStepExecutor } from './function_exector';
+import { FunctionStepExecutor } from './function_executor';
 import { TemplateStepExecutor } from './template_executor';
 
 export class SimpleStepExecutorFactory {
