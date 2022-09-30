@@ -1,27 +1,6 @@
-import jsonata from 'jsonata';
-import { WorkflowEngine } from './workflow';
+import { Step } from "./steps/types";
 
-export type StatusError = {
-  status: number;
-  message: string;
-};
-export type StepOutput = {
-  error?: StatusError;
-  skipped?: boolean;
-  output?: any;
-  outputs?: Record<any, string>;
-};
-
-export enum StepType {
-  Simple = 'simple',
-  Workflow = 'workflow',
-}
-export enum StepExitAction {
-  Return = 'return',
-  Continue = 'continue',
-}
-export type StepFunction = (input: any, bindings: Record<string, any>) => StepOutput;
-
+export type Dictionary<T> = Record<string, T>;
 export type Binding = {
   // exported value's name in bindings
   // if not specified then all paths will be exported
@@ -33,75 +12,21 @@ export type Binding = {
   exportAll?: true;
 };
 
-export type StepCommon = {
-  name: string;
-  description?: string;
-  condition?: string;
-  inputTemplate?: string;
-  loopOverInput?: boolean;
-  onComplete?: StepExitAction;
-  onError?: StepExitAction;
-  debug?: boolean;
-};
-
-export type SimpleStep = StepCommon & {
-  // One of the template, templatePath, externalWorkflowPath, Function are required for simple steps
-  template?: string;
-  templatePath?: string;
-  // external workflow is executed independently and we can access only final output
-  externalWorkflow?: {
-    path: string;
-    // root path for resolving dependencies
-    rootPath?: string;
-  };
-  // Function must be passed using bindings
-  functionName?: string;
-};
-export type WorkflowStep = StepCommon & {
-  bindings?: Binding[];
-  // One of the template, templatePath, Function are required for simple steps
-  // One of the steps, workflowStepPath are required for workflow steps
-  steps?: SimpleStep[];
-  workflowStepPath?: string;
-};
-
-export type StepInternalCommon = {
-  type?: StepType;
-  conditionExpression?: jsonata.Expression;
-  inputTemplateExpression?: jsonata.Expression;
-};
-
-export type SimpleStepInternal = SimpleStep &
-  StepInternalCommon & {
-    templateExpression?: jsonata.Expression;
-    externalWorkflowEngine?: WorkflowEngine;
-    function?: StepFunction;
-  };
-
-export type WorkflowStepInternal = WorkflowStep &
-  StepInternalCommon & {
-    bindingsInternal?: Record<string, any>;
-    steps?: SimpleStepInternal[];
-  };
-
-export type Step = SimpleStep | WorkflowStep;
-export type StepInternal = SimpleStepInternal | WorkflowStepInternal;
-
 export type Workflow = {
   name?: string;
   bindings?: Binding[];
   steps: Step[];
 };
 
-export type WorkflowInternal = {
-  bindings?: Binding[];
-  bindingsInternal?: Record<string, any>;
-  steps: StepInternal[];
-};
-
 export type WorkflowOutput = {
   output?: any;
-  outputs?: Record<string, any>;
+  outputs?: Dictionary<any>;
   status?: number;
   error?: any;
 };
+
+export type ExecutionBindings = {
+  outputs: Dictionary<any>;
+  context: Dictionary<any>;
+  setContext: (string, any) => void;
+}

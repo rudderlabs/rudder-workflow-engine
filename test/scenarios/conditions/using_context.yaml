@@ -1,0 +1,16 @@
+steps:
+  - name: prepareContext
+    template: |
+      $setContext("a", $number(a))
+  - name: aIsLessThan5
+    condition: $context.a < 5
+    template: |
+      {"aIsLessThan5": true}
+  - name: aIsGreaterThan5
+    condition: $context.a > 5
+    template: |
+      {"aIsGreaterThan5": true}
+  - name: aIs5
+    condition: $context.a = 5
+    template: |
+      {"aIs5": true}

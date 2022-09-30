@@ -1,4 +1,11 @@
 steps:
+  - name: returnNothing
+    
+    template: |
+      (
+        /* this is same as returning nothing */
+        $doReturn()
+      )
   - name: returnEarly
     template:
       (

@@ -2,7 +2,7 @@ steps:
   - name: unsupported
     condition: $not(op in ["+", "-", "*", "/"])
     template: |
-      $error("unsupported operation")
+      $doThrow("unsupported operation")
   - name: add
     description: Do addition
     condition: op = "+"

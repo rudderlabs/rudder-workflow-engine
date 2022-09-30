@@ -1,17 +1,17 @@
 [
-    {
-        "input": {
-            "foo": true
-        },
-        "output": "foo"
+  {
+    "input": {
+      "foo": true
     },
-    {
-        "input": {
-            "bar": true
-        },
-        "output": "bar"
+    "output": "foo"
+  },
+  {
+    "input": {
+      "bar": true
     },
-    {
-        "output": "default"
-    }
+    "output": "bar"
+  },
+  {
+    "output": "default"
+  }
 ]

@@ -45,6 +45,8 @@
             "b": 0,
             "op": "/"
         },
-        "error": "division by zero is not allowed"
+        "error": {
+            "message":"division by zero is not allowed"
+        }
     }
 ]

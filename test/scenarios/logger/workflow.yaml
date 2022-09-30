@@ -1,8 +1,35 @@
 name: debug_example
+bindings: 
+  - name: logSomething
 steps:
   - name: debugStep
     debug: true
     template: |
+      ()
+  - name: debugLog
+    condition: step = "debug"
+    template: |
       (
-        $log("I will show on the screen")
+         $debug("some msg1", {"logType": "debug"}, {"hello": "world"})
       )
+  - name: infoLog
+    condition: step = "info"
+    template: |
+      (
+         $info("some msg1", {"logType": "info"}, {"hello": "world"})
+      )
+  - name: warnLog
+    condition: step = "warn"
+    template: |
+      (
+         $warn("some msg1", {"logType": "warn"}, {"hello": "world"})
+      )
+  - name: errorLog
+    condition: step = "error"
+    template: |
+      (
+         $error("some msg1", {"logType": "error"}, {"hello": "world"})
+      )
+  - name: functionLog
+    condition: step = "function"
+    functionName: logSomething
