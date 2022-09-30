@@ -1,0 +1,12 @@
+steps:
+  - name: responseFoo
+    condition: foo = true
+    template: |
+      { "foo": "hello" }
+  - name: responseBar
+    condition: bar = true
+    template: |
+      { "bar": "world" }
+  - name: multiplex
+    template: |
+      [$outputs.responseFoo, $outputs.responseBar]
