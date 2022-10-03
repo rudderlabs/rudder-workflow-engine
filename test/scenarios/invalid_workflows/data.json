@@ -70,7 +70,15 @@
   {
     "workflowPath": "invalid_step_noname.yaml",
     "error": {
-      "message": "step#0 should have a name"
+      "message": "step#0 should have a name",
+      "workflowName": "invalid_step_noname"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_noname_with_workflow_name.yaml",
+    "error": {
+      "message": "step#0 should have a name",
+      "workflowName": "Invalid Step without a name"
     }
   },
   {
