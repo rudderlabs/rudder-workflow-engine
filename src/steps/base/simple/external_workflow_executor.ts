@@ -2,10 +2,10 @@ import { Logger } from 'pino';
 import { join } from 'path';
 import { WorkflowUtils } from '../../../utils';
 import { WorkflowEngine } from '../../../workflow';
-import { Dictionary, ExecutionBindings, Workflow } from '../../../types';
+import { Dictionary, ExecutionBindings } from '../../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { SimpleStep, StepOutput } from '../../types';
-import { StepCreationError, WorkflowCreationError } from '../../../errors';
+import { StepCreationError } from '../../../errors';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;
