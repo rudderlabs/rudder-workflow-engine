@@ -6,7 +6,7 @@ import { WorkflowUtils } from '../../../utils';
 import { Dictionary, ExecutionBindings } from '../../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { SimpleStep, Step, StepOutput } from '../../types';
-import { WorkflowEngineError } from '../../../errors';
+import { StepCreationError, WorkflowCreationError } from '../../../errors';
 
 export class TemplateStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;
@@ -22,11 +22,7 @@ export class TemplateStepExecutor extends BaseStepExecutor {
       step.template = readFileSync(templatePath, { encoding: 'utf-8' });
     }
     if (!step.template) {
-      throw new WorkflowEngineError(
-        'template or templatePath are required for TemplateStepExecutor',
-        400,
-        step.name,
-      );
+      throw new StepCreationError('template or templatePath are required', step.name);
     }
     return jsonata(step.template);
   }

@@ -1,11 +1,16 @@
 import { join } from 'path';
-import { WorkflowEngine, WorkflowUtils, Workflow, WorkflowOutput } from '../../src';
+import { WorkflowEngine, WorkflowUtils, WorkflowOutput } from '../../src';
 import { Sceanario } from '../types';
 
-export async function executeScenario(scenarioDir, test: Sceanario): Promise<WorkflowOutput> {
+export async function executeScenario(
+  scenarioDir,
+  test: Sceanario,
+  index: number,
+): Promise<WorkflowOutput> {
+  console.log(`Executing: ${scenarioDir} test#${index}`);
   const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
   const workflowEngine = new WorkflowEngine(
-    WorkflowUtils.createFromFilePath<Workflow>(workflowPath),
+    WorkflowUtils.createWorkflowFromFilePath(workflowPath),
     scenarioDir,
     ...(test.bindingsPaths || []),
   );

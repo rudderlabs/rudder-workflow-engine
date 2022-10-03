@@ -1,4 +1,4 @@
-import { Step } from "./steps/types";
+import { Step } from './steps/types';
 
 export type Dictionary<T> = Record<string, T>;
 export type Binding = {
@@ -13,7 +13,7 @@ export type Binding = {
 };
 
 export type Workflow = {
-  name?: string;
+  name: string;
   bindings?: Binding[];
   steps: Step[];
 };
@@ -29,4 +29,4 @@ export type ExecutionBindings = {
   outputs: Dictionary<any>;
   context: Dictionary<any>;
   setContext: (string, any) => void;
-}
+};

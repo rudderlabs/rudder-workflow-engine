@@ -1,4 +1,4 @@
-import { WorkflowExecutionError } from '../../errors';
+import { StepExecutionError } from '../../errors';
 import { ExecutionBindings } from '../../types';
 import { ComposableStepExecutor } from './composable_executor';
 import { StepExecutor, StepOutput } from '../types';
@@ -10,7 +10,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     if (!Array.isArray(input)) {
-      throw new WorkflowExecutionError('loopOverInput requires array input', 400, this.getStepName());
+      throw new StepExecutionError('loopOverInput requires array input', 400, this.getStepName());
     }
     const output = await Promise.all(
       input.map(async (element) => {

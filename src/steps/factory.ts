@@ -3,7 +3,7 @@ import { Dictionary } from '../types';
 import { ComposableExecutorFactory } from './composed';
 import { Step, StepExecutor } from './types';
 import { BaseStepExecutorFactory } from './base/factory';
-import { WorkflowEngineError } from '../errors';
+import { StepCreationError, WorkflowCreationError } from '../errors';
 
 export class StepExecutorFactory {
   static create(
@@ -21,8 +21,8 @@ export class StepExecutorFactory {
       );
       stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
       return stepExecutor;
-    } catch (error: any) { 
-      throw new WorkflowEngineError(error.message, 400, step.name);
+    } catch (error: any) {
+      throw new StepCreationError(error.message, step.name);
     }
   }
 }

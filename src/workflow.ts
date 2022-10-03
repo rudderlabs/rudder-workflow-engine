@@ -6,21 +6,37 @@ import { StepExecutor, StepExitAction, StepType } from './steps/types';
 import { Binding, Dictionary, ExecutionBindings, Workflow, WorkflowOutput } from './types';
 import { WorkflowUtils } from './utils';
 import * as libraryBindings from './bindings';
-import { WorkflowExecutionError } from './errors';
+import {
+  StepCreationError,
+  StepExecutionError,
+  WorkflowCreationError,
+  WorkflowExecutionError,
+} from './errors';
 import { WorkflowStepExecutor } from './steps';
 
 export class WorkflowEngine {
-  private readonly stepExecutors: StepExecutor[];
+  readonly name: string;
   readonly logger: Logger;
   readonly bindings: Dictionary<any>;
+
+  private readonly stepExecutors: StepExecutor[];
+
   constructor(workflow: Workflow, rootPath: string, ...bindingsPaths: string[]) {
     WorkflowUtils.validateWorkflow(workflow);
     WorkflowUtils.populateStepType(workflow);
-    this.logger = getLogger(workflow?.name || 'Workflow');
+    this.name = workflow.name;
+    this.logger = getLogger(this.name);
     this.bindings = this.prepareBindings(rootPath, workflow.bindings, bindingsPaths);
-    this.stepExecutors = workflow.steps.map((step) =>
-      StepExecutorFactory.create(step, rootPath, this.bindings, this.logger),
-    );
+    this.stepExecutors = workflow.steps.map((step) => {
+      try {
+        return StepExecutorFactory.create(step, rootPath, this.bindings, this.logger);
+      } catch (error: any) {
+        if (error instanceof StepCreationError) {
+          throw new WorkflowCreationError(error.message, this.name, error.stepName);
+        }
+        throw new WorkflowCreationError(error.message, this.name);
+      }
+    });
   }
 
   private prepareBindings(
@@ -82,12 +98,15 @@ export class WorkflowEngine {
   }
 
   handleError(error: any, stepName: string) {
+    if (error instanceof StepExecutionError) {
+      throw new WorkflowExecutionError(error.message, error.status, this.name, error.stepName);
+    }
     if (error instanceof WorkflowExecutionError) {
       throw error;
     }
     const status = WorkflowUtils.isAssertError(error)
       ? 400
       : error.response?.status || error.status || 500;
-    throw new WorkflowExecutionError(error.message, status, stepName, error);
+    throw new WorkflowExecutionError(error.message, status, this.name, stepName, error);
   }
 }
