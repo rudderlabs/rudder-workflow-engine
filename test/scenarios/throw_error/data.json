@@ -1,6 +1,15 @@
 [
     {
         "input": {
+            "assertionPassed": false
+        },
+        "error": {
+            "message": "assertion failed",
+            "status": 400
+        }
+    },
+    {
+        "input": {
             "error": "some 4xx error",
             "status": 400
         },
