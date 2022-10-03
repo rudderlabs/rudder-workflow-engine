@@ -104,9 +104,12 @@ export class WorkflowEngine {
     if (error instanceof WorkflowExecutionError) {
       throw error;
     }
-    const status = WorkflowUtils.isAssertError(error)
-      ? 400
-      : error.response?.status || error.status || 500;
-    throw new WorkflowExecutionError(error.message, status, this.name, stepName, error);
+    throw new WorkflowExecutionError(
+      error.message,
+      WorkflowUtils.getErrorStatus(error),
+      this.name,
+      stepName,
+      error,
+    );
   }
 }
