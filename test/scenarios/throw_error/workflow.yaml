@@ -1,4 +1,8 @@
 steps:
+  - name: assertError
+    condition: $exists(assertionPassed)
+    template: |
+      $assert(assertionPassed, "assertion failed")
   - name: throwError
     template: |
       $doThrow(error, status)

@@ -11,6 +11,6 @@ const scenarioDir = join(__dirname, 'scenarios', scenario);
 const testsJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
 const tests: Sceanario[] = JSON.parse(testsJSON);
 
-executeScenario(scenarioDir, tests[index] || tests[0])
-  .then(result => console.log(JSON.stringify(result, null, 2)))
+executeScenario(scenarioDir, tests[index] || tests[0], index)
+  .then((result) => console.log(JSON.stringify(result, null, 2)))
   .catch(console.error);

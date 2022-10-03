@@ -1,5 +1,5 @@
 import { Logger } from 'pino';
-import { WorkflowEngineError } from '../../../errors';
+import { StepCreationError, WorkflowCreationError } from '../../../errors';
 import { Dictionary } from '../../../types';
 import { SimpleStep, StepExecutor } from '../../types';
 import { BaseStepExecutor } from '../base_executor';
@@ -27,6 +27,6 @@ export class SimpleStepExecutorFactory {
       return new TemplateStepExecutor(step, rootPath, bindings, simpleStepLogger);
     }
 
-    throw new WorkflowEngineError('Invalid simple step configuration', 400, step.name);
+    throw new StepCreationError('Invalid simple step configuration', step.name);
   }
 }

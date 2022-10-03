@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { Logger } from 'pino';
-import { WorkflowEngineError } from '../../errors';
+import { StepCreationError, WorkflowCreationError } from '../../errors';
 import { Dictionary, ExecutionBindings } from '../../types';
 import { WorkflowUtils } from '../../utils';
 import { BaseStepExecutor } from './base_executor';
@@ -33,7 +33,7 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
       newStep = Object.assign({}, workflowStepFromPath, step);
     }
     if (!newStep.steps?.length) {
-      throw new WorkflowEngineError('Invalid workflow step configuration', 400, step.name);
+      throw new StepCreationError('Invalid workflow step configuration', step.name);
     }
     return newStep;
   }
