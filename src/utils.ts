@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import jsonata from 'jsonata';
 import { Workflow, Binding, Dictionary } from './types';
-import { StatusError, StepCreationError, WorkflowCreationError } from './errors';
+import { StatusError, WorkflowCreationError } from './errors';
 import { SimpleStep, StepType, Step, WorkflowStep, StepExitAction } from './steps/types';
 
 export type GetStepInternalParams = {
@@ -99,11 +99,13 @@ export class WorkflowUtils {
     return StepType.Unknown;
   }
 
-  static getModuleExports(modulePath: string): any {
+  private static getModuleExports(modulePath: string, logError: boolean = false): any {
     try {
       return require(modulePath);
     } catch (error: any) {
-      console.error(error);
+      if (logError) {
+        console.error(error);
+      }
     }
   }
 
@@ -115,7 +117,7 @@ export class WorkflowUtils {
     const bindings = bindingsPaths.map((bindingPath) => {
       return (
         WorkflowUtils.getModuleExports(path.join(rootPath, bindingPath)) ||
-        WorkflowUtils.getModuleExports(path.join(bindingPath)) ||
+        WorkflowUtils.getModuleExports(bindingPath, true) ||
         {}
       );
     });
@@ -142,6 +144,10 @@ export class WorkflowUtils {
     return error.token === 'assert';
   }
 
+  static getErrorStatus(error: any) {
+    return error.response?.status || error.status || 500;
+  }
+
   static jsonataPromise(
     expr: jsonata.Expression,
     data: any,
@@ -152,6 +158,9 @@ export class WorkflowUtils {
         if (error) {
           if (error.token === 'doReturn') {
             return resolve((error as any).result);
+          }
+          if (WorkflowUtils.isAssertError(error)) {
+            return reject(new StatusError(error.message, 400));
           }
           return reject(error);
         }

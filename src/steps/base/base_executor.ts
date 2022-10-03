@@ -37,6 +37,7 @@ export abstract class BaseStepExecutor implements StepExecutor {
 
   getLoggerBindings() {
     return {
+      log: console.log,
       debug: (message: string, ...args) => this.getLogger().debug(args, message),
       info: (message: string, ...args) => this.getLogger().info(args, message),
       warn: (message: string, ...args) => this.getLogger().warn(args, message),
