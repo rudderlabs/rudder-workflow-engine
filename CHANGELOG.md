@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.2...v0.1.3) (2022-10-03)
+
+
+### Bug Fixes
+
+* add the missing export ([#14](https://github.com/rudderlabs/rudder-workflow-engine/issues/14)) ([e7af790](https://github.com/rudderlabs/rudder-workflow-engine/commit/e7af790f656a77e989c29b695ca96485359e6dcb))
+
+
+### Miscellaneous
+
+* error handling in workflow engine ([#17](https://github.com/rudderlabs/rudder-workflow-engine/issues/17)) ([a54e624](https://github.com/rudderlabs/rudder-workflow-engine/commit/a54e62404630970c6d12d210a794662f9f7d382e))
+* fix typo in file name ([#16](https://github.com/rudderlabs/rudder-workflow-engine/issues/16)) ([75476b8](https://github.com/rudderlabs/rudder-workflow-engine/commit/75476b8b80951794eae917ad6def076f6ff8cbcd))
+
 ## [0.1.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.1...v0.1.2) (2022-09-28)
 
 

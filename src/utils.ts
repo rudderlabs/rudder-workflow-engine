@@ -1,9 +1,9 @@
 import yaml from 'js-yaml';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import path from 'path';
 import jsonata from 'jsonata';
 import { Workflow, Binding, Dictionary } from './types';
-import { WorkflowEngineError } from './errors';
+import { StatusError, StepCreationError, WorkflowCreationError } from './errors';
 import { SimpleStep, StepType, Step, WorkflowStep, StepExitAction } from './steps/types';
 
 export type GetStepInternalParams = {
@@ -13,6 +13,15 @@ export type GetStepInternalParams = {
   bindings?: Dictionary<any>;
 };
 export class WorkflowUtils {
+  static createWorkflowFromFilePath(yamlPath: string): Workflow {
+    const workflow = this.createFromFilePath<Workflow>(yamlPath) || {};
+    if (!workflow.name) {
+      const { name } = path.parse(yamlPath);
+      workflow.name = name;
+    }
+    return workflow;
+  }
+
   static createFromFilePath<T>(yamlPath: string): T {
     const yamlString = readFileSync(yamlPath, { encoding: 'utf-8' });
     return yaml.load(yamlString) as T;
@@ -46,23 +55,26 @@ export class WorkflowUtils {
   }
 
   static validateWorkflow(workflow: Workflow) {
-    if (!workflow || !workflow.steps || workflow.steps.length === 0) {
-      throw new WorkflowEngineError('Workflow should contain at least one step', 400);
+    if (!workflow?.name) {
+      throw new Error('Workflow should have a name');
     }
-    for (const step of workflow.steps) {
-      WorkflowUtils.validateStep(step);
+    if (!workflow?.steps?.length) {
+      throw new WorkflowCreationError('Workflow should contain at least one step', workflow.name);
+    }
+    for (let i = 0; i < workflow.steps.length; i++) {
+      WorkflowUtils.validateStep(workflow, workflow.steps[i], i);
     }
   }
 
-  static validateStep(step: Step) {
+  private static validateStep(workflow: Workflow, step: Step, index: number) {
     if (!step.name) {
-      throw new WorkflowEngineError('step should have a name', 400);
+      throw new WorkflowCreationError(`step#${index} should have a name`, workflow.name);
     }
 
     if (step.onComplete === StepExitAction.Return && !step.condition) {
-      throw new WorkflowEngineError(
+      throw new WorkflowCreationError(
         '"onComplete = return" should be used in a step with condition',
-        400,
+        workflow.name,
         step.name,
       );
     }
@@ -71,6 +83,9 @@ export class WorkflowUtils {
   static populateStepType(workflow: Workflow) {
     for (const step of workflow.steps) {
       step.type = WorkflowUtils.getStepType(step);
+      if (step.type === StepType.Unknown) {
+        throw new WorkflowCreationError('Invalid step', workflow.name, step.name);
+      }
     }
   }
 
@@ -81,7 +96,15 @@ export class WorkflowUtils {
     if (WorkflowUtils.isSimpleStep(step)) {
       return StepType.Simple;
     }
-    throw new WorkflowEngineError('Invalid step', 400, step.name);
+    return StepType.Unknown;
+  }
+
+  static getModuleExports(modulePath: string): any {
+    try {
+      return require(modulePath);
+    } catch (error: any) {
+      console.error(error);
+    }
   }
 
   static extractBindingsFromPaths(rootPath: string, bindingsPaths?: string[]): Dictionary<any> {
@@ -90,11 +113,11 @@ export class WorkflowUtils {
     }
 
     const bindings = bindingsPaths.map((bindingPath) => {
-      try {
-        return require(join(rootPath, bindingPath));
-      } catch {
-        return require(bindingPath);
-      }
+      return (
+        WorkflowUtils.getModuleExports(path.join(rootPath, bindingPath)) ||
+        WorkflowUtils.getModuleExports(path.join(bindingPath)) ||
+        {}
+      );
     });
     return Object.assign({}, ...bindings);
   }
@@ -105,7 +128,7 @@ export class WorkflowUtils {
     }
     let bindingsObj: Record<string, any> = {};
     for (const binding of bindings) {
-      const bindingSource = require(join(rootPath, binding.path || 'bindings'));
+      const bindingSource = require(path.join(rootPath, binding.path || 'bindings'));
       if (binding.name) {
         bindingsObj[binding.name] = binding.exportAll ? bindingSource : bindingSource[binding.name];
       } else {

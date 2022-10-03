@@ -1,5 +1,5 @@
 import { Logger } from 'pino';
-import { WorkflowEngineError } from '../../errors';
+import { StepCreationError, WorkflowCreationError } from '../../errors';
 import { Dictionary } from '../../types';
 import { WorkflowUtils } from '../../utils';
 import { Step, StepType, WorkflowStep } from '../types';
@@ -20,7 +20,7 @@ export class BaseStepExecutorFactory {
       case StepType.Workflow:
         return new WorkflowStepExecutor(step as WorkflowStep, rootPath, bindings, parentLogger);
       default:
-        throw new WorkflowEngineError('Invalid step type', 400, step.name);
+        throw new StepCreationError('Invalid step type', step.name);
     }
   }
 }

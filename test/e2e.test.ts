@@ -30,8 +30,8 @@ function testLogger(logger: LogCounts) {
 }
 
 describe('Scenarios tests', () => {
-  let scenarios = (process.env.scenarios || "all").split(/, /)
-  if (scenarios[0] === "all") {
+  let scenarios = (process.env.scenarios || 'all').split(/, /);
+  if (scenarios[0] === 'all') {
     scenarios = readdirSync(join(__dirname, 'scenarios'));
   }
   scenarios.forEach((scenario) => {
@@ -42,11 +42,11 @@ describe('Scenarios tests', () => {
       tests.forEach((test, index) => {
         it(`Test ${index}`, async () => {
           try {
-            const result = await executeScenario(scenarioDir, test);
+            const result = await executeScenario(scenarioDir, test, index);
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
             expect(error).toEqual(expect.objectContaining(test.error));
-            if(test.errorClass){
+            if (test.errorClass) {
               expect(error.error?.constructor.name).toEqual(test.errorClass);
             }
           }

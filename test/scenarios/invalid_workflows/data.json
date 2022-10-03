@@ -1,86 +1,104 @@
 [
-    {
-        "workflowPath": "blank_externalworkflow_step.yaml",
-        "error": {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "blank_function_step.yaml",
-        "error":  {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "blank_template_path_step.yaml",
-        "error":  {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "blank_template_step.yaml",
-        "error":  {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "blank_workflow_path_step.yaml",
-        "error":  {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "empty_workflow.yaml",
-        "error": {
-            "message": "Workflow should contain at least one step"
-        }
-    },
-    {
-        "workflowPath": "empty_steps.yaml",
-        "error": {
-            "message": "Workflow should contain at least one step"
-        }
-    },
-    {
-        "workflowPath": "invalid_workflowstep.yaml",
-        "error":  {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "invalid_function_step.yaml",
-        "error": {
-            "message": "Invalid functionName"
-        }
-    },
-    {
-        "workflowPath": "invalid_step_nobody.yaml",
-        "error": {
-            "message": "Invalid step"
-        }
-    },
-    {
-        "workflowPath": "invalid_step_noname.yaml",
-        "error": {
-            "message": "step should have a name"
-        }
-    },
-    {
-        "workflowPath": "invalid_template.yaml",
-        "error": {
-            "message": "The symbol \")\" cannot be used as a unary operator"
-        }
-    },
-    {
-        "workflowPath": "invalid_binding.yaml",
-        "error": {
-            "code": "MODULE_NOT_FOUND"
-        }
-    },
-    {
-        "workflowPath": "invalid_usage_oncomplete.yaml",
-        "error": {
-            "message": "\"onComplete = return\" should be used in a step with condition"
-        }
+  {
+    "workflowPath": "blank_externalworkflow_step.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidExternalWorkflowStep"
     }
+  },
+  {
+    "workflowPath": "blank_function_step.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidFunctionStep"
+    }
+  },
+  {
+    "workflowPath": "blank_template_path_step.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidTemplateStep"
+    }
+  },
+  {
+    "workflowPath": "blank_template_step.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidTemplateStep"
+    }
+  },
+  {
+    "workflowPath": "blank_workflow_path_step.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidWorkflowStep"
+    }
+  },
+  {
+    "workflowPath": "empty_workflow.yaml",
+    "error": {
+      "message": "Workflow should contain at least one step"
+    }
+  },
+  {
+    "workflowPath": "empty_steps.yaml",
+    "error": {
+      "message": "Workflow should contain at least one step"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflowstep.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidWorkflowStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_function_step.yaml",
+    "error": {
+      "message": "Invalid functionName",
+      "stepName": "invalidFunctionStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_nobody.yaml",
+    "error": {
+      "message": "Invalid step",
+      "stepName": "invalidStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_noname.yaml",
+    "error": {
+      "message": "step#0 should have a name",
+      "workflowName": "invalid_step_noname"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_noname_with_workflow_name.yaml",
+    "error": {
+      "message": "step#0 should have a name",
+      "workflowName": "Invalid Step without a name"
+    }
+  },
+  {
+    "workflowPath": "invalid_template.yaml",
+    "error": {
+      "message": "The symbol \")\" cannot be used as a unary operator",
+      "stepName": "invalidTemplate"
+    }
+  },
+  {
+    "workflowPath": "invalid_binding.yaml",
+    "error": {
+      "code": "MODULE_NOT_FOUND"
+    }
+  },
+  {
+    "workflowPath": "invalid_usage_oncomplete.yaml",
+    "error": {
+      "message": "\"onComplete = return\" should be used in a step with condition",
+      "stepName": "InvalidOnComplete"
+    }
+  }
 ]

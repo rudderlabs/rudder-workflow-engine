@@ -1,3 +1,3 @@
 steps:
-  - name: invalidFunctionStep
+  - name: invalidTemplateStep
     template: 

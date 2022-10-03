@@ -1,0 +1,36 @@
+[
+  {
+    "input": {
+      "foo": true
+    },
+    "output": [
+      {
+        "foo": "hello"
+      }
+    ]
+  },
+  {
+    "input": {
+      "bar": true
+    },
+    "output": [
+      {
+        "bar": "world"
+      }
+    ]
+  },
+  {
+    "input": {
+      "foo": true,
+      "bar": true
+    },
+    "output": [
+      {
+        "foo": "hello"
+      },
+      {
+        "bar": "world"
+      }
+    ]
+  }
+]
