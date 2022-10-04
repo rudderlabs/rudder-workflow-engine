@@ -8,18 +8,22 @@
             "name": "Test Scenario",
             "program": "${workspaceFolder}/test/test_scenario.ts",
             "request": "launch",
-            "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register/transpile-only"
+            ],
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "env": {
                 "scenario": "${input:scenario}",
-                "index": "${input:index}",
+                "index": "${input:index}"
             },
             "type": "node"
         },
         {
-            "runtimeExecutable":"/usr/local/bin/node",
+            "runtimeExecutable": "/usr/local/bin/node",
             "type": "node",
             "request": "launch",
             "name": "Jest Current File",
@@ -32,11 +36,11 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest"
             }
         },
         {
-            "runtimeExecutable":"/usr/local/bin/node",
+            "runtimeExecutable": "/usr/local/bin/node",
             "type": "node",
             "request": "launch",
             "name": "Jest Scenarios",
@@ -47,31 +51,31 @@
             "args": [
                 "test/e2e.test.ts",
                 "--config",
-                "jest.config.ts"                
+                "jest.config.ts"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest"
             }
-        },
+        }
     ],
     "inputs": [
         {
             "id": "scenarios",
-            "type":"promptString",
+            "type": "promptString",
             "description": "Enter Scenarios",
             "default": "all"
         },
         {
             "id": "scenario",
-            "type":"promptString",
+            "type": "promptString",
             "description": "Enter Scenario",
             "default": "basic_workflow"
         },
         {
             "id": "index",
-            "type":"promptString",
+            "type": "promptString",
             "description": "Enter test index",
             "default": "0"
         }

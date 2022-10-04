@@ -1,42 +1,24 @@
-export class StatusError extends Error {
-  status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = +status;
-  }
-}
-export class WorkflowCreationError extends StatusError {
+import { StepCreationError, StepExecutionError } from "./steps/errors";
+
+export class WorkflowCreationError extends StepCreationError {
   workflowName: string;
-  stepName?: string;
-  constructor(message: string, workflowName: string, stepName?: string) {
-    super(message, 400);
+  constructor(message: string, workflowName: string, stepName?: string, childStepName?: string) {
+    super(message, stepName, childStepName);
     this.workflowName = workflowName;
-    this.stepName = stepName;
   }
 }
 
-export class WorkflowExecutionError extends StatusError {
+export class WorkflowExecutionError extends StepExecutionError {
   workflowName: string;
-  stepName?: string;
-  error?: Error;
   constructor(
     message: string,
     status: number,
     workflowName: string,
     stepName: string,
+    childStepName?: string,
     error?: Error,
   ) {
-    super(message, status);
+    super(message, status, stepName, childStepName, error);
     this.workflowName = workflowName;
-    this.stepName = stepName;
-    this.error = error;
-  }
-}
-
-export class ReturnResultError extends Error {
-  result: any;
-  constructor(result: any) {
-    super();
-    this.result = result;
   }
 }

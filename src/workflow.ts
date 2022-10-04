@@ -1,13 +1,13 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { Logger } from 'pino';
 import { StepExecutor, StepExitAction, StepType } from './steps/types';
-import { ExecutionBindings, WorkflowOutput } from './types';
+import { Dictionary, ExecutionBindings, Executor, WorkflowOutput } from './types';
 import { WorkflowUtils } from './utils';
 import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from './steps';
 import { StepExecutionError } from './steps/errors';
 
-export class WorkflowEngine {
+export class WorkflowEngine implements Executor {
   readonly workflowName: string;
   private readonly logger: Logger;
   private readonly stepExecutors: StepExecutor[];
@@ -18,17 +18,27 @@ export class WorkflowEngine {
     this.stepExecutors = stepExecutors;
   }
 
-  getStepExecutor(stepName: string, childStepName?: string): StepExecutor | undefined {
+  getStepExecutor(stepName: string, childStepName?: string): StepExecutor  {
     let stepExecutor = this.stepExecutors.find(
       (stepExecutor) => stepExecutor.getStepName() === stepName,
     );
-    if (childStepName && stepExecutor?.getStepType() === StepType.Workflow) {
-      stepExecutor = (stepExecutor as WorkflowStepExecutor).getStepExecutor(childStepName);
+
+    if(!stepExecutor) {
+      throw new Error(`${stepName} is not found`)
     }
+
+    if (childStepName) {
+      const baseExecutor = stepExecutor.getBaseExecutor();
+      if(baseExecutor instanceof WorkflowStepExecutor) {
+        return baseExecutor.getStepExecutor(childStepName);
+      }
+      throw new Error(`${stepName} is not a workflow step`)
+    }
+    
     return stepExecutor;
   }
 
-  async execute(input: any, context: Record<string, any> = {}): Promise<WorkflowOutput> {
+  async execute(input: any, context: Dictionary<any> = {}): Promise<WorkflowOutput> {
     const newContext = cloneDeep(context);
     const executionBindings: ExecutionBindings = {
       outputs: {},
@@ -64,23 +74,13 @@ export class WorkflowEngine {
   }
 
   handleError(error: any, stepName: string) {
-    if (error instanceof StepExecutionError) {
-      throw new WorkflowExecutionError(
-        error.message,
-        error.status,
-        this.workflowName,
-        error.stepName,
-      );
-    }
-    if (error instanceof WorkflowExecutionError) {
-      throw error;
-    }
     throw new WorkflowExecutionError(
       error.message,
       WorkflowUtils.getErrorStatus(error),
       this.workflowName,
       stepName,
-      error,
+      error.childStepName,
+      error.error
     );
   }
 }

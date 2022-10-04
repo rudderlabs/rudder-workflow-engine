@@ -28,9 +28,10 @@
     }
   },
   {
-    "workflowPath": "blank_workflow_path_step.yaml",
+    "workflowPath": "blank_workflow_step_path.yaml",
     "error": {
       "message": "Invalid step",
+      "workflowName": "blank_workflow_step_path",
       "stepName": "invalidWorkflowStep"
     }
   },
@@ -99,6 +100,23 @@
     "error": {
       "message": "\"onComplete = return\" should be used in a step with condition",
       "stepName": "InvalidOnComplete"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflowstep_from_path.yaml",
+    "error": {
+      "message": "Invalid workflow step configuration",
+      "workflowName": "invalid_workflowstep_from_path",
+      "stepName": "invalidWorkflowStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_simple_step_in_workflowstep.yaml",
+    "error": {
+      "message": "Invalid simple step configuration",
+      "workflowName": "invalid_simple_step_in_workflowstep",
+      "stepName": "invalidWorkflowStep",
+      "childStepName": "invalidSimpleStep"
     }
   }
 ]

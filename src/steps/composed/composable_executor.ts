@@ -1,5 +1,6 @@
 import { Logger } from 'pino';
 import { Dictionary, ExecutionBindings } from '../../types';
+import { BaseStepExecutor } from '../base';
 import { Step, StepExecutor, StepOutput, StepType } from '../types';
 
 /**
@@ -11,10 +12,6 @@ export class ComposableStepExecutor implements StepExecutor {
 
   constructor(stepExecutor: StepExecutor) {
     this.stepExecutor = stepExecutor;
-  }
-
-  getStepType(): StepType {
-    return this.stepExecutor.getStepType();
   }
 
   getBindings(): Dictionary<any> {
@@ -31,6 +28,10 @@ export class ComposableStepExecutor implements StepExecutor {
 
   getStepName(): string {
     return this.stepExecutor.getStepName();
+  }
+
+  getBaseExecutor(): BaseStepExecutor {
+    return this.stepExecutor.getBaseExecutor();
   }
 
   execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

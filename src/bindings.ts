@@ -1,5 +1,5 @@
 import jsonata from 'jsonata';
-import { ReturnResultError, StatusError } from './errors';
+import { ReturnResultError, StatusError } from './steps';
 import { Dictionary } from './types';
 
 export { chunk } from 'lodash';
@@ -9,7 +9,7 @@ export function values(obj: Dictionary<any>): any[] {
 }
 
 export function getByPaths(obj: any, paths: string | string[]): any {
-  if (obj === undefined || paths === undefined) {
+  if (!obj || !paths) {
     return undefined;
   }
   let pathStr: string = Array.isArray(paths) ? `[${paths.join(',')}]` : paths;

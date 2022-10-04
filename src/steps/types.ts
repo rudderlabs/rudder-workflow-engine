@@ -1,16 +1,13 @@
 import { Logger } from 'pino';
-import { StatusError } from '../errors';
-import { Binding, Dictionary, ExecutionBindings } from '../types';
+import { Binding, Dictionary, ExecutionBindings, Executor } from '../types';
+import { BaseStepExecutor } from './base';
+import { StatusError } from './errors';
 
-export interface StepExecutor {
+export interface StepExecutor extends Executor {
   /**
    * Returns the name of the step which executor is operating
    */
   getStepName(): string;
-  /**
-   * Returns the type of the step which executor is operating
-   */
-  getStepType(): StepType;
   /**
    * Returns the step which executor is operating
    */
@@ -23,6 +20,11 @@ export interface StepExecutor {
    * Returns the step's static bindings
    */
   getBindings(): Dictionary<any>;
+
+  /**
+   * Return the base step executor
+   */
+  getBaseExecutor(): BaseStepExecutor;
   /**
    * Executes the step
    */

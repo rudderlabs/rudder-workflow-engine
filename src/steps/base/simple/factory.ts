@@ -1,10 +1,9 @@
 import { Logger } from 'pino';
 import { join } from 'path';
-import { readFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { StepCreationError } from '../../errors';
 import { Dictionary } from '../../../types';
-import { ExternalWorkflow, SimpleStep } from '../../types';
+import { ExternalWorkflow, SimpleStep, StepFunction } from '../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { ExternalWorkflowStepExecutor } from './external_workflow_executor';
 import { FunctionStepExecutor } from './function_executor';
@@ -14,34 +13,7 @@ import { WorkflowUtils } from '../../../utils';
 import { WorkflowEngine } from '../../../workflow';
 
 export class SimpleStepExecutorFactory {
-  static create(
-    step: SimpleStep,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    parentLogger: Logger,
-  ): BaseStepExecutor {
-    const simpleStepLogger = parentLogger.child({ step: step.name });
-    if (step.externalWorkflow) {
-      const workflowEngine = this.createExternalWorkflowEngine(rootPath, step.externalWorkflow);
-      return new ExternalWorkflowStepExecutor(workflowEngine, step, bindings, simpleStepLogger);
-    }
-
-    if (step.functionName) {
-      return new FunctionStepExecutor(step, bindings, simpleStepLogger);
-    }
-
-    if (step.templatePath) {
-      step.template = this.extractTemplate(rootPath, step.templatePath);
-    }
-
-    if (step.template) {
-      return new TemplateStepExecutor(step.template, step, bindings, simpleStepLogger);
-    }
-
-    throw new StepCreationError('Invalid simple step configuration', step.name);
-  }
-
-  static async createAsync(
+  static async create(
     step: SimpleStep,
     rootPath: string,
     bindings: Dictionary<any>,
@@ -49,7 +21,7 @@ export class SimpleStepExecutorFactory {
   ): Promise<BaseStepExecutor> {
     const simpleStepLogger = parentLogger.child({ step: step.name });
     if (step.externalWorkflow) {
-      const workflowEngine = await this.createExternalWorkflowEngineAsync(
+      const workflowEngine = await this.createExternalWorkflowEngine(
         rootPath,
         step.externalWorkflow,
       );
@@ -57,40 +29,26 @@ export class SimpleStepExecutorFactory {
     }
 
     if (step.functionName) {
-      return new FunctionStepExecutor(step, bindings, simpleStepLogger);
+      const fn = this.exatractFunction(step.functionName, bindings, step.name);
+      return new FunctionStepExecutor(fn, step, bindings, simpleStepLogger);
     }
 
     if (step.templatePath) {
-      step.template = await this.extractTemplateAsync(rootPath, step.templatePath);
+      step.template = await this.extractTemplate(rootPath, step.templatePath);
     }
-
     if (step.template) {
       return new TemplateStepExecutor(step.template, step, bindings, simpleStepLogger);
     }
 
-    throw new StepCreationError('Invalid simple step configuration', step.name);
+    throw new StepCreationError("Invalid simple step configuration", step.name);
   }
 
-  private static createExternalWorkflowEngine(
-    rootPath: string,
-    externalWorkflow: ExternalWorkflow,
-  ): WorkflowEngine {
-    const workflowPath = join(rootPath, externalWorkflow.path);
-    const workflow = WorkflowUtils.createWorkflowFromFilePath(workflowPath);
-    const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
-    return WorkflowEngineFactory.create(
-      workflow,
-      externalWorkflowRootPath,
-      externalWorkflow.bindingPaths,
-    );
-  }
-
-  private static async createExternalWorkflowEngineAsync(
+  private static async createExternalWorkflowEngine(
     rootPath: string,
     externalWorkflow: ExternalWorkflow,
   ): Promise<WorkflowEngine> {
     const workflowPath = join(rootPath, externalWorkflow.path);
-    const workflow = await WorkflowUtils.createWorkflowFromFilePathAsync(workflowPath);
+    const workflow = await WorkflowUtils.createWorkflowFromFilePath(workflowPath);
     const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
     return WorkflowEngineFactory.create(
       workflow,
@@ -99,11 +57,14 @@ export class SimpleStepExecutorFactory {
     );
   }
 
-  private static extractTemplate(rootPath: string, templatePath: string): string {
-    return readFileSync(join(rootPath, templatePath), { encoding: 'utf-8' });
+  private static exatractFunction(functionName: string, bindings: Dictionary<any>, stepName: string): StepFunction {
+    if (typeof bindings[functionName] !== 'function') {
+      throw new StepCreationError('Invalid functionName', stepName);
+    }
+    return bindings[functionName] as StepFunction;
   }
 
-  private static extractTemplateAsync(rootPath: string, templatePath: string): Promise<string> {
+  private static extractTemplate(rootPath: string, templatePath: string): Promise<string> {
     return readFile(join(rootPath, templatePath), { encoding: 'utf-8' });
   }
 }

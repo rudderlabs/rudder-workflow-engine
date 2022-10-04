@@ -4,6 +4,7 @@ import { WorkflowUtils } from '../../../utils';
 import { Dictionary, ExecutionBindings } from '../../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { Step, StepOutput } from '../../types';
+import { StepExecutionError } from '../../errors';
 
 export class TemplateStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;

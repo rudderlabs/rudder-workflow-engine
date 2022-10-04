@@ -14,10 +14,6 @@ export abstract class BaseStepExecutor implements StepExecutor {
     this.bindings = bindings;
   }
 
-  getStepType(): StepType {
-    return this.step.type || StepUtils.getStepType(this.step);
-  }
-
   getBindings(): Dictionary<any> {
     return this.bindings;
   }
@@ -47,12 +43,12 @@ export abstract class BaseStepExecutor implements StepExecutor {
     return this.step.name;
   }
 
-  setLogger(logger?: Logger) {
-    this.logger = logger || this.logger;
-  }
-
   getLogger(): Logger {
     return this.logger;
+  }
+
+  getBaseExecutor(): BaseStepExecutor {
+    return this;
   }
 
   abstract execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput>;

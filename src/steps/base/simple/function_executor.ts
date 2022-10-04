@@ -7,19 +7,9 @@ import { StepFunction, StepOutput, SimpleStep } from '../../types';
 export class FunctionStepExecutor extends BaseStepExecutor {
   private readonly fn: StepFunction;
 
-  constructor(step: SimpleStep, bindings: Dictionary<any>, parentLogger: Logger) {
+  constructor(fn: StepFunction, step: SimpleStep, bindings: Dictionary<any>, parentLogger: Logger) {
     super(step, bindings, parentLogger.child({ type: 'Function' }));
-    this.fn = this.prepareFunction(step);
-  }
-
-  private prepareFunction(step: SimpleStep): StepFunction {
-    if (!step.functionName) {
-      throw new StepCreationError('functionName required', step.name);
-    }
-    if (typeof this.bindings[step.functionName] !== 'function') {
-      throw new StepCreationError('Invalid functionName', this.step.name);
-    }
-    return this.bindings[step.functionName] as StepFunction;
+    this.fn = fn;
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

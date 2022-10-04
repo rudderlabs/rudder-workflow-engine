@@ -1,0 +1,15 @@
+steps:
+  - name: add
+    template:
+      (a + b)
+  - name: subtract
+    template:
+      (a - b)
+  - name: moreOps
+    steps:
+      - name: multiply
+        template: |
+          (a * b)
+      - name: divide
+        template: |
+          (a / b)

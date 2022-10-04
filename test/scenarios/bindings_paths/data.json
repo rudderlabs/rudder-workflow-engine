@@ -65,5 +65,16 @@
         "error": {
             "message": "unsupported operation"
         }
+    },
+    {
+        "bindingsPaths": ["invalid_path"],
+        "input": {
+            "a": 10,
+            "b": 2,
+            "op": "+"
+        },
+        "error": {
+            "message": "Cannot find module"
+        }
     }
 ]

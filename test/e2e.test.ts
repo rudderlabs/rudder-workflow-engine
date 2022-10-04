@@ -13,8 +13,7 @@ Pino.mockImplementation(() => fakeLogger);
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { SceanarioUtils } from './utils';
-import { LogCounts, SceanarioError, SceanarioType } from './types';
-import { WorkflowEngine } from '../src';
+import { LogCounts, SceanarioError } from './types';
 
 function testLogger(logger: LogCounts) {
   const debugCount = logger.debug || 0;
@@ -46,20 +45,15 @@ describe('Scenarios tests', () => {
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);
-      const allScenarios = SceanarioUtils.extractScenarios(scenarioDir);
-      allScenarios.forEach((scenario) => {
-        it(`${scenario.type} Scenario ${scenario.index}`, async () => {
+      const sceanarios = SceanarioUtils.extractScenarios(scenarioDir);
+      sceanarios.forEach((scenario, index) => {
+        it(`Scenario ${index}`, async () => {
           try {
-            let workflowEngine: WorkflowEngine;
-            if (scenario.type === SceanarioType.Async) {
-              workflowEngine = await SceanarioUtils.createWorkflowEngineAsync(
+             const workflowEngine = await SceanarioUtils.createWorkflowEngine(
                 scenarioDir,
                 scenario,
               );
-            } else {
-              workflowEngine = SceanarioUtils.createWorkflowEngine(scenarioDir, scenario);
-            }
-            const result = await SceanarioUtils.executeWorkflow(workflowEngine, scenario.input);
+            const result = await SceanarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
             expect(scenario.error).toBeDefined();

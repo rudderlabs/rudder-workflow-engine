@@ -14,34 +14,16 @@ export class WorkflowEngineFactory {
     WorkflowUtils.populateStepType(workflow);
   }
 
-  static create(workflow: Workflow, rootPath: string, bindingsPaths?: string[]): WorkflowEngine {
-    try {
-      this.prepareWorkflow(workflow);
-      const bindings = this.prepareBindings(rootPath, workflow.bindings, bindingsPaths);
-      const logger = getLogger(workflow.name);
-      const stepExecutors = this.createStepExecutors(workflow.steps, rootPath, bindings, logger);
-      return new WorkflowEngine(workflow.name, logger, stepExecutors);
-    } catch (error: any) {
-      if (error instanceof StepCreationError) {
-        throw new WorkflowCreationError(error.message, workflow.name, error.stepName);
-      }
-      if (error instanceof WorkflowCreationError) {
-        throw error;
-      }
-      throw new WorkflowCreationError(error.message, workflow.name);
-    }
-  }
-
-  static async createAsync(
+  static async create(
     workflow: Workflow,
     rootPath: string,
     bindingsPaths?: string[],
   ): Promise<WorkflowEngine> {
     try {
       this.prepareWorkflow(workflow);
-      const bindings = await this.prepareBindingsAsync(rootPath, workflow.bindings, bindingsPaths);
+      const bindings = await this.prepareBindings(rootPath, workflow.bindings, bindingsPaths);
       const logger = getLogger(workflow.name);
-      const stepExecutors = await this.createStepExecutorsAsync(
+      const stepExecutors = await this.createStepExecutors(
         workflow.steps,
         rootPath,
         bindings,
@@ -49,48 +31,28 @@ export class WorkflowEngineFactory {
       );
       return new WorkflowEngine(workflow.name, logger, stepExecutors);
     } catch (error: any) {
-      if (error instanceof StepCreationError) {
-        throw new WorkflowCreationError(error.message, workflow.name, error.stepName);
-      }
       if (error instanceof WorkflowCreationError) {
         throw error;
       }
+      
+      if (error instanceof StepCreationError) {
+        throw new WorkflowCreationError(error.message, workflow.name, error.stepName, error.childStepName);
+      }
+
       throw new WorkflowCreationError(error.message, workflow.name);
     }
   }
 
-  static createFromFilePath(
-    workflowPath: string,
-    rootPath: string,
-    bindingsPaths?: string[],
-  ): WorkflowEngine {
-    const workflow = WorkflowUtils.createWorkflowFromFilePath(workflowPath);
-    return this.create(workflow, rootPath, bindingsPaths);
-  }
-
-  static async createFromFilePathAsync(
+  static async createFromFilePath(
     workflowPath: string,
     rootPath: string,
     bindingsPaths?: string[],
   ): Promise<WorkflowEngine> {
-    const workflow = await WorkflowUtils.createWorkflowFromFilePathAsync(workflowPath);
+    const workflow = await WorkflowUtils.createWorkflowFromFilePath(workflowPath);
     return this.create(workflow, rootPath, bindingsPaths);
   }
 
-  private static prepareBindings(
-    rootPath: string,
-    workflowBindings?: Binding[],
-    bindingsPaths?: string[],
-  ): Dictionary<any> {
-    return Object.assign(
-      {},
-      libraryBindings,
-      WorkflowUtils.extractBindingsFromPaths(rootPath, bindingsPaths),
-      WorkflowUtils.extractBindings(rootPath, workflowBindings),
-    );
-  }
-
-  private static async prepareBindingsAsync(
+  private static async prepareBindings(
     rootPath: string,
     workflowBindings?: Binding[],
     bindingsPaths?: string[],
@@ -98,8 +60,8 @@ export class WorkflowEngineFactory {
     return Object.assign(
       {},
       libraryBindings,
-      await WorkflowUtils.extractBindingsFromPathsAsync(rootPath, bindingsPaths),
-      await WorkflowUtils.extractBindingsAsync(rootPath, workflowBindings),
+      await WorkflowUtils.extractBindingsFromPaths(rootPath, bindingsPaths),
+      await WorkflowUtils.extractBindings(rootPath, workflowBindings),
     );
   }
 
@@ -108,18 +70,9 @@ export class WorkflowEngineFactory {
     rootPath: string,
     bindings: Dictionary<any>,
     logger: Logger,
-  ): StepExecutor[] {
-    return steps.map((step) => StepExecutorFactory.create(step, rootPath, bindings, logger));
-  }
-
-  private static createStepExecutorsAsync(
-    steps: Step[],
-    rootPath: string,
-    bindings: Dictionary<any>,
-    logger: Logger,
   ): Promise<StepExecutor[]> {
     return Promise.all(
-      steps.map((step) => StepExecutorFactory.createAsync(step, rootPath, bindings, logger)),
+      steps.map((step) => StepExecutorFactory.create(step, rootPath, bindings, logger)),
     );
   }
 }

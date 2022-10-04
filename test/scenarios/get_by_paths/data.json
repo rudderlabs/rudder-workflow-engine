@@ -60,5 +60,8 @@
         "output": [
             3
         ]
+    },
+    {
+        "description": "no input so no output"
     }
 ]

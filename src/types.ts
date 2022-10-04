@@ -30,3 +30,7 @@ export type ExecutionBindings = {
   context: Dictionary<any>;
   setContext: (string, any) => void;
 };
+
+export interface Executor {
+  execute(input: any, bindings?: Dictionary<any>): Promise<any>
+}

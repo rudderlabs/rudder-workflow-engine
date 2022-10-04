@@ -2,6 +2,7 @@ import { Step, StepExecutor } from "../types";
 import { ConditionalStepExecutor } from "./conditional_executor";
 import { CustomInputStepExecutor } from "./custom_input_executor";
 import { DebuggableStepExecutor } from "./debuggable_executor";
+import { ErrorWrapStepExecutor } from "./error_wrap_executor";
 import { LoopStepExecutor } from "./loop_executor";
 
 export class ComposableExecutorFactory {
@@ -21,6 +22,7 @@ export class ComposableExecutorFactory {
         if (step.debug) {
             stepExecutor = new DebuggableStepExecutor(stepExecutor);
         }
+        stepExecutor = new ErrorWrapStepExecutor(stepExecutor);
         return stepExecutor;
     }
 }

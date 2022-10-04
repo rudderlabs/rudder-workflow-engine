@@ -3,6 +3,7 @@ import { WorkflowEngine } from '../../../workflow';
 import { Dictionary, ExecutionBindings } from '../../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { SimpleStep, StepOutput } from '../../types';
+import { StepExecutionError } from '../../errors';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;
@@ -18,6 +19,10 @@ export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    return this.workflowEngine.execute(input, executionBindings.context);
+    try{
+      return await this.workflowEngine.execute(input, executionBindings.context);
+    } catch(error: any) {
+      throw new StepExecutionError(error.message, error.status, this.getStepName(), undefined, error);
+    }
   }
 }

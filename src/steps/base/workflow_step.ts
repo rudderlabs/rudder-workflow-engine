@@ -1,12 +1,9 @@
-import { join } from 'path';
 import { Logger } from 'pino';
-import { StepCreationError } from '../errors';
+import { StepExecutionError } from '../errors';
 import { Dictionary, ExecutionBindings } from '../../types';
 import { WorkflowUtils } from '../../utils';
 import { BaseStepExecutor } from './base_executor';
-import { StepExecutorFactory } from '../factory';
-import { StepExecutor, StepOutput, StepType, WorkflowStep } from '../types';
-
+import { StepExecutor, StepOutput, WorkflowStep } from '../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
   constructor(
@@ -19,17 +16,30 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
     this.stepExecutors = stepExecutors;
   }
 
-  getStepExecutor(stepName: string): StepExecutor | undefined {
-    return this.stepExecutors.find((stepExecutor) => stepExecutor.getStepName() === stepName);
+  getStepExecutor(childStepName: string): StepExecutor {
+    const stepExecutor = this.stepExecutors.find((stepExecutor) => stepExecutor.getStepName() === childStepName);
+    if (!stepExecutor) {
+      throw new Error(`${this.step.name}:${childStepName} is not found`)
+    }
+    return stepExecutor;
+  }
+
+  async executeChildStep(childExector: StepExecutor, input: any, executionBindings: ExecutionBindings) {
+    try {
+      return await childExector.execute(input, executionBindings);
+    } catch (error: any) {
+      throw new StepExecutionError(error.message, WorkflowUtils.getErrorStatus(error),
+        this.getStepName(), error.stepName, error.error);
+    }
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     executionBindings.outputs[this.getStepName()] = {};
     let finalOutput: any;
-    for (const simpleStepExecutor of this.stepExecutors) {
-      const { skipped, output } = await simpleStepExecutor.execute(input, executionBindings);
+    for (const childExecutor of this.stepExecutors) {
+      const { skipped, output } = await this.executeChildStep(childExecutor, input, executionBindings);
       if (!skipped) {
-        executionBindings.outputs[this.getStepName()][simpleStepExecutor.getStepName()] = output;
+        executionBindings.outputs[this.getStepName()][childExecutor.getStepName()] = output;
         finalOutput = output;
       }
     }

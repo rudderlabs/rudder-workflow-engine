@@ -8,20 +8,18 @@ export type LogCounts = {
 export type SceanarioError = {
   message?: string;
   status?: string;
+  stepName?: string;
+  childStepName?: string;
 };
 
-export enum SceanarioType {
-  Async = 'async',
-  Sync = 'sync',
-}
 export type Sceanario = {
   input?: any;
   workflowPath?: string;
   bindingsPaths?: string[];
+  stepName?: string;
+  childStepName?: string;
   output?: any;
   error?: SceanarioError;
   errorClass?: string;
   logger?: LogCounts;
-  type?: SceanarioType;
-  index?: number;
 };
