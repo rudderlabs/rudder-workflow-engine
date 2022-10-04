@@ -3,7 +3,7 @@ import { Dictionary } from '../types';
 import { ComposableExecutorFactory } from './composed';
 import { Step, StepExecutor } from './types';
 import { BaseStepExecutorFactory } from './base/factory';
-import { StepCreationError } from '../errors';
+import { StepCreationError } from './errors';
 
 export class StepExecutorFactory {
   static create(

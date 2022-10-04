@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { Logger } from 'pino';
-import { StepCreationError, WorkflowCreationError } from '../../errors';
+import { StepCreationError } from '../errors';
 import { Dictionary, ExecutionBindings } from '../../types';
 import { WorkflowUtils } from '../../utils';
 import { BaseStepExecutor } from './base_executor';

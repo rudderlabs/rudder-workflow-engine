@@ -1,4 +1,4 @@
-import { StepExecutionError } from '../../errors';
+import { StepExecutionError } from '../errors';
 import { ExecutionBindings } from '../../types';
 import { ComposableStepExecutor } from './composable_executor';
 import { StepExecutor, StepOutput } from '../types';

@@ -5,16 +5,17 @@ export type LogCounts = {
   error?: number;
 };
 
+export type SceanarioError = {
+  message?: string;
+  status?: string;
+};
+
 export type Sceanario = {
   input?: any;
   workflowPath?: string;
   bindingsPaths?: string[];
   output?: any;
-  error?: {
-    message?: string,
-    status?: string,
-    code?: string
-  },
-  errorClass?: string,
+  error?: SceanarioError;
+  errorClass?: string;
   logger?: LogCounts;
 };

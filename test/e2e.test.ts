@@ -13,7 +13,7 @@ Pino.mockImplementation(() => fakeLogger);
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { executeScenario } from './utils';
-import { LogCounts, Sceanario } from './types';
+import { LogCounts, Sceanario, SceanarioError } from './types';
 
 function testLogger(logger: LogCounts) {
   const debugCount = logger.debug || 0;
@@ -27,6 +27,14 @@ function testLogger(logger: LogCounts) {
   expect(fakeLogger.info.mock.calls.length).toBeGreaterThanOrEqual(infoCount);
   expect(fakeLogger.warn.mock.calls.length).toBeGreaterThanOrEqual(warnCount);
   expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(errorCount);
+}
+
+function getErrorMatcher(error: SceanarioError = {}) {
+  let errorMatcher = error as any;
+  if (error.message) {
+    errorMatcher.message = expect.stringContaining(error.message);
+  }
+  return errorMatcher;
 }
 
 describe('Scenarios tests', () => {
@@ -45,7 +53,8 @@ describe('Scenarios tests', () => {
             const result = await executeScenario(scenarioDir, test, index);
             expect(result.output).toEqual(test.output);
           } catch (error: any) {
-            expect(error).toEqual(expect.objectContaining(test.error));
+            expect(test.error).toBeDefined();
+            expect(error).toMatchObject(getErrorMatcher(test.error));
             if (test.errorClass) {
               expect(error.error?.constructor.name).toEqual(test.errorClass);
             }

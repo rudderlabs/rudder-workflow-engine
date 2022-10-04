@@ -91,7 +91,7 @@
   {
     "workflowPath": "invalid_binding.yaml",
     "error": {
-      "code": "MODULE_NOT_FOUND"
+      "message": "Cannot find module"
     }
   },
   {

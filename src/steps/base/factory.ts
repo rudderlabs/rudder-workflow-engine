@@ -1,11 +1,11 @@
 import { Logger } from 'pino';
-import { StepCreationError, WorkflowCreationError } from '../../errors';
+import { StepCreationError } from '../errors';
 import { Dictionary } from '../../types';
-import { WorkflowUtils } from '../../utils';
 import { Step, StepType, WorkflowStep } from '../types';
 import { BaseStepExecutor } from './base_executor';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './workflow_step';
+import { StepUtils } from '../utils';
 
 export class BaseStepExecutorFactory {
   static create(
@@ -14,7 +14,7 @@ export class BaseStepExecutorFactory {
     bindings: Dictionary<any>,
     parentLogger: Logger,
   ): BaseStepExecutor {
-    switch (step.type || WorkflowUtils.getStepType(step)) {
+    switch (step.type || StepUtils.getStepType(step)) {
       case StepType.Simple:
         return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
       case StepType.Workflow:

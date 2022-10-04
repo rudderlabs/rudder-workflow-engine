@@ -1,5 +1,5 @@
 import { Logger } from 'pino';
-import { StatusError } from 'src/errors';
+import { StatusError } from '../errors';
 import { Binding, Dictionary, ExecutionBindings } from '../types';
 
 export interface StepExecutor {
@@ -52,6 +52,7 @@ export type ExternalWorkflow = {
   path: string;
   // root path for resolving dependencies
   rootPath?: string;
+  bindingPaths?: string[];
 };
 
 export type StepCommon = {

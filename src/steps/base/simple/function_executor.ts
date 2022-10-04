@@ -1,5 +1,5 @@
 import { Logger } from 'pino';
-import { StepCreationError } from '../../../errors';
+import { StepCreationError } from '../../errors';
 import { Dictionary, ExecutionBindings } from '../../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { StepFunction, StepOutput, SimpleStep } from '../../types';

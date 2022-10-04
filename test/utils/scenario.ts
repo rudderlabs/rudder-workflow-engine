@@ -1,17 +1,17 @@
 import { join } from 'path';
-import { WorkflowEngine, WorkflowUtils, WorkflowOutput } from '../../src';
+import { WorkflowOutput, WorkflowEngineFactory } from '../../src';
 import { Sceanario } from '../types';
 
 export async function executeScenario(
   scenarioDir,
   test: Sceanario,
-  index: number,
+  _index: number,
 ): Promise<WorkflowOutput> {
   const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
-  const workflowEngine = new WorkflowEngine(
-    WorkflowUtils.createWorkflowFromFilePath(workflowPath),
+  const workflowEngine = WorkflowEngineFactory.createFromFilePath(
+    workflowPath,
     scenarioDir,
-    ...(test.bindingsPaths || []),
+    test.bindingsPaths,
   );
   let result = await workflowEngine.execute(test.input);
   // JSONata creates immutable arrays and it cause issues

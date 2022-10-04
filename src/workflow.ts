@@ -1,55 +1,21 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { Logger } from 'pino';
-import { getLogger } from './logger';
-import { StepExecutorFactory } from './steps/factory';
 import { StepExecutor, StepExitAction, StepType } from './steps/types';
-import { Binding, Dictionary, ExecutionBindings, Workflow, WorkflowOutput } from './types';
+import { ExecutionBindings, WorkflowOutput } from './types';
 import { WorkflowUtils } from './utils';
-import * as libraryBindings from './bindings';
-import {
-  StepCreationError,
-  StepExecutionError,
-  WorkflowCreationError,
-  WorkflowExecutionError,
-} from './errors';
+import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from './steps';
+import { StepExecutionError } from './steps/errors';
 
 export class WorkflowEngine {
-  readonly name: string;
-  readonly logger: Logger;
-  readonly bindings: Dictionary<any>;
-
+  readonly workflowName: string;
+  private readonly logger: Logger;
   private readonly stepExecutors: StepExecutor[];
 
-  constructor(workflow: Workflow, rootPath: string, ...bindingsPaths: string[]) {
-    WorkflowUtils.validateWorkflow(workflow);
-    WorkflowUtils.populateStepType(workflow);
-    this.name = workflow.name;
-    this.logger = getLogger(this.name);
-    this.bindings = this.prepareBindings(rootPath, workflow.bindings, bindingsPaths);
-    this.stepExecutors = workflow.steps.map((step) => {
-      try {
-        return StepExecutorFactory.create(step, rootPath, this.bindings, this.logger);
-      } catch (error: any) {
-        if (error instanceof StepCreationError) {
-          throw new WorkflowCreationError(error.message, this.name, error.stepName);
-        }
-        throw new WorkflowCreationError(error.message, this.name);
-      }
-    });
-  }
-
-  private prepareBindings(
-    rootPath: string,
-    workflowBindings?: Binding[],
-    bindingsPaths?: string[],
-  ) {
-    return Object.assign(
-      {},
-      libraryBindings,
-      WorkflowUtils.extractBindingsFromPaths(rootPath, bindingsPaths),
-      WorkflowUtils.extractBindings(rootPath, workflowBindings),
-    );
+  constructor(workflowName: string, logger: Logger, stepExecutors: StepExecutor[]) {
+    this.workflowName = workflowName;
+    this.logger = logger;
+    this.stepExecutors = stepExecutors;
   }
 
   getStepExecutor(stepName: string, childStepName?: string): StepExecutor | undefined {
@@ -99,7 +65,12 @@ export class WorkflowEngine {
 
   handleError(error: any, stepName: string) {
     if (error instanceof StepExecutionError) {
-      throw new WorkflowExecutionError(error.message, error.status, this.name, error.stepName);
+      throw new WorkflowExecutionError(
+        error.message,
+        error.status,
+        this.workflowName,
+        error.stepName,
+      );
     }
     if (error instanceof WorkflowExecutionError) {
       throw error;
@@ -107,7 +78,7 @@ export class WorkflowEngine {
     throw new WorkflowExecutionError(
       error.message,
       WorkflowUtils.getErrorStatus(error),
-      this.name,
+      this.workflowName,
       stepName,
       error,
     );
