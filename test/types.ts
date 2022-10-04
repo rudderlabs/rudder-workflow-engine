@@ -10,6 +10,10 @@ export type SceanarioError = {
   status?: string;
 };
 
+export enum SceanarioType {
+  Async = 'async',
+  Sync = 'sync',
+}
 export type Sceanario = {
   input?: any;
   workflowPath?: string;
@@ -18,4 +22,6 @@ export type Sceanario = {
   error?: SceanarioError;
   errorClass?: string;
   logger?: LogCounts;
+  type?: SceanarioType;
+  index?: number;
 };

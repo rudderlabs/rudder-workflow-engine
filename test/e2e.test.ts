@@ -10,10 +10,11 @@ const fakeLogger = {
 };
 Pino.mockImplementation(() => fakeLogger);
 
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync } from 'fs';
 import { join } from 'path';
-import { executeScenario } from './utils';
-import { LogCounts, Sceanario, SceanarioError } from './types';
+import { SceanarioUtils } from './utils';
+import { LogCounts, SceanarioError, SceanarioType } from './types';
+import { WorkflowEngine } from '../src';
 
 function testLogger(logger: LogCounts) {
   const debugCount = logger.debug || 0;
@@ -45,22 +46,30 @@ describe('Scenarios tests', () => {
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);
-      const testsJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
-      const tests: Sceanario[] = JSON.parse(testsJSON);
-      tests.forEach((test, index) => {
-        it(`Test ${index}`, async () => {
+      const allScenarios = SceanarioUtils.extractScenarios(scenarioDir);
+      allScenarios.forEach((scenario) => {
+        it(`${scenario.type} Scenario ${scenario.index}`, async () => {
           try {
-            const result = await executeScenario(scenarioDir, test, index);
-            expect(result.output).toEqual(test.output);
+            let workflowEngine: WorkflowEngine;
+            if (scenario.type === SceanarioType.Async) {
+              workflowEngine = await SceanarioUtils.createWorkflowEngineAsync(
+                scenarioDir,
+                scenario,
+              );
+            } else {
+              workflowEngine = SceanarioUtils.createWorkflowEngine(scenarioDir, scenario);
+            }
+            const result = await SceanarioUtils.executeWorkflow(workflowEngine, scenario.input);
+            expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
-            expect(test.error).toBeDefined();
-            expect(error).toMatchObject(getErrorMatcher(test.error));
-            if (test.errorClass) {
-              expect(error.error?.constructor.name).toEqual(test.errorClass);
+            expect(scenario.error).toBeDefined();
+            expect(error).toMatchObject(getErrorMatcher(scenario.error));
+            if (scenario.errorClass) {
+              expect(error.error?.constructor.name).toEqual(scenario.errorClass);
             }
           }
-          if (test.logger) {
-            testLogger(test.logger);
+          if (scenario.logger) {
+            testLogger(scenario.logger);
           }
         });
       });

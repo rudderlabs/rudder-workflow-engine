@@ -8,14 +8,8 @@ import { Step, StepOutput } from '../../types';
 export class TemplateStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;
 
-  constructor(
-    template: string,
-    step: Step,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    parentLogger: Logger,
-  ) {
-    super(step, rootPath, bindings, parentLogger.child({ type: 'Template' }));
+  constructor(template: string, step: Step, bindings: Dictionary<any>, parentLogger: Logger) {
+    super(step, bindings, parentLogger.child({ type: 'Template' }));
     this.templateExpression = jsonata(template);
   }
 

@@ -10,40 +10,13 @@ import { StepExecutor, StepOutput, StepType, WorkflowStep } from '../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
   constructor(
+    stepExecutors: StepExecutor[],
     step: WorkflowStep,
-    rootPath: string,
-    workflowBindings: Dictionary<any>,
-    parentLogger: Logger,
+    bindings: Dictionary<any>,
+    logger: Logger,
   ) {
-    const newStep = WorkflowStepExecutor.populate(step, rootPath);
-    const bindings = Object.assign(
-      {},
-      workflowBindings,
-      WorkflowUtils.extractBindings(rootPath, newStep.bindings),
-    );
-    super(newStep, rootPath, bindings, parentLogger.child({ workflow: step.name }));
-    this.stepExecutors = this.prepareStepExecutors();
-  }
-
-  private static populate(step: WorkflowStep, rootPath: string): WorkflowStep {
-    let newStep = step;
-    if (step.workflowStepPath) {
-      const workflowStepPath = join(rootPath, step.workflowStepPath);
-      const workflowStepFromPath = WorkflowUtils.createFromFilePath<WorkflowStep>(workflowStepPath);
-      newStep = Object.assign({}, workflowStepFromPath, step);
-    }
-    if (!newStep.steps?.length) {
-      throw new StepCreationError('Invalid workflow step configuration', step.name);
-    }
-    return newStep;
-  }
-
-  private prepareStepExecutors(): StepExecutor[] {
-    const steps = (this.step as WorkflowStep).steps || [];
-    steps.forEach((step) => (step.type = StepType.Simple));
-    return steps.map((step) =>
-      StepExecutorFactory.create(step, this.rootPath, this.bindings, this.getLogger()),
-    );
+    super(step, bindings, logger);
+    this.stepExecutors = stepExecutors;
   }
 
   getStepExecutor(stepName: string): StepExecutor | undefined {

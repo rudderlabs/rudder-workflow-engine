@@ -25,4 +25,24 @@ export class StepExecutorFactory {
       throw new StepCreationError(error.message, step.name);
     }
   }
+
+  static async createAsync(
+    step: Step,
+    rootPath: string,
+    bindings: Dictionary<any>,
+    parentLogger: Logger,
+  ): Promise<StepExecutor> {
+    try {
+      let stepExecutor: StepExecutor = await BaseStepExecutorFactory.createAsync(
+        step,
+        rootPath,
+        bindings,
+        parentLogger,
+      );
+      stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
+      return stepExecutor;
+    } catch (error: any) {
+      throw new StepCreationError(error.message, step.name);
+    }
+  }
 }

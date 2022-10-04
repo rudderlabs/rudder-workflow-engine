@@ -10,11 +10,10 @@ export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   constructor(
     workflowEngine: WorkflowEngine,
     step: SimpleStep,
-    rootPath: string,
     bindings: Dictionary<any>,
     parentLogger: Logger,
   ) {
-    super(step, rootPath, bindings, parentLogger.child({ type: 'ExternalWorkflow' }));
+    super(step, bindings, parentLogger.child({ type: 'ExternalWorkflow' }));
     this.workflowEngine = workflowEngine;
   }
 

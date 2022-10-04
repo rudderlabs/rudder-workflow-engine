@@ -6,11 +6,9 @@ import { StepUtils } from '../utils';
 export abstract class BaseStepExecutor implements StepExecutor {
   protected readonly step: Step;
   private logger: Logger;
-  protected readonly rootPath: string;
   protected readonly bindings: Dictionary<any>;
 
-  constructor(step: Step, rootPath: string, bindings: Dictionary<any>, logger: Logger) {
-    this.rootPath = rootPath;
+  constructor(step: Step, bindings: Dictionary<any>, logger: Logger) {
     this.step = step;
     this.logger = this.prepareLogger(logger);
     this.bindings = bindings;

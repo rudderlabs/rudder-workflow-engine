@@ -7,8 +7,8 @@ import { StepFunction, StepOutput, SimpleStep } from '../../types';
 export class FunctionStepExecutor extends BaseStepExecutor {
   private readonly fn: StepFunction;
 
-  constructor(step: SimpleStep, rootPath: string, bindings: Dictionary<any>, parentLogger: Logger) {
-    super(step, rootPath, bindings, parentLogger.child({ type: 'Function' }));
+  constructor(step: SimpleStep, bindings: Dictionary<any>, parentLogger: Logger) {
+    super(step, bindings, parentLogger.child({ type: 'Function' }));
     this.fn = this.prepareFunction(step);
   }
 
