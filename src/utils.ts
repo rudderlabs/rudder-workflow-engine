@@ -34,18 +34,6 @@ export class WorkflowUtils {
     if (!workflow?.steps?.length) {
       throw new WorkflowCreationError('Workflow should contain at least one step', workflow.name);
     }
-    for (let i = 0; i < workflow.steps.length; i++) {
-      StepUtils.validateStep(workflow.steps[i], i);
-    }
-  }
-
-  static populateStepType(workflow: Workflow) {
-    for (const step of workflow.steps) {
-      step.type = StepUtils.getStepType(step);
-      if (step.type === StepType.Unknown) {
-        throw new WorkflowCreationError('Invalid step', workflow.name, step.name);
-      }
-    }
   }
 
   private static async getModuleExports(

@@ -2,35 +2,35 @@
   {
     "workflowPath": "blank_externalworkflow_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidExternalWorkflowStep"
     }
   },
   {
     "workflowPath": "blank_function_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidFunctionStep"
     }
   },
   {
     "workflowPath": "blank_template_path_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidTemplateStep"
     }
   },
   {
     "workflowPath": "blank_template_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidTemplateStep"
     }
   },
   {
     "workflowPath": "blank_workflow_step_path.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "workflowName": "blank_workflow_step_path",
       "stepName": "invalidWorkflowStep"
     }
@@ -50,7 +50,7 @@
   {
     "workflowPath": "invalid_workflowstep.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidWorkflowStep"
     }
   },
@@ -64,7 +64,7 @@
   {
     "workflowPath": "invalid_step_nobody.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step type",
       "stepName": "invalidStep"
     }
   },
@@ -111,12 +111,21 @@
     }
   },
   {
-    "workflowPath": "invalid_simple_step_in_workflowstep.yaml",
+    "workflowPath": "invalid_step_in_workflowstep.yaml",
     "error": {
-      "message": "Invalid simple step configuration",
-      "workflowName": "invalid_simple_step_in_workflowstep",
+      "message": "Invalid step type",
+      "workflowName": "invalid_step_in_workflowstep",
       "stepName": "invalidWorkflowStep",
       "childStepName": "invalidSimpleStep"
+    }
+  },
+  {
+    "workflowPath": "workflow_step_in_workflow_step.yaml",
+    "error": {
+      "message": "Invalid step type",
+      "workflowName": "workflow_step_in_workflow_step",
+      "stepName": "invalidWorkflowStep",
+      "childStepName": "invalidChildStep"
     }
   }
 ]

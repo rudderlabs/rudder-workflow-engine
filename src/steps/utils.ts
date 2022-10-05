@@ -25,9 +25,25 @@ export class StepUtils {
         );
     }
 
-    static validateStep(step: Step, index: number) {
+    static populateSteps(steps: Step[]) {
+        for (const step of steps) {
+            step.type = StepUtils.getStepType(step);
+        }
+    }
+
+    static validateSteps(steps: Step[], allowedStepTypes: string[]) {
+        for (let i = 0; i < steps.length; i++) {
+            StepUtils.validateStep(steps[i], i, allowedStepTypes);
+        }
+    }
+
+    static validateStep(step: Step, index: number, allowedStepTypes: string[]) {
         if (!step.name) {
             throw new StepCreationError(`step#${index} should have a name`);
+        }
+
+        if (!allowedStepTypes.includes(step.type as StepType)) {
+            throw new StepCreationError('Invalid step type', step.name);
         }
 
         if (step.onComplete === StepExitAction.Return && !step.condition) {

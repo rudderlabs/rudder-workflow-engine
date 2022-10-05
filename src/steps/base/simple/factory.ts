@@ -36,11 +36,8 @@ export class SimpleStepExecutorFactory {
     if (step.templatePath) {
       step.template = await this.extractTemplate(rootPath, step.templatePath);
     }
-    if (step.template) {
-      return new TemplateStepExecutor(step.template, step, bindings, simpleStepLogger);
-    }
 
-    throw new StepCreationError("Invalid simple step configuration", step.name);
+    return new TemplateStepExecutor(step.template as string, step, bindings, simpleStepLogger);
   }
 
   private static async createExternalWorkflowEngine(

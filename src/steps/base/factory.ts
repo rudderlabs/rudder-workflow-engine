@@ -28,18 +28,20 @@ export class BaseStepExecutorFactory {
     workflowBindings: Dictionary<any>,
     logger: Logger,
   ): Promise<WorkflowStepExecutor> {
-    let workflowStepLogger = logger.child({ workflow: step.name });
-    let newStep = await BaseStepUtils.populateWorkflowStep(step, rootPath);
-    if (!newStep.steps?.length) {
-      throw new StepCreationError('Invalid workflow step configuration', step.name);
+    try {
+      let workflowStepLogger = logger.child({ workflow: step.name });
+      let newStep = await BaseStepUtils.populateWorkflowStep(step, rootPath);
+      BaseStepUtils.validateWorkflowStep(newStep);
+      let workflowStepBindings = Object.assign({}, workflowBindings,
+        await WorkflowUtils.extractBindings(rootPath, newStep.bindings));
+
+      let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(
+        newStep, rootPath, workflowStepBindings, workflowStepLogger);
+
+      return new WorkflowStepExecutor(simpleStepExecutors, step,
+        workflowStepBindings, workflowStepLogger);
+    } catch (error: any) {
+      throw new StepCreationError(error.message, step.name, error.stepName);
     }
-    let workflowStepBindings = Object.assign({},workflowBindings,
-      await WorkflowUtils.extractBindings(rootPath, newStep.bindings));
-
-    let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(
-      newStep, rootPath, workflowStepBindings, workflowStepLogger);
-
-    return new WorkflowStepExecutor(simpleStepExecutors, step,
-      workflowStepBindings, workflowStepLogger);
   }
 }

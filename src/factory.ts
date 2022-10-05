@@ -4,14 +4,15 @@ import * as libraryBindings from './bindings';
 import { WorkflowCreationError } from './errors';
 import { StepCreationError } from './steps/errors';
 import { WorkflowEngine } from './workflow';
-import { Step, StepExecutor, StepExecutorFactory } from './steps';
+import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from './steps';
 import { getLogger } from './logger';
 import { Logger } from 'pino';
 
 export class WorkflowEngineFactory {
   private static prepareWorkflow(workflow: Workflow) {
     WorkflowUtils.validateWorkflow(workflow);
-    WorkflowUtils.populateStepType(workflow);
+    StepUtils.populateSteps(workflow.steps);
+    StepUtils.validateSteps(workflow.steps, [StepType.Simple, StepType.Workflow]);
   }
 
   static async create(
@@ -34,7 +35,7 @@ export class WorkflowEngineFactory {
       if (error instanceof WorkflowCreationError) {
         throw error;
       }
-      
+
       if (error instanceof StepCreationError) {
         throw new WorkflowCreationError(error.message, workflow.name, error.stepName, error.childStepName);
       }
