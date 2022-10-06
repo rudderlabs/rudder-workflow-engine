@@ -7,7 +7,6 @@ export async function executeScenario(
   test: Sceanario,
   index: number,
 ): Promise<WorkflowOutput> {
-  console.log(`Executing: ${scenarioDir} test#${index}`);
   const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
   const workflowEngine = new WorkflowEngine(
     WorkflowUtils.createWorkflowFromFilePath(workflowPath),

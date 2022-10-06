@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.3...v0.1.4) (2022-10-03)
+
+
+### Miscellaneous
+
+* error status ([#18](https://github.com/rudderlabs/rudder-workflow-engine/issues/18)) ([1564ae1](https://github.com/rudderlabs/rudder-workflow-engine/commit/1564ae1f2994c79d46fa0f306111008358d464ed))
+
 ## [0.1.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.2...v0.1.3) (2022-10-03)
 
 

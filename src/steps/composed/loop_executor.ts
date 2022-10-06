@@ -2,6 +2,7 @@ import { StepExecutionError } from '../../errors';
 import { ExecutionBindings } from '../../types';
 import { ComposableStepExecutor } from './composable_executor';
 import { StepExecutor, StepOutput } from '../types';
+import { WorkflowUtils } from '../../utils';
 
 export class LoopStepExecutor extends ComposableStepExecutor {
   constructor(nextExecutor: StepExecutor) {
@@ -19,7 +20,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
         } catch (error: any) {
           return {
             error: {
-              status: error.response?.status || 500,
+              status: WorkflowUtils.getErrorStatus(error),
               message: error.message,
             },
           };
