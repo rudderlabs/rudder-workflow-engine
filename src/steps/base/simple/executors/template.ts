@@ -1,10 +1,10 @@
 import jsonata from 'jsonata';
 import { Logger } from 'pino';
-import { WorkflowUtils } from '../../../workflow/utils';
-import { ExecutionBindings } from '../../../workflow/types';
-import { Dictionary } from '../../../common/types';
-import { BaseStepExecutor } from '../base_executor';
-import { Step, StepOutput } from '../../types';
+import { WorkflowUtils } from '../../../../workflow/utils';
+import { ExecutionBindings } from '../../../../workflow/types';
+import { Dictionary } from '../../../../common/types';
+import { BaseStepExecutor } from '../../executors/base';
+import { Step, StepOutput } from '../../../types';
 
 export class TemplateStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;

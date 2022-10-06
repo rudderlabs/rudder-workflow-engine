@@ -1,8 +1,8 @@
 import { Logger } from 'pino';
-import { ExecutionBindings } from '../../workflow/types';
-import { Dictionary } from '../../common/types';
-import { BaseStepExecutor } from '../base';
-import { Step, StepExecutor, StepOutput } from '../types';
+import { ExecutionBindings } from '../../../workflow/types';
+import { Dictionary } from '../../../common/types';
+import { BaseStepExecutor } from '../../base';
+import { Step, StepExecutor, StepOutput } from '../../types';
 
 /**
  * ComposableStepExecutor allows compose more logic

@@ -1,8 +1,8 @@
 import { Logger } from 'pino';
-import { ExecutionBindings } from '../../../workflow/types';
-import { Dictionary } from '../../../common/types';
-import { BaseStepExecutor } from '../base_executor';
-import { StepFunction, StepOutput, SimpleStep } from '../../types';
+import { ExecutionBindings } from '../../../../workflow/types';
+import { Dictionary } from '../../../../common/types';
+import { BaseStepExecutor } from '../../executors/base';
+import { StepFunction, StepOutput, SimpleStep } from '../../../types';
 
 export class FunctionStepExecutor extends BaseStepExecutor {
   private readonly fn: StepFunction;

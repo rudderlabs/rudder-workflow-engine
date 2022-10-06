@@ -1,8 +1,8 @@
 import jsonata from 'jsonata';
-import { WorkflowUtils } from '../../workflow/utils';
-import { ExecutionBindings } from '../../workflow/types';
-import { ComposableStepExecutor } from './composable_executor';
-import { StepExecutor, StepOutput } from '../types';
+import { WorkflowUtils } from '../../../workflow/utils';
+import { ExecutionBindings } from '../../../workflow/types';
+import { ComposableStepExecutor } from './composable';
+import { StepExecutor, StepOutput } from '../../types';
 
 /**
  * CustomInputStepExecutor customizes the input the

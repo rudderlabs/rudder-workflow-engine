@@ -4,10 +4,10 @@ import { readFile } from 'fs/promises';
 import { StepCreationError } from '../../errors';
 import { Dictionary } from '../../../common/types';
 import { ExternalWorkflow, SimpleStep, StepFunction } from '../../types';
-import { BaseStepExecutor } from '../base_executor';
-import { ExternalWorkflowStepExecutor } from './external_workflow_executor';
-import { FunctionStepExecutor } from './function_executor';
-import { TemplateStepExecutor } from './template_executor';
+import { BaseStepExecutor } from '../executors/base';
+import { ExternalWorkflowStepExecutor } from './executors/external_workflow';
+import { FunctionStepExecutor } from './executors/function';
+import { TemplateStepExecutor } from './executors/template';
 import { WorkflowEngineFactory } from '../../../workflow/factory';
 import { WorkflowUtils } from '../../../workflow/utils';
 import { WorkflowEngine } from '../../../workflow/engine';
@@ -54,7 +54,11 @@ export class SimpleStepExecutorFactory {
     );
   }
 
-  private static exatractFunction(functionName: string, bindings: Dictionary<any>, stepName: string): StepFunction {
+  private static exatractFunction(
+    functionName: string,
+    bindings: Dictionary<any>,
+    stepName: string,
+  ): StepFunction {
     if (typeof bindings[functionName] !== 'function') {
       throw new StepCreationError('Invalid functionName', stepName);
     }

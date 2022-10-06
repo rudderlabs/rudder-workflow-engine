@@ -2,9 +2,9 @@ import { Logger } from 'pino';
 import { StepCreationError } from '../errors';
 import { Dictionary } from '../../common/types';
 import { Step, StepType, WorkflowStep } from '../types';
-import { BaseStepExecutor } from './base_executor';
+import { BaseStepExecutor } from './executors/base';
 import { SimpleStepExecutorFactory } from './simple';
-import { WorkflowStepExecutor } from './workflow_step';
+import { WorkflowStepExecutor } from './executors/workflow_step';
 import { WorkflowUtils } from '../../workflow/utils';
 import { BaseStepUtils } from './utils';
 
@@ -31,14 +31,25 @@ export class BaseStepExecutorFactory {
     try {
       let workflowStepLogger = logger.child({ workflow: step.name });
       let newStep = await BaseStepUtils.prepareWorkflowStep(step, rootPath);
-      let workflowStepBindings = Object.assign({}, workflowBindings,
-        await WorkflowUtils.extractBindings(rootPath, newStep.bindings));
+      let workflowStepBindings = Object.assign(
+        {},
+        workflowBindings,
+        await WorkflowUtils.extractBindings(rootPath, newStep.bindings),
+      );
 
       let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(
-        newStep, rootPath, workflowStepBindings, workflowStepLogger);
+        newStep,
+        rootPath,
+        workflowStepBindings,
+        workflowStepLogger,
+      );
 
-      return new WorkflowStepExecutor(simpleStepExecutors, step,
-        workflowStepBindings, workflowStepLogger);
+      return new WorkflowStepExecutor(
+        simpleStepExecutors,
+        step,
+        workflowStepBindings,
+        workflowStepLogger,
+      );
     } catch (error: any) {
       throw new StepCreationError(error.message, step.name, error.stepName);
     }
