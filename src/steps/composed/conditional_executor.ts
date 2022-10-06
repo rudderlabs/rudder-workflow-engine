@@ -1,5 +1,5 @@
 import jsonata from 'jsonata';
-import { ExecutionBindings } from '../../types';
+import { ExecutionBindings } from '../../workflow/types';
 import { ComposableStepExecutor } from './composable_executor';
 import { StepExecutor, StepOutput } from '../types';
 

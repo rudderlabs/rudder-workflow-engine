@@ -1,9 +1,10 @@
 import { Logger } from 'pino';
-import { WorkflowEngine } from '../../../workflow';
-import { Dictionary, ExecutionBindings } from '../../../types';
+import { WorkflowEngine } from '../../../workflow/engine';
+import { Dictionary } from '../../../common/types';
 import { BaseStepExecutor } from '../base_executor';
 import { SimpleStep, StepOutput } from '../../types';
 import { StepExecutionError } from '../../errors';
+import { ExecutionBindings } from '../../../workflow/types';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;

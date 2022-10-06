@@ -1,5 +1,5 @@
 import { Logger } from 'pino';
-import { Dictionary } from '../types';
+import { Dictionary } from '../common/types';
 import { ComposableExecutorFactory } from './composed';
 import { Step, StepExecutor } from './types';
 import { BaseStepExecutorFactory } from './base/factory';

@@ -1,8 +1,8 @@
-import { ExecutionBindings } from '../../types';
+import { ExecutionBindings } from '../../workflow/types';
 import { ComposableStepExecutor } from './composable_executor';
 import { StepExecutor, StepOutput } from '../types';
 import { StepExecutionError } from '../errors';
-import { WorkflowUtils } from '../../utils';
+import { WorkflowUtils } from '../../workflow/utils';
 
 export class ErrorWrapStepExecutor extends ComposableStepExecutor {
     constructor(nextExecutor: StepExecutor) {

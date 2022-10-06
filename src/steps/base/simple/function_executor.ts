@@ -1,6 +1,6 @@
 import { Logger } from 'pino';
-import { StepCreationError } from '../../errors';
-import { Dictionary, ExecutionBindings } from '../../../types';
+import { ExecutionBindings } from '../../../workflow/types';
+import { Dictionary } from '../../../common/types';
 import { BaseStepExecutor } from '../base_executor';
 import { StepFunction, StepOutput, SimpleStep } from '../../types';
 

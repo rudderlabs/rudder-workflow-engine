@@ -1,5 +1,6 @@
 import { Logger } from 'pino';
-import { Binding, Dictionary, ExecutionBindings, Executor } from '../types';
+import { ExecutionBindings, Binding } from '../workflow/types';
+import { Dictionary, Executor } from '../common/types';
 import { BaseStepExecutor } from './base';
 import { StatusError } from './errors';
 

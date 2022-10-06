@@ -1,7 +1,8 @@
 import { Logger } from 'pino';
 import { StepExecutionError } from '../errors';
-import { Dictionary, ExecutionBindings } from '../../types';
-import { WorkflowUtils } from '../../utils';
+import { ExecutionBindings } from '../../workflow/types';
+import { Dictionary } from '../../common/types';
+import { WorkflowUtils } from '../../workflow/utils';
 import { BaseStepExecutor } from './base_executor';
 import { StepExecutor, StepOutput, WorkflowStep } from '../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {

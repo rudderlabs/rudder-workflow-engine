@@ -1,4 +1,4 @@
-import { StepCreationError, StepExecutionError } from "./steps/errors";
+import { StepCreationError, StepExecutionError } from "../steps/errors";
 
 export class WorkflowCreationError extends StepCreationError {
   workflowName: string;

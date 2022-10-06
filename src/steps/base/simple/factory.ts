@@ -2,15 +2,15 @@ import { Logger } from 'pino';
 import { join } from 'path';
 import { readFile } from 'fs/promises';
 import { StepCreationError } from '../../errors';
-import { Dictionary } from '../../../types';
+import { Dictionary } from '../../../common/types';
 import { ExternalWorkflow, SimpleStep, StepFunction } from '../../types';
 import { BaseStepExecutor } from '../base_executor';
 import { ExternalWorkflowStepExecutor } from './external_workflow_executor';
 import { FunctionStepExecutor } from './function_executor';
 import { TemplateStepExecutor } from './template_executor';
-import { WorkflowEngineFactory } from '../../../factory';
-import { WorkflowUtils } from '../../../utils';
-import { WorkflowEngine } from '../../../workflow';
+import { WorkflowEngineFactory } from '../../../workflow/factory';
+import { WorkflowUtils } from '../../../workflow/utils';
+import { WorkflowEngine } from '../../../workflow/engine';
 
 export class SimpleStepExecutorFactory {
   static async create(

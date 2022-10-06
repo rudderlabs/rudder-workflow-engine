@@ -2,11 +2,11 @@ import yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import jsonata from 'jsonata';
-import { Workflow, Binding, Dictionary } from './types';
+import { Dictionary } from '../common/types';
 import { WorkflowCreationError } from './errors';
-import { StepType } from './steps/types';
-import { StepUtils } from './steps/utils';
-import { StatusError } from './steps';
+import { StatusError } from '../steps';
+import { Binding, Workflow } from './types';
+
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
     if (!workflow.name) {

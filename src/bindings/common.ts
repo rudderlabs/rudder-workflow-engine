@@ -1,6 +1,6 @@
 import jsonata from 'jsonata';
-import { ReturnResultError, StatusError } from './steps';
-import { Dictionary } from './types';
+import { ReturnResultError, StatusError } from '../steps';
+import { Dictionary } from '../common/types';
 
 export { chunk } from 'lodash';
 

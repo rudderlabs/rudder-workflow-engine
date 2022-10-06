@@ -1,12 +1,13 @@
-import { Binding, Dictionary, Workflow } from './types';
+import { Dictionary } from '../common/types';
 import { WorkflowUtils } from './utils';
-import * as libraryBindings from './bindings';
+import * as libraryBindings from '../bindings';
 import { WorkflowCreationError } from './errors';
-import { StepCreationError } from './steps/errors';
-import { WorkflowEngine } from './workflow';
-import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from './steps';
-import { getLogger } from './logger';
+import { StepCreationError } from '../steps/errors';
+import { WorkflowEngine } from './engine';
+import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
+import { getLogger } from '../common/logger';
 import { Logger } from 'pino';
+import { Binding, Workflow } from './types';
 
 export class WorkflowEngineFactory {
   private static prepareWorkflow(workflow: Workflow) {

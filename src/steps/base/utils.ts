@@ -1,14 +1,14 @@
 import { join } from 'path';
 import { Logger } from 'pino';
-import { Dictionary } from '../../types';
-import { WorkflowUtils } from '../../utils';
+import { Dictionary } from '../../common/types';
+import { WorkflowUtils } from '../../workflow/utils';
 import { StepCreationError } from '../errors';
 import { StepExecutorFactory } from '../factory';
 import { SimpleStep, StepExecutor, StepType, WorkflowStep } from '../types';
 import { StepUtils } from '../utils';
 
 export class BaseStepUtils {
-    static async populateWorkflowStep(
+    static async prepareWorkflowStep(
         step: WorkflowStep,
         rootPath: string,
     ): Promise<WorkflowStep> {
@@ -20,6 +20,7 @@ export class BaseStepUtils {
             );
             newStep = Object.assign({}, workflowStepFromPath, step);
         }
+        BaseStepUtils.validateWorkflowStep(newStep);
         return newStep;
     }
 

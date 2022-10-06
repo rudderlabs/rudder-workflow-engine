@@ -1,11 +1,11 @@
 import { Logger } from 'pino';
 import { StepCreationError } from '../errors';
-import { Dictionary } from '../../types';
+import { Dictionary } from '../../common/types';
 import { Step, StepType, WorkflowStep } from '../types';
 import { BaseStepExecutor } from './base_executor';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './workflow_step';
-import { WorkflowUtils } from '../../utils';
+import { WorkflowUtils } from '../../workflow/utils';
 import { BaseStepUtils } from './utils';
 
 export class BaseStepExecutorFactory {
@@ -30,8 +30,7 @@ export class BaseStepExecutorFactory {
   ): Promise<WorkflowStepExecutor> {
     try {
       let workflowStepLogger = logger.child({ workflow: step.name });
-      let newStep = await BaseStepUtils.populateWorkflowStep(step, rootPath);
-      BaseStepUtils.validateWorkflowStep(newStep);
+      let newStep = await BaseStepUtils.prepareWorkflowStep(step, rootPath);
       let workflowStepBindings = Object.assign({}, workflowBindings,
         await WorkflowUtils.extractBindings(rootPath, newStep.bindings));
 

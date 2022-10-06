@@ -1,11 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { Logger } from 'pino';
-import { StepExecutor, StepExitAction, StepType } from './steps/types';
-import { Dictionary, ExecutionBindings, Executor, WorkflowOutput } from './types';
+import { StepExecutor, StepExitAction } from '../steps/types';
+import { Dictionary, Executor } from '../common/types';
 import { WorkflowUtils } from './utils';
 import { WorkflowExecutionError } from './errors';
-import { WorkflowStepExecutor } from './steps';
-import { StepExecutionError } from './steps/errors';
+import { WorkflowStepExecutor } from '../steps';
+import { ExecutionBindings, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
   readonly workflowName: string;
