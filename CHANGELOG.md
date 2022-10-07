@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.4...v0.1.5) (2022-10-07)
+
+
+### Miscellaneous
+
+* move file api calls to factories ([#20](https://github.com/rudderlabs/rudder-workflow-engine/issues/20)) ([1023e21](https://github.com/rudderlabs/rudder-workflow-engine/commit/1023e217df4ce4e62c8657e3aea47b0ce39df577))
+* remove workflows not required anymore ([#21](https://github.com/rudderlabs/rudder-workflow-engine/issues/21)) ([caa77b5](https://github.com/rudderlabs/rudder-workflow-engine/commit/caa77b5d682a883fb616424772b97131a37e76df))
+
 ## [0.1.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.3...v0.1.4) (2022-10-03)
 
 
