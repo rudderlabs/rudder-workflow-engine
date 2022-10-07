@@ -18,7 +18,7 @@ export class CustomInputStepExecutor extends ComposableStepExecutor {
 
   private async prepareInput(input: any, executionBindings: ExecutionBindings): Promise<any> {
     const allBindings = Object.assign({}, super.getBindings(), executionBindings);
-    return WorkflowUtils.jsonataPromise(this.inputTemplateExpression, input, allBindings);
+    return WorkflowUtils.evaluateJsonataExpr(this.inputTemplateExpression, input, allBindings);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

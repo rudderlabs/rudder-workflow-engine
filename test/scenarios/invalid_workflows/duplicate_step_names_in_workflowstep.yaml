@@ -1,0 +1,12 @@
+steps:
+  - name: step1
+    template: |
+      $info("something 1")
+  - name: workflowStep
+    steps:
+      - name: duplicateName2
+        template: |
+          $info("something 2")
+      - name: duplicateName2
+        template: |
+          $info("something otherthing 2")

@@ -49,10 +49,7 @@ describe('Scenarios tests', () => {
       sceanarios.forEach((scenario, index) => {
         it(`Scenario ${index}`, async () => {
           try {
-             const workflowEngine = await SceanarioUtils.createWorkflowEngine(
-                scenarioDir,
-                scenario,
-              );
+            const workflowEngine = await SceanarioUtils.createWorkflowEngine(scenarioDir, scenario);
             const result = await SceanarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {

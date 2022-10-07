@@ -38,7 +38,12 @@ export class WorkflowEngineFactory {
       }
 
       if (error instanceof StepCreationError) {
-        throw new WorkflowCreationError(error.message, workflow.name, error.stepName, error.childStepName);
+        throw new WorkflowCreationError(
+          error.message,
+          workflow.name,
+          error.stepName,
+          error.childStepName,
+        );
       }
 
       throw new WorkflowCreationError(error.message, workflow.name);

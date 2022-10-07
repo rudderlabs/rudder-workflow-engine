@@ -20,7 +20,13 @@ export class StepExecutionError extends StatusError {
   stepName: string;
   childStepName?: string;
   error?: Error;
-  constructor(message: string, status: number, stepName: string, childStepName?: string, error?: Error) {
+  constructor(
+    message: string,
+    status: number,
+    stepName: string,
+    childStepName?: string,
+    error?: Error,
+  ) {
     super(message, status);
     this.stepName = stepName;
     this.childStepName = childStepName;

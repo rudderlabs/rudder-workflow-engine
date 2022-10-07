@@ -21,7 +21,11 @@ export class TemplateStepExecutor extends BaseStepExecutor {
       executionBindings,
       this.getLoggerBindings(),
     );
-    const output = await WorkflowUtils.jsonataPromise(this.templateExpression, input, allBindings);
+    const output = await WorkflowUtils.evaluateJsonataExpr(
+      this.templateExpression,
+      input,
+      allBindings,
+    );
     return { output };
   }
 }

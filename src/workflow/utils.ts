@@ -44,7 +44,7 @@ export class WorkflowUtils {
       return await import(modulePath);
     } catch (error: any) {
       if (throwError) {
-        throw error
+        throw error;
       }
     }
   }
@@ -60,18 +60,15 @@ export class WorkflowUtils {
     const bindings = await Promise.all(
       bindingsPaths.map(async (bindingPath) => {
         return (
-          await this.getModuleExports(bindingPath) ||
-          await this.getModuleExports(path.join(rootPath, bindingPath), true)
+          (await this.getModuleExports(bindingPath)) ||
+          this.getModuleExports(path.join(rootPath, bindingPath), true)
         );
       }),
     );
     return Object.assign({}, ...bindings);
   }
 
-  static async extractBindings(
-    rootPath: string,
-    bindings?: Binding[],
-  ): Promise<Dictionary<any>> {
+  static async extractBindings(rootPath: string, bindings?: Binding[]): Promise<Dictionary<any>> {
     if (!bindings?.length) {
       return {};
     }
@@ -95,7 +92,7 @@ export class WorkflowUtils {
     return error.response?.status || error.status || 500;
   }
 
-  static jsonataPromise(
+  static evaluateJsonataExpr(
     expr: jsonata.Expression,
     data: any,
     bindings: Record<string, any>,

@@ -1,62 +1,62 @@
 [
-    {
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "+"
-        },
-        "output": 12
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "+"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "-"
-        },
-        "output": 8
+    "output": 12
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "-"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "*"
-        },
-        "output": 20
+    "output": 8
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "*"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "/"
-        },
-        "output": 5
+    "output": 20
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "/"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "/"
-        },
-        "output": 5
+    "output": 5
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "/"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 0,
-            "op": "/"
-        },
-        "error": {
-            "message": "division by zero is not allowed"
-        }
+    "output": 5
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "/"
     },
-    {
-        "input": {
-            "a": 10,
-            "b": 0,
-            "op": "^"
-        },
-        "error": {
-            "message": "unsupported operation"
-        }
+    "error": {
+      "message": "division by zero is not allowed"
     }
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "^"
+    },
+    "error": {
+      "message": "unsupported operation"
+    }
+  }
 ]

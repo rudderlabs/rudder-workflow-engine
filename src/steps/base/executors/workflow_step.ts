@@ -22,7 +22,7 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
       (stepExecutor) => stepExecutor.getStepName() === childStepName,
     );
     if (!stepExecutor) {
-      throw new Error(`${this.step.name}:${childStepName} is not found`);
+      throw new Error(`${this.getStepName()}:${childStepName} was not found`);
     }
     return stepExecutor;
   }
@@ -59,6 +59,6 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
         finalOutput = output;
       }
     }
-    return { outputs: executionBindings.outputs[this.step.name], output: finalOutput };
+    return { outputs: executionBindings.outputs[this.getStepName()], output: finalOutput };
   }
 }

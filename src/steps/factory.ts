@@ -22,8 +22,8 @@ export class StepExecutorFactory {
       stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
       return stepExecutor;
     } catch (error: any) {
-      if(error instanceof StepCreationError) {
-        throw error
+      if (error instanceof StepCreationError) {
+        throw error;
       }
       throw new StepCreationError(error.message, step.name);
     }

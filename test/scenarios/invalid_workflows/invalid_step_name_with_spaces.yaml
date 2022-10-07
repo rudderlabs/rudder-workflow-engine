@@ -1,0 +1,6 @@
+steps:
+  - name: workflowStep
+    steps:
+      - name: I have spaces in my name
+        template: |
+          $info("something 1")

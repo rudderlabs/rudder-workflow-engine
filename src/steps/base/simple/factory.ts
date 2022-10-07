@@ -29,7 +29,7 @@ export class SimpleStepExecutorFactory {
     }
 
     if (step.functionName) {
-      const fn = this.exatractFunction(step.functionName, bindings, step.name);
+      const fn = this.extractFunction(step.functionName, bindings, step.name);
       return new FunctionStepExecutor(fn, step, bindings, simpleStepLogger);
     }
 
@@ -54,13 +54,13 @@ export class SimpleStepExecutorFactory {
     );
   }
 
-  private static exatractFunction(
+  private static extractFunction(
     functionName: string,
     bindings: Dictionary<any>,
     stepName: string,
   ): StepFunction {
     if (typeof bindings[functionName] !== 'function') {
-      throw new StepCreationError('Invalid functionName', stepName);
+      throw new StepCreationError(`Invalid functionName: ${functionName}`, stepName);
     }
     return bindings[functionName] as StepFunction;
   }

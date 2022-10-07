@@ -4,10 +4,7 @@ import { WorkflowEngineFactory, WorkflowEngine, Executor } from '../../src';
 import { Sceanario } from '../types';
 
 export class SceanarioUtils {
-  static createWorkflowEngine(
-    scenarioDir: string,
-    sceanario: Sceanario,
-  ): Promise<WorkflowEngine> {
+  static createWorkflowEngine(scenarioDir: string, sceanario: Sceanario): Promise<WorkflowEngine> {
     const workflowPath = join(scenarioDir, sceanario.workflowPath || 'workflow.yaml');
     return WorkflowEngineFactory.createFromFilePath(
       workflowPath,
@@ -16,10 +13,7 @@ export class SceanarioUtils {
     );
   }
 
-  private static async execute(
-    executor: Executor,
-    input: any,
-  ): Promise<any> {
+  private static async execute(executor: Executor, input: any): Promise<any> {
     let result = await executor.execute(input);
     // JSONata creates immutable arrays and it cause issues
     // so doing the following makes the comparison successful.
@@ -29,7 +23,7 @@ export class SceanarioUtils {
 
   static executeScenario(workflowEngine: WorkflowEngine, sceanario: Sceanario) {
     let executor: Executor = workflowEngine;
-    if(sceanario.stepName) {
+    if (sceanario.stepName) {
       executor = workflowEngine.getStepExecutor(sceanario.stepName, sceanario.childStepName);
     }
     return this.execute(executor, sceanario.input);
