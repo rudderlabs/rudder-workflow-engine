@@ -1,19 +1,19 @@
 import { Logger } from 'pino';
-import { Dictionary } from '../types';
+import { Dictionary } from '../common/types';
 import { ComposableExecutorFactory } from './composed';
 import { Step, StepExecutor } from './types';
 import { BaseStepExecutorFactory } from './base/factory';
-import { StepCreationError } from '../errors';
+import { StepCreationError } from './errors';
 
 export class StepExecutorFactory {
-  static create(
+  static async create(
     step: Step,
     rootPath: string,
     bindings: Dictionary<any>,
     parentLogger: Logger,
-  ): StepExecutor {
+  ): Promise<StepExecutor> {
     try {
-      let stepExecutor: StepExecutor = BaseStepExecutorFactory.create(
+      let stepExecutor: StepExecutor = await BaseStepExecutorFactory.create(
         step,
         rootPath,
         bindings,
@@ -22,6 +22,9 @@ export class StepExecutorFactory {
       stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
       return stepExecutor;
     } catch (error: any) {
+      if (error instanceof StepCreationError) {
+        throw error;
+      }
       throw new StepCreationError(error.message, step.name);
     }
   }

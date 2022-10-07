@@ -2,42 +2,52 @@
   {
     "workflowPath": "blank_externalworkflow_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
       "stepName": "invalidExternalWorkflowStep"
     }
   },
   {
     "workflowPath": "blank_function_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
       "stepName": "invalidFunctionStep"
     }
   },
   {
     "workflowPath": "blank_template_path_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
       "stepName": "invalidTemplateStep"
     }
   },
   {
     "workflowPath": "blank_template_step.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
       "stepName": "invalidTemplateStep"
     }
   },
   {
-    "workflowPath": "blank_workflow_path_step.yaml",
+    "workflowPath": "blank_workflow_step_path.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
+      "workflowName": "blank_workflow_step_path",
       "stepName": "invalidWorkflowStep"
     }
   },
   {
-    "workflowPath": "empty_workflow.yaml",
+    "workflowPath": "duplicate_step_names.yaml",
     "error": {
-      "message": "Workflow should contain at least one step"
+      "workflowName": "duplicate_step_names",
+      "message": "found duplicate step names"
+    }
+  },
+  {
+    "workflowPath": "duplicate_step_names_in_workflowstep.yaml",
+    "error": {
+      "workflowName": "duplicate_step_names_in_workflowstep",
+      "message": "found duplicate step names",
+      "stepName": "workflowStep"
     }
   },
   {
@@ -47,10 +57,15 @@
     }
   },
   {
-    "workflowPath": "invalid_workflowstep.yaml",
+    "workflowPath": "empty_workflow.yaml",
     "error": {
-      "message": "Invalid step",
-      "stepName": "invalidWorkflowStep"
+      "message": "Workflow should contain at least one step"
+    }
+  },
+  {
+    "workflowPath": "invalid_binding.yaml",
+    "error": {
+      "message": "Cannot find module"
     }
   },
   {
@@ -61,9 +76,35 @@
     }
   },
   {
+    "workflowPath": "invalid_step_in_workflowstep.yaml",
+    "error": {
+      "message": "Invalid step configuration",
+      "workflowName": "invalid_step_in_workflowstep",
+      "stepName": "invalidWorkflowStep",
+      "childStepName": "invalidSimpleStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_name_with_spaces.yaml",
+    "error": {
+      "message": "step name is invalid",
+      "workflowName": "invalid_step_name_with_spaces",
+      "stepName": "workflowStep",
+      "childStepName": "I have spaces in my name"
+    }
+  },
+  {
+    "workflowPath": "invalid_step_name_with_special_chars.yaml",
+    "error": {
+      "message": "step name is invalid",
+      "workflowName": "invalid_step_name_with_special_chars",
+      "stepName": "Step$"
+    }
+  },
+  {
     "workflowPath": "invalid_step_nobody.yaml",
     "error": {
-      "message": "Invalid step",
+      "message": "Invalid step configuration",
       "stepName": "invalidStep"
     }
   },
@@ -89,16 +130,34 @@
     }
   },
   {
-    "workflowPath": "invalid_binding.yaml",
-    "error": {
-      "code": "MODULE_NOT_FOUND"
-    }
-  },
-  {
     "workflowPath": "invalid_usage_oncomplete.yaml",
     "error": {
       "message": "\"onComplete = return\" should be used in a step with condition",
       "stepName": "InvalidOnComplete"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflowstep.yaml",
+    "error": {
+      "message": "Invalid step configuration",
+      "stepName": "invalidWorkflowStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflowstep_from_path.yaml",
+    "error": {
+      "message": "Invalid workflow step configuration",
+      "workflowName": "invalid_workflowstep_from_path",
+      "stepName": "invalidWorkflowStep"
+    }
+  },
+  {
+    "workflowPath": "workflow_step_in_workflow_step.yaml",
+    "error": {
+      "message": "Invalid step configuration",
+      "workflowName": "workflow_step_in_workflow_step",
+      "stepName": "invalidWorkflowStep",
+      "childStepName": "invalidChildStep"
     }
   }
 ]

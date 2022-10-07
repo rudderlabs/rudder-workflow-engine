@@ -1,0 +1,4 @@
+steps:
+  - name: invalidWorkflowStep
+    steps:
+      - name: invalidSimpleStep

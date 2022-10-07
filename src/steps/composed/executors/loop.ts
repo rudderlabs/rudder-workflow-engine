@@ -1,8 +1,8 @@
 import { StepExecutionError } from '../../errors';
-import { ExecutionBindings } from '../../types';
-import { ComposableStepExecutor } from './composable_executor';
-import { StepExecutor, StepOutput } from '../types';
-import { WorkflowUtils } from '../../utils';
+import { ExecutionBindings } from '../../../workflow/types';
+import { ComposableStepExecutor } from './composable';
+import { StepExecutor, StepOutput } from '../../types';
+import { WorkflowUtils } from '../../../workflow/utils';
 
 export class LoopStepExecutor extends ComposableStepExecutor {
   constructor(nextExecutor: StepExecutor) {

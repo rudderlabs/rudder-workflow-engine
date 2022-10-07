@@ -1,21 +1,36 @@
+import { readFileSync } from 'fs';
 import { join } from 'path';
-import { WorkflowEngine, WorkflowUtils, WorkflowOutput } from '../../src';
+import { WorkflowEngineFactory, WorkflowEngine, Executor } from '../../src';
 import { Sceanario } from '../types';
 
-export async function executeScenario(
-  scenarioDir,
-  test: Sceanario,
-  index: number,
-): Promise<WorkflowOutput> {
-  const workflowPath = join(scenarioDir, test.workflowPath || 'workflow.yaml');
-  const workflowEngine = new WorkflowEngine(
-    WorkflowUtils.createWorkflowFromFilePath(workflowPath),
-    scenarioDir,
-    ...(test.bindingsPaths || []),
-  );
-  let result = await workflowEngine.execute(test.input);
-  // JSONata creates immutable arrays and it cause issues
-  // so doing the following makes the comparison successful.
-  result = JSON.parse(JSON.stringify(result));
-  return { output: result.output };
+export class SceanarioUtils {
+  static createWorkflowEngine(scenarioDir: string, sceanario: Sceanario): Promise<WorkflowEngine> {
+    const workflowPath = join(scenarioDir, sceanario.workflowPath || 'workflow.yaml');
+    return WorkflowEngineFactory.createFromFilePath(
+      workflowPath,
+      scenarioDir,
+      sceanario.bindingsPaths,
+    );
+  }
+
+  private static async execute(executor: Executor, input: any): Promise<any> {
+    let result = await executor.execute(input);
+    // JSONata creates immutable arrays and it cause issues
+    // so doing the following makes the comparison successful.
+    result = JSON.parse(JSON.stringify(result));
+    return { output: result.output };
+  }
+
+  static executeScenario(workflowEngine: WorkflowEngine, sceanario: Sceanario) {
+    let executor: Executor = workflowEngine;
+    if (sceanario.stepName) {
+      executor = workflowEngine.getStepExecutor(sceanario.stepName, sceanario.childStepName);
+    }
+    return this.execute(executor, sceanario.input);
+  }
+
+  static extractScenarios(scenarioDir: string): Sceanario[] {
+    const scenariosJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
+    return JSON.parse(scenariosJSON) as Sceanario[];
+  }
 }

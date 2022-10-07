@@ -1,7 +1,7 @@
 import jsonata from 'jsonata';
-import { ExecutionBindings } from '../../types';
-import { ComposableStepExecutor } from './composable_executor';
-import { StepExecutor, StepOutput } from '../types';
+import { ExecutionBindings } from '../../../workflow/types';
+import { ComposableStepExecutor } from './composable';
+import { StepExecutor, StepOutput } from '../../types';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
   private readonly conditionExpression: jsonata.Expression;

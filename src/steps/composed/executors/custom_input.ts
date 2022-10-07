@@ -1,8 +1,8 @@
 import jsonata from 'jsonata';
-import { WorkflowUtils } from '../../utils';
-import { ExecutionBindings } from '../../types';
-import { ComposableStepExecutor } from './composable_executor';
-import { StepExecutor, StepOutput } from '../types';
+import { WorkflowUtils } from '../../../workflow/utils';
+import { ExecutionBindings } from '../../../workflow/types';
+import { ComposableStepExecutor } from './composable';
+import { StepExecutor, StepOutput } from '../../types';
 
 /**
  * CustomInputStepExecutor customizes the input the
@@ -18,7 +18,7 @@ export class CustomInputStepExecutor extends ComposableStepExecutor {
 
   private async prepareInput(input: any, executionBindings: ExecutionBindings): Promise<any> {
     const allBindings = Object.assign({}, super.getBindings(), executionBindings);
-    return WorkflowUtils.jsonataPromise(this.inputTemplateExpression, input, allBindings);
+    return WorkflowUtils.evaluateJsonataExpr(this.inputTemplateExpression, input, allBindings);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

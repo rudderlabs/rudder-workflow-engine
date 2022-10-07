@@ -1,23 +1,16 @@
 import { Logger } from 'pino';
-import { WorkflowUtils } from '../../utils';
-import { Dictionary, ExecutionBindings } from '../../types';
-import { Step, StepExecutor, StepOutput, StepType } from '../types';
-
+import { ExecutionBindings } from '../../../workflow/types';
+import { Dictionary } from '../../../common/types';
+import { Step, StepExecutor, StepOutput } from '../../types';
 export abstract class BaseStepExecutor implements StepExecutor {
   protected readonly step: Step;
   private logger: Logger;
-  protected readonly rootPath: string;
   protected readonly bindings: Dictionary<any>;
 
-  constructor(step: Step, rootPath: string, bindings: Dictionary<any>, logger: Logger) {
-    this.rootPath = rootPath;
+  constructor(step: Step, bindings: Dictionary<any>, logger: Logger) {
     this.step = step;
     this.logger = this.prepareLogger(logger);
     this.bindings = bindings;
-  }
-
-  getStepType(): StepType {
-    return this.step.type || WorkflowUtils.getStepType(this.step);
   }
 
   getBindings(): Dictionary<any> {
@@ -49,12 +42,12 @@ export abstract class BaseStepExecutor implements StepExecutor {
     return this.step.name;
   }
 
-  setLogger(logger?: Logger) {
-    this.logger = logger || this.logger;
-  }
-
   getLogger(): Logger {
     return this.logger;
+  }
+
+  getBaseExecutor(): BaseStepExecutor {
+    return this;
   }
 
   abstract execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput>;
