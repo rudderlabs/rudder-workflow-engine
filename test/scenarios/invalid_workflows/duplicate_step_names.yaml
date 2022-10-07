@@ -1,0 +1,13 @@
+steps:
+  - name: duplicateName1
+    template: |
+      $info("something 1")
+  - name: duplicateName1
+    template: |
+      $info("something otherthing 1")
+  - name: duplicateName2
+    template: |
+      $info("something 2")
+  - name: duplicateName2
+    template: |
+      $info("something otherthing 2")

@@ -1,41 +1,72 @@
 [
-    {
-        "input": {
-            "assertionPassed": false
-        },
-        "error": {
-            "message": "assertion failed",
-            "status": 400
-        }
+  {
+    "input": {
+      "throwAssertionError": true,
+      "assertionPassed": false
     },
-    {
-        "input": {
-            "error": "some 4xx error",
-            "status": 400
-        },
-        "error": {
-            "message": "some 4xx error",
-            "status": 400
-        },
-        "errorClass": "StatusError"
+    "error": {
+      "message": "assertion failed",
+      "status": 400,
+      "stepName": "assertError"
     },
-    {
-        "input": {
-            "error": "some 5xx error",
-            "status": 500
-        },
-        "error": {
-            "message": "some 5xx error",
-            "status": 500
-        }
+    "errorClass": "StatusError"
+  },
+  {
+    "input": {
+      "throwTemplateError": true,
+      "error": "some 4xx error",
+      "status": 400
     },
-    {
-        "input": {
-            "error": "some unknown error"
-        },
-        "error": {
-            "message": "some unknown error",
-            "status": 500
-        }
-    }
+    "error": {
+      "message": "some 4xx error",
+      "status": 400,
+      "workflowName": "workflow",
+      "stepName": "workflowErrors",
+      "childStepName": "templateError"
+    },
+    "errorClass": "StatusError"
+  },
+  {
+    "input": {
+      "throwFunctionError": true,
+      "error": "some 4xx error",
+      "status": 400
+    },
+    "error": {
+      "message": "some 4xx error",
+      "status": 400,
+      "workflowName": "workflow",
+      "stepName": "workflowErrors",
+      "childStepName": "functionError"
+    },
+    "errorClass": "BadFunctionError"
+  },
+  {
+    "input": {
+      "throwFunctionError": true,
+      "error": "some unknown error"
+    },
+    "error": {
+      "message": "some unknown error",
+      "status": 500,
+      "workflowName": "workflow",
+      "stepName": "workflowErrors",
+      "childStepName": "functionError"
+    },
+    "errorClass": "BadFunctionError"
+  },
+  {
+    "input": {
+      "throwExternalWorkflowError": true,
+      "error": "some unknown error"
+    },
+    "error": {
+      "message": "some unknown error",
+      "status": 500,
+      "workflowName": "workflow",
+      "stepName": "workflowErrors",
+      "childStepName": "externalWorkflowError"
+    },
+    "errorClass": "WorkflowExecutionError"
+  }
 ]

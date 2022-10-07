@@ -1,0 +1,8 @@
+steps:
+  - name: invalidWorkflowStep
+    steps:
+      - name: invalidChildStep
+        steps:
+          - name: someStep
+            template: |
+              ()

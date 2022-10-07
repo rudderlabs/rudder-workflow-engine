@@ -1,16 +1,14 @@
 import { Logger } from 'pino';
-import { StatusError } from 'src/errors';
-import { Binding, Dictionary, ExecutionBindings } from '../types';
+import { ExecutionBindings, Binding } from '../workflow/types';
+import { Dictionary, Executor } from '../common/types';
+import { BaseStepExecutor } from './base';
+import { StatusError } from './errors';
 
-export interface StepExecutor {
+export interface StepExecutor extends Executor {
   /**
    * Returns the name of the step which executor is operating
    */
   getStepName(): string;
-  /**
-   * Returns the type of the step which executor is operating
-   */
-  getStepType(): StepType;
   /**
    * Returns the step which executor is operating
    */
@@ -23,6 +21,11 @@ export interface StepExecutor {
    * Returns the step's static bindings
    */
   getBindings(): Dictionary<any>;
+
+  /**
+   * Return the base step executor
+   */
+  getBaseExecutor(): BaseStepExecutor;
   /**
    * Executes the step
    */
@@ -52,6 +55,7 @@ export type ExternalWorkflow = {
   path: string;
   // root path for resolving dependencies
   rootPath?: string;
+  bindingPaths?: string[];
 };
 
 export type StepCommon = {

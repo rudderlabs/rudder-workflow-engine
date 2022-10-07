@@ -1,6 +1,6 @@
 export const ops = {
-    plus: "+",
-    minus: "-",
-    multiply: "*",
-    divide: "/"
-}
+  plus: '+',
+  minus: '-',
+  multiply: '*',
+  divide: '/',
+};

@@ -1,8 +1,20 @@
+bindings:
+  - name: badFunction
 steps:
   - name: assertError
-    condition: $exists(assertionPassed)
+    condition: throwAssertionError
     template: |
       $assert(assertionPassed, "assertion failed")
-  - name: throwError
-    template: |
-      $doThrow(error, status)
+  - name: workflowErrors
+    steps:
+      - name: templateError
+        condition: throwTemplateError
+        template: |
+          $doThrow(error, status)
+      - name: functionError
+        condition: throwFunctionError
+        functionName: badFunction
+      - name: externalWorkflowError
+        condition: throwExternalWorkflowError
+        externalWorkflow:
+          path: bad_workflow.yaml

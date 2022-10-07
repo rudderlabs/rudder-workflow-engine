@@ -1,69 +1,80 @@
 [
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "+"
-        },
-        "output": 12
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "+"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "-"
-        },
-        "output": 8
+    "output": 12
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "-"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "*"
-        },
-        "output": 20
+    "output": 8
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "*"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "/"
-        },
-        "output": 5
+    "output": 20
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "/"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 2,
-            "op": "/"
-        },
-        "output": 5
+    "output": 5
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "/"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 0,
-            "op": "/"
-        },
-        "error":  {
-            "message": "division by zero is not allowed"
-        }
+    "output": 5
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "/"
     },
-    {
-        "bindingsPaths": ["functions", "ops"],
-        "input": {
-            "a": 10,
-            "b": 0,
-            "op": "^"
-        },
-        "error": {
-            "message": "unsupported operation"
-        }
+    "error": {
+      "message": "division by zero is not allowed"
     }
+  },
+  {
+    "bindingsPaths": ["functions", "ops"],
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "^"
+    },
+    "error": {
+      "message": "unsupported operation"
+    }
+  },
+  {
+    "bindingsPaths": ["invalid_path"],
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "+"
+    },
+    "error": {
+      "message": "Cannot find module"
+    }
+  }
 ]

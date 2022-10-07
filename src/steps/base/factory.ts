@@ -1,11 +1,12 @@
 import { Logger } from 'pino';
-import { StepCreationError, WorkflowCreationError } from '../../errors';
-import { Dictionary } from '../../types';
-import { WorkflowUtils } from '../../utils';
+import { StepCreationError } from '../errors';
+import { Dictionary } from '../../common/types';
 import { Step, StepType, WorkflowStep } from '../types';
-import { BaseStepExecutor } from './base_executor';
+import { BaseStepExecutor } from './executors/base';
 import { SimpleStepExecutorFactory } from './simple';
-import { WorkflowStepExecutor } from './workflow_step';
+import { WorkflowStepExecutor } from './executors/workflow_step';
+import { WorkflowUtils } from '../../workflow/utils';
+import { BaseStepUtils } from './utils';
 
 export class BaseStepExecutorFactory {
   static create(
@@ -13,14 +14,44 @@ export class BaseStepExecutorFactory {
     rootPath: string,
     bindings: Dictionary<any>,
     parentLogger: Logger,
-  ): BaseStepExecutor {
-    switch (step.type || WorkflowUtils.getStepType(step)) {
-      case StepType.Simple:
-        return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
-      case StepType.Workflow:
-        return new WorkflowStepExecutor(step as WorkflowStep, rootPath, bindings, parentLogger);
-      default:
-        throw new StepCreationError('Invalid step type', step.name);
+  ): Promise<BaseStepExecutor> {
+    if (step.type == StepType.Simple) {
+      return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
+    } else {
+      return this.createWorkflowStepExecutor(step, rootPath, bindings, parentLogger);
+    }
+  }
+
+  static async createWorkflowStepExecutor(
+    step: WorkflowStep,
+    rootPath: string,
+    workflowBindings: Dictionary<any>,
+    logger: Logger,
+  ): Promise<WorkflowStepExecutor> {
+    try {
+      let workflowStepLogger = logger.child({ workflow: step.name });
+      let newStep = await BaseStepUtils.prepareWorkflowStep(step, rootPath);
+      let workflowStepBindings = Object.assign(
+        {},
+        workflowBindings,
+        await WorkflowUtils.extractBindings(rootPath, newStep.bindings),
+      );
+
+      let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(
+        newStep,
+        rootPath,
+        workflowStepBindings,
+        workflowStepLogger,
+      );
+
+      return new WorkflowStepExecutor(
+        simpleStepExecutors,
+        step,
+        workflowStepBindings,
+        workflowStepLogger,
+      );
+    } catch (error: any) {
+      throw new StepCreationError(error.message, step.name, error.stepName);
     }
   }
 }
