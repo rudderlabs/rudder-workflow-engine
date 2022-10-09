@@ -16,6 +16,11 @@ export function getByPaths(obj: any, paths: string | string[]): any {
   pathStr = pathStr.replace(/\.0/g, '[0]');
   return jsonata(pathStr).evaluate(obj);
 }
+
+export function toArray(obj: any): any[] {
+  return Array.isArray(obj) ? obj : [obj];
+}
+
 export function doReturn(obj?: any) {
   throw new ReturnResultError(obj);
 }

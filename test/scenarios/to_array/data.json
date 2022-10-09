@@ -1,0 +1,14 @@
+[
+  {
+    "input": {
+      "a": "foo",
+      "b": ["foo"],
+      "c": ["foo", "bar"]
+    },
+    "output": {
+      "a": ["foo"],
+      "b": ["foo"],
+      "c": ["foo", "bar"]
+    }
+  }
+]

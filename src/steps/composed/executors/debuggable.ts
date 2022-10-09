@@ -13,6 +13,8 @@ export class DebuggableStepExecutor extends ComposableStepExecutor {
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     this.getLogger().debug({ input });
+    this.getLogger().debug({ bindings: this.getBindings() });
+    this.getLogger().debug(executionBindings);
     const output = await super.execute(input, executionBindings);
     this.getLogger().debug({ output });
     return output;

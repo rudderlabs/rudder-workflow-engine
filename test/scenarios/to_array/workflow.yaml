@@ -1,0 +1,8 @@
+steps:
+  - name: returnArray
+    template: |
+      {
+        "a": $toArray(a),
+        "b": $toArray(b),
+        "c": $toArray(c)
+      }
