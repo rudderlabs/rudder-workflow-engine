@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.5...v0.1.6) (2022-10-10)
+
+
+### Features
+
+* add toArray binding ([#23](https://github.com/rudderlabs/rudder-workflow-engine/issues/23)) ([b3040af](https://github.com/rudderlabs/rudder-workflow-engine/commit/b3040af258c95ca074ed917843f3cdd4f2b000f9))
+
 ## [0.1.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.4...v0.1.5) (2022-10-07)
 
 
