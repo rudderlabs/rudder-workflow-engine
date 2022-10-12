@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.6...v0.2.0) (2022-10-12)
+
+
+### Bug Fixes
+
+* jsonata output clean up ([#26](https://github.com/rudderlabs/rudder-workflow-engine/issues/26)) ([d684b72](https://github.com/rudderlabs/rudder-workflow-engine/commit/d684b72ffa14e1cdb04fe241d31839fa68d8a9a3))
+
+
+### Miscellaneous
+
+* release v0.2.0 ([c0de6c7](https://github.com/rudderlabs/rudder-workflow-engine/commit/c0de6c7cc494b86cd46f7dbb1cf1824ca439c68a))
+
 ## [0.1.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.5...v0.1.6) (2022-10-10)
 
 
