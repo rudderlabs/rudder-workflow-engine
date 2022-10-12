@@ -92,6 +92,22 @@ export class WorkflowUtils {
     return error.response?.status || error.status || 500;
   }
 
+  /**
+   * JSONata adds custom properties to arrays for internal processing
+   * hence it fails the comparison so we need to cleanup.
+   * Reference: https://github.com/jsonata-js/jsonata/issues/296
+   */
+  private static cleanUpArrays(obj: any) {
+    if (Array.isArray(obj)) {
+      obj = obj.map(WorkflowUtils.cleanUpArrays);
+    } else if (obj instanceof Object) {
+      Object.keys(obj).forEach((key) => {
+        obj[key] = WorkflowUtils.cleanUpArrays(obj[key]);
+      });
+    }
+    return obj;
+  }
+
   static evaluateJsonataExpr(
     expr: jsonata.Expression,
     data: any,
@@ -110,6 +126,6 @@ export class WorkflowUtils {
         }
         resolve(response);
       });
-    });
+    }).then(WorkflowUtils.cleanUpArrays);
   }
 }
