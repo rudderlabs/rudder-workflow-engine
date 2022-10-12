@@ -1,6 +1,10 @@
 import pino from 'pino';
 import pinoCaller from 'pino-caller';
 
+/**
+ * Returns the pino compatible log level
+ * @returns pino log level
+ */
 function getLogLevel(): string {
   switch (process.env.LOG_LEVEL) {
     case 'debug':

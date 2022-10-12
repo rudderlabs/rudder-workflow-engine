@@ -18,7 +18,7 @@ describe('Logger', () => {
       custom: 'info',
     };
     Object.entries(testCases).forEach(([inputLevel, expectedLevel]) => {
-      it(`getLogger inputLevel:${inputLevel}`, () => {
+      it(`Test for level ${inputLevel}`, () => {
         process.env.LOG_LEVEL = inputLevel;
         expect(getLogger('test').level).toEqual(expectedLevel);
       });
