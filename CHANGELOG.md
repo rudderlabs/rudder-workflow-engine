@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.0...v0.2.1) (2022-10-12)
+
+
+### Features
+
+* **logger:** add getLogLevel function ([#27](https://github.com/rudderlabs/rudder-workflow-engine/issues/27)) ([27245a6](https://github.com/rudderlabs/rudder-workflow-engine/commit/27245a6d231a0c1d3e6530e01415a2c808765ba2))
+
 ## [0.2.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.1.6...v0.2.0) (2022-10-12)
 
 
