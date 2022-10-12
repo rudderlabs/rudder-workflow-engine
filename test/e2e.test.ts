@@ -29,8 +29,13 @@ function testLogger(logger: LogCounts) {
   expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(errorCount);
 }
 
-function getErrorMatcher(error: SceanarioError = {}) {
-  let errorMatcher = error as any;
+function getErrorMatcher(error?: SceanarioError) {
+  if (!error) {
+    // Ideally shouldn't reach here.
+    // Sending default error so that test case fails.
+    return { message: 'should fail' };
+  }
+  let errorMatcher = error;
   if (error.message) {
     errorMatcher.message = expect.stringContaining(error.message);
   }
@@ -53,7 +58,6 @@ describe('Scenarios tests', () => {
             const result = await SceanarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
-            expect(scenario.error).toBeDefined();
             expect(error).toMatchObject(getErrorMatcher(scenario.error));
             if (scenario.errorClass) {
               expect(error.error?.constructor.name).toEqual(scenario.errorClass);
