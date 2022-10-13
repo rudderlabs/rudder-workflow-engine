@@ -1,5 +1,20 @@
 jest.mock('pino');
 const Pino = require('pino');
+import { readdirSync } from 'fs';
+import { join } from 'path';
+import { Command } from 'commander';
+import { SceanarioUtils } from './utils';
+import { LogCounts, SceanarioError } from './types';
+
+const command = new Command();
+command.allowUnknownOption().option('--scenarios <string>', 'Enter Scenario Names', 'all').parse();
+
+const opts = command.opts();
+let scenarios = opts.scenarios.split(/[, ]/);
+
+if (scenarios[0] === 'all') {
+  scenarios = readdirSync(join(__dirname, 'scenarios'));
+}
 const fakeLogger = {
   debug: jest.fn(),
   info: jest.fn(),
@@ -9,11 +24,6 @@ const fakeLogger = {
   child: () => fakeLogger,
 };
 Pino.mockImplementation(() => fakeLogger);
-
-import { readdirSync } from 'fs';
-import { join } from 'path';
-import { SceanarioUtils } from './utils';
-import { LogCounts, SceanarioError } from './types';
 
 function testLogger(logger: LogCounts) {
   const debugCount = logger.debug || 0;
@@ -43,10 +53,6 @@ function getErrorMatcher(error?: SceanarioError) {
 }
 
 describe('Scenarios tests', () => {
-  let scenarios = (process.env.scenarios || 'all').split(/, /);
-  if (scenarios[0] === 'all') {
-    scenarios = readdirSync(join(__dirname, 'scenarios'));
-  }
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);

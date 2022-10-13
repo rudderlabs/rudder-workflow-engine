@@ -10,10 +10,7 @@
       "request": "launch",
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
       "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "scenario": "${input:scenario}",
-        "index": "${input:index}"
-      },
+      "args": ["--scenario=${input:scenario}", "--index=${input:index}"],
       "type": "node"
     },
     {
@@ -35,10 +32,7 @@
       "request": "launch",
       "name": "Jest Scenarios",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "env": {
-        "scenarios": "${input:scenarios}"
-      },
-      "args": ["test/e2e.test.ts", "--config", "jest.config.ts"],
+      "args": ["test/e2e.test.ts", "--config", "jest.config.ts", "--scenarios=${input:scenarios}"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "windows": {
