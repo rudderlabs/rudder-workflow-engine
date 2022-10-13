@@ -34,6 +34,17 @@ TODO
 
 TODO
 
+## Testing
+
+#### Test Scenarios using Jest
+* `npm run jest:scenarios --  --scenarios=<comma separate scenarios>`
+* Example: `npm run jest:scenarios --  --scenarios=basic_workflow,to_array`
+
+#### Mananully Test Scenario
+* `npm run test:scenario -- -s <scenario_folder>  -i <test_case_index_from_data.json>`
+* Example: `npm run test:scenario -- -s outputs -i 1`
+* Note: It just run the test case and produces results but won't run any validations of the results.
+
 ## Contribute
 
 We would love to see you contribute to RudderStack. Get more information on how to contribute [**here**](CONTRIBUTING.md).

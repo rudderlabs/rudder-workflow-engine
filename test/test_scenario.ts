@@ -1,11 +1,21 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import { Command } from 'commander';
 import { Sceanario } from './types';
 import { SceanarioUtils } from './utils';
-const scenario = process.env.scenario || process.argv[2] || 'basic_workflow';
-const index = +(process.env.index || process.argv[3] || 0);
 
-console.log(`Executing scenario: ${scenario} and sceanario: ${index}`);
+const command = new Command();
+command
+  .allowUnknownOption()
+  .option('-s, --scenario <string>', 'Enter Scenario Name')
+  .option('-i, --index <number>', 'Enter Test case index')
+  .parse();
+
+const opts = command.opts();
+const scenario = opts.scenario || process.argv[2] || 'basic_workflow';
+const index = +(opts.index || process.argv[3] || 0);
+
+console.log(`Executing scenario: ${scenario} and test: ${index}`);
 
 async function createAndExecuteWorkFlow() {
   try {
