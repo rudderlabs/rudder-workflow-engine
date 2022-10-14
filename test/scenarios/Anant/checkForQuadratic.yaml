@@ -1,0 +1,5 @@
+steps:
+- name: checkA
+  condition: a=0
+  template: |
+      $doThrow("Not a Quadratic Equation.")

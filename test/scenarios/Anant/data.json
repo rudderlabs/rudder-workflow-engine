@@ -1,0 +1,27 @@
+[
+    {
+        "workflowPath": "workflow.yaml",
+        "input": {
+            "a": "1",
+            "b": "9",
+            "c": "1"
+        },
+        "output": [
+            8.887482193696062,
+            0.1125178063039387
+        ]
+    },
+    {
+        "workflowPath": "workflow.yaml",
+        "input": {
+            "a": "1",
+            "b": "1",
+            "c": "1"
+        },
+        "error": {
+            "status": 400,
+            "stepName": "checkIfRootsExists",
+            "message": "Roots don't exist"
+        }
+    }
+]

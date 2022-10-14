@@ -1,37 +1,38 @@
 bindings:
   - path: ./functions
 steps:
-  # convert and assign values use video and input format 
-  # intiate with input case to be having abc 
-  # enhance it by converting the array into abc
   - name: convertToInt
-    loopOverInput: true # use loop over input folder
     template: |
-      (
-      )
-  # done
-  - name: check A
-    condition: a!=0
+      {"a": $number(a),
+      "b": $number(b),
+      "c": $number(c)}
+
+  - name: checkA
+    externalWorkflow:
+      path: ./checkForQuadratic.yaml
+
+  - name: Cald
     template: |
-      $dothrow("Not a Quadratic Equation.")
-  # done
-  - name: Cal d
+      $setContext("d",$cald($outputs.convertToInt.a,$outputs.convertToInt.b,$outputs.convertToInt.c))
+  
+  - name: d
     template: |
-      $setContext("d",$cald(a,b,c,d))
-  # done
-  - name: check if roots exists
+      $log($context.d)
+  - name: checkIfRootsExists
     template: |
-      $assert( d>=0, "Roots don't exist.")
-  # done
-  - name: Sqrt of d
+      $assert( $context.d>=0, "Roots don't exist.")
+  - name: Sqrtd
     template: |
       $setContext("D",$sqrt($context.d))
-  # done
-  - name: Cal first root Numerator
+  - name: CalFirstRootNumerator
     template: |
-      $setcontext("N1",$add(b,$context.D))
-  - name: Cal Second root Numerator
+      $setContext("N1",$add($outputs.convertToInt.b,$context.D))
+  - name: CalSecondRootNumerator
     template: |
-      $setcontext("N2",$subtract(b,$context.D))
-  # pass both roots to array use to array folder
-  - name: Cal roots to array
+      $setContext("N2",$subtract($outputs.convertToInt.b,$context.D))
+  - name: D
+    template: |
+      $log($add($outputs.convertToInt.b,$context.D))
+  - name: Calrootstoarray
+    template: |
+      [$divide($context.N1,$multiply(2,$outputs.convertToInt.a)), $divide($context.N2,$multiply(2,$outputs.convertToInt.a))]
