@@ -15,9 +15,6 @@ export class SceanarioUtils {
 
   private static async execute(executor: Executor, input: any): Promise<any> {
     let result = await executor.execute(input);
-    // JSONata creates immutable arrays and it cause issues
-    // so doing the following makes the comparison successful.
-    result = JSON.parse(JSON.stringify(result));
     return { output: result.output };
   }
 

@@ -1,5 +1,20 @@
 jest.mock('pino');
 const Pino = require('pino');
+import { readdirSync } from 'fs';
+import { join } from 'path';
+import { Command } from 'commander';
+import { SceanarioUtils } from './utils';
+import { LogCounts, SceanarioError } from './types';
+
+const command = new Command();
+command.allowUnknownOption().option('--scenarios <string>', 'Enter Scenario Names', 'all').parse();
+
+const opts = command.opts();
+let scenarios = opts.scenarios.split(/[, ]/);
+
+if (scenarios[0] === 'all') {
+  scenarios = readdirSync(join(__dirname, 'scenarios'));
+}
 const fakeLogger = {
   debug: jest.fn(),
   info: jest.fn(),
@@ -9,11 +24,6 @@ const fakeLogger = {
   child: () => fakeLogger,
 };
 Pino.mockImplementation(() => fakeLogger);
-
-import { readdirSync } from 'fs';
-import { join } from 'path';
-import { SceanarioUtils } from './utils';
-import { LogCounts, SceanarioError } from './types';
 
 function testLogger(logger: LogCounts) {
   const debugCount = logger.debug || 0;
@@ -29,8 +39,13 @@ function testLogger(logger: LogCounts) {
   expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(errorCount);
 }
 
-function getErrorMatcher(error: SceanarioError = {}) {
-  let errorMatcher = error as any;
+function getErrorMatcher(error?: SceanarioError) {
+  if (!error) {
+    // Ideally shouldn't reach here.
+    // Sending default error so that test case fails.
+    return { message: 'should fail' };
+  }
+  let errorMatcher = error;
   if (error.message) {
     errorMatcher.message = expect.stringContaining(error.message);
   }
@@ -38,10 +53,6 @@ function getErrorMatcher(error: SceanarioError = {}) {
 }
 
 describe('Scenarios tests', () => {
-  let scenarios = (process.env.scenarios || 'all').split(/, /);
-  if (scenarios[0] === 'all') {
-    scenarios = readdirSync(join(__dirname, 'scenarios'));
-  }
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, 'scenarios', scenario);
@@ -53,7 +64,6 @@ describe('Scenarios tests', () => {
             const result = await SceanarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
-            expect(scenario.error).toBeDefined();
             expect(error).toMatchObject(getErrorMatcher(scenario.error));
             if (scenario.errorClass) {
               expect(error.error?.constructor.name).toEqual(scenario.errorClass);
