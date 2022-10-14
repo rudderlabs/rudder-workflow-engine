@@ -1,0 +1,8 @@
+steps:
+  - name: odd
+    condition: $count(Numbers)%2
+    template: |
+      "Number of elements in the array is odd and it is " & $count(Numbers)
+  - name: even
+    template: |
+      "Number of elements in the array is even and it is " & $count(Numbers)
