@@ -1,0 +1,12 @@
+steps:
+  - name: validateOp
+    template: |
+      $assert(op in ["+", "-", "*", "/", "++", "%"], "unsupported operation")
+  - name: validateDivision
+    condition: op = "/"
+    template: |
+      $assert( b != 0, "division by zero is not allowed")
+  - name: validateModulo
+    condition: op = "%"
+    template: |
+      $assert( b != 0, "denominator can not be zero")

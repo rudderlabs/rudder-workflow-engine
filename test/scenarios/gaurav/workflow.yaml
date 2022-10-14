@@ -1,0 +1,48 @@
+bindings:
+  - path: ./functions
+steps:
+  - name: validateInput
+    description: validate input using workflow step
+    workflowStepPath: ./validation.yaml
+  - name: operations
+    description: Do operations using workflow step
+    steps:
+      - name: A
+        template: |
+          $number(a)
+      - name: B
+        template: |
+          $number(b)
+      - name: d
+        template: |
+          $log($outputs.operations.A)
+      - name: add
+        description: Do addition
+        condition: op = "+"
+        template: |
+          $add($outputs.operations.A, $outputs.operations.B)
+      - name: subtract
+        description: Do subtraction
+        condition: op = "-"
+        template: |
+          $subtract($outputs.operations.A, $outputs.operations.B)
+      - name: multiply
+        description: Do multiplication
+        condition: op = "*"
+        template: |
+          $multiply($outputs.operations.A, $outputs.operations.B)
+      - name: divide
+        description: Do division
+        condition: op = "/"
+        template: |
+          $divide($outputs.operations.A, $outputs.operations.B)
+      - name: modulo
+        description: Do modulo
+        condition: op = "%"
+        template: |
+          $modulo($outputs.operations.A, $outputs.operations.B)
+      - name: addAll
+        description: return the sum of an array
+        condition: op = "++"
+        template: |
+          $sum(data)

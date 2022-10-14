@@ -1,0 +1,76 @@
+[
+  {
+    "input": {
+      "a": "10",
+      "b": "2",
+      "op": "+"
+    },
+    "output": 12
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "+"
+    },
+    "output": 12
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "-"
+    },
+    "output": 8
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "*"
+    },
+    "output": 20
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 2,
+      "op": "/"
+    },
+    "output": 5
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "/"
+    },
+    "error": {
+      "message": "division by zero is not allowed"
+    }
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "^"
+    },
+    "error": {
+      "message": "unsupported operation"
+    }
+  },
+  {
+    "input": { "data": [1, 2, 3, 4], "op": "++" },
+    "output": 10
+  },
+  {
+    "input": {
+      "a": 10,
+      "b": 0,
+      "op": "%"
+    },
+    "error": {
+      "message": "denominator can not be zero"
+    }
+  }
+]
