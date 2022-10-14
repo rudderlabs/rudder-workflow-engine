@@ -1,0 +1,16 @@
+[
+  {
+    "workflowPath": "LeapYear.yaml",
+    "input": {
+      "year": 2014
+    },
+    "output": "2014 is not a leap year"
+  },
+  {
+    "workflowPath": "odd-even.yaml",
+    "input": {
+      "Numbers": [12, 23, 63, 46]
+    },
+    "output": "Number of elements in the array is even and it is 4"
+  }
+]
