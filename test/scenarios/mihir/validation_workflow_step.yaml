@@ -1,0 +1,4 @@
+steps:
+  - name: validateOp
+    template: |
+      $assert(op in ["sumArrayElements", "maxElementFromAnArray", "minElementFromAnArray", "averageOfAnArray","sizeOfAnArray"], "operation is not supported")

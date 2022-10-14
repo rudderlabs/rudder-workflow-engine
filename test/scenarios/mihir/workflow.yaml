@@ -1,0 +1,33 @@
+steps:
+  - name: validateInput
+    workflowStepPath: ./validation_workflow_step.yaml
+  - name: operations
+    description: Do operations using workflow step
+    bindings:
+      - path: functions
+    steps:
+      - name: sum
+        description: return the sum of an array
+        condition: op = "sumArrayElements"
+        template: |
+          $sum(data)
+      - name: max
+        description: return the max element from an array
+        condition: op = "maxElementFromAnArray"
+        template: |
+          $max(data)
+      - name: min
+        description: return the min element from an array
+        condition: op = "minElementFromAnArray"
+        template: |
+          $min(data)
+      - name: average
+        description: return the average of an array
+        condition: op = "averageOfAnArray"
+        template: |
+          $average(data)
+      - name: count
+        description: return the count of number of
+        condition: op = "sizeOfAnArray"
+        template: |
+          $count(data)
