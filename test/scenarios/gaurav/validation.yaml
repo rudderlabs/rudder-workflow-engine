@@ -1,7 +1,7 @@
 steps:
   - name: validateOp
     template: |
-      $assert(op in ["+", "-", "*", "/", "++", "%"], "unsupported operation")
+      $assert(op in ["+", "-", "*", "/", "++", "%", "sort"], "unsupported operation")
   - name: validateDivision
     condition: op = "/"
     template: |

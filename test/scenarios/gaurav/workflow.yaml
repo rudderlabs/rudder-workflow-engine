@@ -46,3 +46,8 @@ steps:
         condition: op = "++"
         template: |
           $sum(data)
+      - name: sortArray
+        description: returns sorted array
+        condition: op = "sort"
+        template: |
+          $sort(data)
