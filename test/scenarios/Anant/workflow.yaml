@@ -1,0 +1,37 @@
+bindings:
+  - path: ./functions
+steps:
+  # convert and assign values use video and input format 
+  # intiate with input case to be having abc 
+  # enhance it by converting the array into abc
+  - name: convertToInt
+    loopOverInput: true # use loop over input folder
+    template: |
+      (
+      )
+  # done
+  - name: check A
+    condition: a!=0
+    template: |
+      $dothrow("Not a Quadratic Equation.")
+  # done
+  - name: Cal d
+    template: |
+      $setContext("d",$cald(a,b,c,d))
+  # done
+  - name: check if roots exists
+    template: |
+      $assert( d>=0, "Roots don't exist.")
+  # done
+  - name: Sqrt of d
+    template: |
+      $setContext("D",$sqrt($context.d))
+  # done
+  - name: Cal first root Numerator
+    template: |
+      $setcontext("N1",$add(b,$context.D))
+  - name: Cal Second root Numerator
+    template: |
+      $setcontext("N2",$subtract(b,$context.D))
+  # pass both roots to array use to array folder
+  - name: Cal roots to array
