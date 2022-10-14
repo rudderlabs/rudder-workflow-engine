@@ -27,7 +27,12 @@ steps:
         template: |
           $average(data)
       - name: count
-        description: return the count of number of
+        description: return the count of elements inside the array
         condition: op = "sizeOfAnArray"
         template: |
           $count(data)
+      - name: reverse
+        description: sort an array in reverse order
+        condition: op = "reverseSortOfAnArray"
+        template: |
+          $reverse(data)

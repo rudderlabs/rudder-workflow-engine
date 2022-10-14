@@ -37,6 +37,13 @@
   {
     "input": {
       "data": [1, 2, 3, 4, 5, 6],
+      "op": "reverseSortOfAnArray"
+    },
+    "output": [6, 5, 4, 3, 2, 1]
+  },
+  {
+    "input": {
+      "data": [1, 2, 3, 4, 5, 6],
       "op": "randomOperation"
     },
     "error": {
