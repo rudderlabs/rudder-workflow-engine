@@ -1,0 +1,19 @@
+steps:
+  - name: medianOfAnArray
+    description: If Number of elements is odd in an array
+    condition: $count(Numbers)%2
+    template: |
+      Numbers[$count(Numbers)%2]
+  - name: median
+    description: Even
+    template: |
+      Numbers[$count(Numbers)%2]+Numbers[$count(Numbers)%2-1]
+
+  - name: isLeapYear
+    description:
+    condition: (year%400 = 0 or (year%4=0 and year%100!=0))
+    template: |
+      year & " is a leap year"
+  - name: isNotALeapYear
+    template: |
+      year & " is not a leap year"
