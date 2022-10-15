@@ -1,0 +1,18 @@
+[
+  {
+    "input": {
+      "foo": "bar"
+    },
+    "output": {
+      "foo": "bar"
+    }
+  },
+  {
+    "input": {
+      "foo": "hello"
+    },
+    "output": {
+      "foo": "hello"
+    }
+  }
+]

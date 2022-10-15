@@ -1,3 +1,5 @@
+import { Dictionary } from '../src';
+
 export type LogCounts = {
   debug?: number;
   info?: number;
@@ -13,9 +15,11 @@ export type SceanarioError = {
 };
 
 export type Sceanario = {
+  description?: string;
   input?: any;
   workflowPath?: string;
   bindingsPaths?: string[];
+  bindings?: Dictionary<any>;
   stepName?: string;
   childStepName?: string;
   output?: any;
