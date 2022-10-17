@@ -12,5 +12,83 @@
       "Numbers": [12, 23, 63, 46]
     },
     "output": "Number of elements in the array is even and it is 4"
+  },
+  {
+    "workflowPath": "ecom.yaml",
+    "input": {
+      "message": {
+        "type": "track",
+        "event": "Order Completed",
+        "messageId": "7208bbb6-2c4e-45bb-bf5b-ad426f3593e9",
+        "timestamp": "2020-08-14T05:30:30.118Z",
+        "properties": {
+          "products": [
+            {
+              "sku": "45790-32",
+              "name": "Monopoly: 3rd Edition",
+              "price": 19,
+              "brand": "Red Tick",
+              "variant": "Blue",
+              "category": "Games",
+              "quantity": 1,
+              "product_id": "507f1f77bcf86cd799439011"
+            },
+            {
+              "sku": "46493-32",
+              "name": "Uno Card Game",
+              "price": 3,
+              "brand": "Red Tick",
+              "variant": "Black",
+              "category": "Games",
+              "quantity": 2,
+              "product_id": "505bd76785ebb509fc183733"
+            },
+            {
+              "sku": "46493-32",
+              "name": "Uno Card Game",
+              "price": 3,
+              "brand": "Red Tick",
+              "variant": "Black",
+              "category": "Games",
+              "quantity": 2,
+              "product_id": "505bd76785ebb509fc183733"
+            }
+          ]
+        }
+      }
+    },
+    "output": {
+      "ecommerce": {
+        "revenue": 25,
+        "order_completed": {
+          "products": [
+            {
+              "id": "507f1f77bcf86cd799439011",
+              "name": "Monopoly: 3rd Edition",
+              "price": 19,
+              "brand": "Red Tick",
+              "category": "Games",
+              "variant": "Blue"
+            },
+            {
+              "id": "505bd76785ebb509fc183733",
+              "name": "Uno Card Game",
+              "price": 3,
+              "brand": "Red Tick",
+              "category": "Games",
+              "variant": "Black"
+            },
+            {
+              "id": "505bd76785ebb509fc183733",
+              "name": "Uno Card Game",
+              "price": 3,
+              "brand": "Red Tick",
+              "category": "Games",
+              "variant": "Black"
+            }
+          ]
+        }
+      }
+    }
   }
 ]

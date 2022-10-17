@@ -1,0 +1,20 @@
+steps:
+  - name: prepareEcommerceObject
+    condition: $exists(message.properties.products)
+    template: |
+      {
+        "ecommerce":{
+          "cuurencyCode": message.properties.currency,
+          "revenue": $sum(message.properties.products.price),
+          $lowercase($replace((message.event)," ","_")):{
+             "products": message.properties.products.{
+             "id": product_id?product_id:sku,
+             "name": name,
+             "price": $number(price),
+             "brand": brand,
+             "category": category,
+             "variant": variant
+            }
+          }
+        }
+      }
