@@ -1,6 +1,6 @@
 import { Step, StepExecutor } from '../types';
 import { ConditionalStepExecutor } from './executors/conditional';
-import { CustomInputStepExecutor } from './executors/custom_input';
+import { CustomDataStepExecutor } from './executors/custom_data';
 import { DebuggableStepExecutor } from './executors/debuggable';
 import { ErrorWrapStepExecutor } from './executors/error_wrap';
 import { LoopStepExecutor } from './executors/loop';
@@ -11,8 +11,8 @@ export class ComposableExecutorFactory {
       stepExecutor = new LoopStepExecutor(stepExecutor);
     }
 
-    if (step.inputTemplate) {
-      stepExecutor = new CustomInputStepExecutor(step.inputTemplate, stepExecutor);
+    if (step.inputTemplate || step.contextTemplate) {
+      stepExecutor = new CustomDataStepExecutor(step, stepExecutor);
     }
 
     if (step.condition) {

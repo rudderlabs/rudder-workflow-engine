@@ -1,0 +1,15 @@
+[
+  {
+    "output": {
+      "foo": "bar"
+    }
+  },
+  {
+    "input": {
+      "customContext": true
+    },
+    "output": {
+      "foo": "custom"
+    }
+  }
+]

@@ -4,13 +4,11 @@ import { readFile } from 'fs/promises';
 import { StepCreationError } from '../../errors';
 import { Dictionary } from '../../../common/types';
 import { ExternalWorkflow, SimpleStep, StepFunction } from '../../types';
-import { BaseStepExecutor } from '../executors/base';
-import { ExternalWorkflowStepExecutor } from './executors/external_workflow';
 import { FunctionStepExecutor } from './executors/function';
 import { TemplateStepExecutor } from './executors/template';
-import { WorkflowEngineFactory } from '../../../workflow/factory';
-import { WorkflowUtils } from '../../../workflow/utils';
-import { WorkflowEngine } from '../../../workflow/engine';
+import { WorkflowUtils, WorkflowEngineFactory } from '../../../workflow';
+import { BaseStepExecutor } from '../executors';
+import { ExternalWorkflowStepExecutor } from './executors';
 
 export class SimpleStepExecutorFactory {
   static async create(
@@ -21,11 +19,13 @@ export class SimpleStepExecutorFactory {
   ): Promise<BaseStepExecutor> {
     const simpleStepLogger = parentLogger.child({ step: step.name });
     if (step.externalWorkflow) {
-      const workflowEngine = await this.createExternalWorkflowEngine(
-        rootPath,
+      return this.createExternalWorkflowEngineExecutor(
         step.externalWorkflow,
+        step,
+        rootPath,
+        bindings,
+        simpleStepLogger,
       );
-      return new ExternalWorkflowStepExecutor(workflowEngine, step, bindings, simpleStepLogger);
     }
 
     if (step.functionName) {
@@ -38,20 +38,6 @@ export class SimpleStepExecutorFactory {
     }
 
     return new TemplateStepExecutor(step.template as string, step, bindings, simpleStepLogger);
-  }
-
-  private static async createExternalWorkflowEngine(
-    rootPath: string,
-    externalWorkflow: ExternalWorkflow,
-  ): Promise<WorkflowEngine> {
-    const workflowPath = join(rootPath, externalWorkflow.path);
-    const workflow = await WorkflowUtils.createWorkflowFromFilePath(workflowPath);
-    const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
-    return WorkflowEngineFactory.create(
-      workflow,
-      externalWorkflowRootPath,
-      externalWorkflow.bindingPaths,
-    );
   }
 
   private static extractFunction(
@@ -67,5 +53,23 @@ export class SimpleStepExecutorFactory {
 
   private static extractTemplate(rootPath: string, templatePath: string): Promise<string> {
     return readFile(join(rootPath, templatePath), { encoding: 'utf-8' });
+  }
+
+  private static async createExternalWorkflowEngineExecutor(
+    externalWorkflow: ExternalWorkflow,
+    step: SimpleStep,
+    rootPath: string,
+    bindings: Dictionary<any>,
+    parentLogger: Logger,
+  ): Promise<ExternalWorkflowStepExecutor> {
+    const workflowPath = join(rootPath, externalWorkflow.path);
+    const workflow = await WorkflowUtils.createWorkflowFromFilePath(workflowPath);
+    const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
+    const workflowEngine = await WorkflowEngineFactory.create(
+      workflow,
+      externalWorkflowRootPath,
+      externalWorkflow.bindingPaths,
+    );
+    return new ExternalWorkflowStepExecutor(workflowEngine, step, bindings, parentLogger);
   }
 }

@@ -1,7 +1,7 @@
 bindings:
   - path: bindings
 steps:
-  - name: bindingMaps
+  - name: returnBindings
     template: |
       {
         "maxBatchSize": $MAX_BATCH_SIZE,

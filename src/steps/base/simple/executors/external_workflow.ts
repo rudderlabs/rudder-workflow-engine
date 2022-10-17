@@ -21,7 +21,7 @@ export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     try {
-      return await this.workflowEngine.execute(input, { context: executionBindings.context });
+      return await this.workflowEngine.execute(input, executionBindings);
     } catch (error: any) {
       throw new StepExecutionError(
         error.message,
