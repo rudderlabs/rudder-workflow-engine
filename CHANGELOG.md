@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.1...v0.2.2) (2022-10-18)
+
+
+### Features
+
+* add support for overriding bindings ([#35](https://github.com/rudderlabs/rudder-workflow-engine/issues/35)) ([f183d2f](https://github.com/rudderlabs/rudder-workflow-engine/commit/f183d2f2f54a4cb41e90fa34d9665ceed7cf72d9))
+
+
+### Miscellaneous
+
+* add npm run scripts for tests ([#29](https://github.com/rudderlabs/rudder-workflow-engine/issues/29)) ([4c863d4](https://github.com/rudderlabs/rudder-workflow-engine/commit/4c863d4929cab0a186694ab3d30a539946ea70ce))
+
 ## [0.2.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.0...v0.2.1) (2022-10-12)
 
 
