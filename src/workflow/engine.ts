@@ -38,13 +38,15 @@ export class WorkflowEngine implements Executor {
     return stepExecutor;
   }
 
-  async execute(input: any, context: Dictionary<any> = {}): Promise<WorkflowOutput> {
-    const newContext = cloneDeep(context);
+  async execute(input: any, bindings: Dictionary<any> = {}): Promise<WorkflowOutput> {
+    const newBindings = cloneDeep(bindings);
+    const context = newBindings.context || {};
     const executionBindings: ExecutionBindings = {
+      ...newBindings,
       outputs: {},
-      context: newContext,
+      context,
       setContext: (key, value) => {
-        newContext[key] = value;
+        context[key] = value;
       },
     };
 

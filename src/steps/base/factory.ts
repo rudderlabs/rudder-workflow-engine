@@ -1,8 +1,7 @@
 import { Logger } from 'pino';
 import { StepCreationError } from '../errors';
 import { Dictionary } from '../../common/types';
-import { Step, StepType, WorkflowStep } from '../types';
-import { BaseStepExecutor } from './executors/base';
+import { Step, StepExecutor, StepType, WorkflowStep } from '../types';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './executors/workflow_step';
 import { WorkflowUtils } from '../../workflow/utils';
@@ -14,7 +13,7 @@ export class BaseStepExecutorFactory {
     rootPath: string,
     bindings: Dictionary<any>,
     parentLogger: Logger,
-  ): Promise<BaseStepExecutor> {
+  ): Promise<StepExecutor> {
     if (step.type == StepType.Simple) {
       return SimpleStepExecutorFactory.create(step, rootPath, bindings, parentLogger);
     } else {

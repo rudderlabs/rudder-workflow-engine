@@ -1,0 +1,11 @@
+steps:
+  - name: workflowStep
+    bindings:
+      - path: bindings
+    steps:
+      - name: returnBindings
+        template: |
+          {
+            "maxBatchSize": $MAX_BATCH_SIZE,
+            "maxNumRequests": $MAX_NUM_REQUESTS
+          }

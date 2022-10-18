@@ -25,7 +25,8 @@ async function createAndExecuteWorkFlow() {
     const sceanario: Sceanario = sceanarios[index] || sceanarios[0];
     const workflowEngine = await SceanarioUtils.createWorkflowEngine(scenarioDir, sceanario);
     const result = await SceanarioUtils.executeScenario(workflowEngine, sceanario);
-    console.log(JSON.stringify(result, null, 2));
+    console.log('Actual result', JSON.stringify(result.output, null, 2));
+    console.log('Expected result', JSON.stringify(sceanario.output, null, 2));
   } catch (error) {
     console.error(error);
   }

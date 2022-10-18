@@ -13,8 +13,8 @@ export class SceanarioUtils {
     );
   }
 
-  private static async execute(executor: Executor, input: any): Promise<any> {
-    let result = await executor.execute(input);
+  private static async execute(executor: Executor, sceanario: Sceanario): Promise<any> {
+    let result = await executor.execute(sceanario.input, sceanario.bindings);
     return { output: result.output };
   }
 
@@ -23,7 +23,7 @@ export class SceanarioUtils {
     if (sceanario.stepName) {
       executor = workflowEngine.getStepExecutor(sceanario.stepName, sceanario.childStepName);
     }
-    return this.execute(executor, sceanario.input);
+    return this.execute(executor, sceanario);
   }
 
   static extractScenarios(scenarioDir: string): Sceanario[] {

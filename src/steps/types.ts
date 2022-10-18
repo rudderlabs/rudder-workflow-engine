@@ -64,6 +64,7 @@ export type StepCommon = {
   type?: StepType;
   condition?: string;
   inputTemplate?: string;
+  contextTemplate?: string;
   loopOverInput?: boolean;
   onComplete?: StepExitAction;
   onError?: StepExitAction;
