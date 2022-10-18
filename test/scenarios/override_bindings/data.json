@@ -1,0 +1,54 @@
+[
+  {
+    "description": "Should get overriden bindings",
+    "bindings": {
+      "MAX_BATCH_SIZE": 10,
+      "MAX_NUM_REQUESTS": 5
+    },
+    "output": {
+      "maxBatchSize": 10,
+      "maxNumRequests": 5
+    }
+  },
+  {
+    "description": "Should get overriden bindings",
+    "workflowPath": "workflow_step.yaml",
+    "bindings": {
+      "MAX_BATCH_SIZE": 10,
+      "MAX_NUM_REQUESTS": 5
+    },
+    "output": {
+      "maxBatchSize": 10,
+      "maxNumRequests": 5
+    }
+  },
+  {
+    "description": "Should get overriden bindings",
+    "workflowPath": "external_workflow.yaml",
+    "bindings": {
+      "MAX_BATCH_SIZE": 10,
+      "MAX_NUM_REQUESTS": 5
+    },
+    "output": {
+      "maxBatchSize": 10,
+      "maxNumRequests": 5
+    }
+  },
+  {
+    "description": "Should get partial bindings",
+    "bindings": {
+      "MAX_BATCH_SIZE": 10
+    },
+    "output": {
+      "maxBatchSize": 10,
+      "maxNumRequests": 500
+    }
+  },
+  {
+    "description": "Should get default bindings",
+    "output": {
+      "maxBatchSize": 1000,
+      "maxNumRequests": 500
+    }
+  }
+]

@@ -1,0 +1,7 @@
+steps:
+  - name: setContext
+    template: |
+      $setContext("foo", foo)
+  - name: useExternalWorkflow
+    externalWorkflow:
+      path: ./external_workflow.yaml

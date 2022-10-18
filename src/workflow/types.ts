@@ -13,6 +13,7 @@ export type Binding = {
 };
 
 export type ExecutionBindings = {
+  [key: string]: any;
   outputs: Dictionary<any>;
   context: Dictionary<any>;
   setContext: (string, any) => void;

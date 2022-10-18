@@ -1,0 +1,12 @@
+steps:
+  - name: setContext
+    template: |
+      $setContext("foo", "bar")
+  - name: returnCustomContext
+    condition: customContext
+    contextTemplate: |
+        {"foo": "custom"}
+    template: $context
+    onComplete: return
+  - name: returnOriginalContext
+    template: $context
