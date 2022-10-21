@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.2...v0.2.3) (2022-10-21)
+
+
+### Bug Fixes
+
+* to array binding ([#36](https://github.com/rudderlabs/rudder-workflow-engine/issues/36)) ([8f09f4b](https://github.com/rudderlabs/rudder-workflow-engine/commit/8f09f4bc16dffeb63311ad360826639b4858c65c))
+
 ## [0.2.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.1...v0.2.2) (2022-10-18)
 
 
