@@ -4,5 +4,6 @@ steps:
       {
         "a": $toArray(a),
         "b": $toArray(b),
-        "c": $toArray(c)
+        "c": $toArray(c),
+        "d": $toArray(d)
       }
