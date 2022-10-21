@@ -18,6 +18,9 @@ export function getByPaths(obj: any, paths: string | string[]): any {
 }
 
 export function toArray(obj: any): any[] {
+  if (obj === undefined) {
+    return obj;
+  }
   return Array.isArray(obj) ? obj : [obj];
 }
 
