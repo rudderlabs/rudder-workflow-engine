@@ -38,14 +38,6 @@
     "output": 3
   },
   {
-    "input": "a.c.f[0]",
-    "output": 3
-  },
-  {
-    "input": "a.c.f[]",
-    "output": [3]
-  },
-  {
     "description": "no input so no output"
   }
 ]
