@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.3...v0.2.4) (2022-10-27)
+
+
+### Miscellaneous
+
+* getByPaths to use lodash at method ([#38](https://github.com/rudderlabs/rudder-workflow-engine/issues/38)) ([ecfad5f](https://github.com/rudderlabs/rudder-workflow-engine/commit/ecfad5f2f5b410ab0d29ec68efe553035535e046))
+
 ## [0.2.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.2...v0.2.3) (2022-10-21)
 
 
