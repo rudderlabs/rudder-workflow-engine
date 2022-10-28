@@ -22,6 +22,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
             error: {
               status: WorkflowUtils.getErrorStatus(error),
               message: error.message,
+              error: error.originalError,
             },
           };
         }
