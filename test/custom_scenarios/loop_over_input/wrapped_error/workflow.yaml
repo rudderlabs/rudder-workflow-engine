@@ -1,0 +1,5 @@
+steps:
+  - name: loopOverInput
+    loopOverInput: true
+    externalWorkflow:
+      path: ./external_workflow.yaml
