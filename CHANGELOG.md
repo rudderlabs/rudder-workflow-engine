@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.4...v0.2.5) (2022-10-31)
+
+
+### Bug Fixes
+
+* add original error field to track actual error ([#40](https://github.com/rudderlabs/rudder-workflow-engine/issues/40)) ([3069132](https://github.com/rudderlabs/rudder-workflow-engine/commit/3069132efb1299dcd7dca9e0aaecc44c0b819ac6))
+
 ## [0.2.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.3...v0.2.4) (2022-10-27)
 
 
