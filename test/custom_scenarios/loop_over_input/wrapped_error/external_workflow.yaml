@@ -1,0 +1,7 @@
+steps:
+  - name: sample
+    template: |
+      (
+        $exists(error) ? $doThrow(error.message, 500);
+        $exists(output) ? output : { "foo": "bar" }
+      )

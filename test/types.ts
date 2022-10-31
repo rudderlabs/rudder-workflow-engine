@@ -7,6 +7,15 @@ export type LogCounts = {
   error?: number;
 };
 
+export type FakeLogger = {
+  debug: jest.Mock<any, any>;
+  info: jest.Mock<any, any>;
+  warn: jest.Mock<any, any>;
+  error: jest.Mock<any, any>;
+  level: string;
+  child: () => FakeLogger;
+};
+
 export type SceanarioError = {
   message?: string;
   status?: string;
