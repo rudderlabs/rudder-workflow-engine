@@ -31,14 +31,14 @@ export class CustomDataStepExecutor extends ComposableStepExecutor {
     const allBindings = Object.assign({}, super.getBindings(), executionBindings);
     const customData: CustomData = { input, context: executionBindings.context };
     if (this.inputTemplateExpression) {
-      customData.input = await WorkflowUtils.evaluateJsonataExpr(
+      customData.input = await WorkflowUtils.evaluateJsonataBetaExpr(
         this.inputTemplateExpression,
         input,
         allBindings,
       );
     }
     if (this.contextTemplateExpression) {
-      customData.context = await WorkflowUtils.evaluateJsonataExpr(
+      customData.context = await WorkflowUtils.evaluateJsonataBetaExpr(
         this.contextTemplateExpression,
         input,
         allBindings,

@@ -60,6 +60,7 @@
   "dependencies": {
     "js-yaml": "^4.1.0",
     "jsonata": "^1.8.6",
+    "jsonataBeta": "github:jsonata-js/jsonata",
     "lodash": "^4.17.21",
     "pino": "^8.6.0",
     "pino-caller": "^3.2.0"
