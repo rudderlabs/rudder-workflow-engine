@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.6-beta](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.5...v0.2.6-beta) (2022-11-04)
+
+
+### Miscellaneous
+
+* integrate jsonata beta version ([#42](https://github.com/rudderlabs/rudder-workflow-engine/issues/42)) ([b1d3375](https://github.com/rudderlabs/rudder-workflow-engine/commit/b1d3375d2b5a8df556adf1ac5ce1ec010125e2c0))
+* new release 0.2.6 ([b7aa73c](https://github.com/rudderlabs/rudder-workflow-engine/commit/b7aa73cc67a97efd8ccb739fe8807c9f8ab89ab3))
+* new release 0.2.6-beta ([7f4dd6b](https://github.com/rudderlabs/rudder-workflow-engine/commit/7f4dd6b409788470fee51a1582debcf9c5dcc838))
+
 ## [0.2.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.4...v0.2.5) (2022-10-31)
 
 
