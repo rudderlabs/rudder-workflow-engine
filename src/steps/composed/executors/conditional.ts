@@ -2,6 +2,7 @@ import jsonataBeta from '../../../external_dependencies/jsonata';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
 import { StepExecutor, StepOutput } from '../../types';
+import { WorkflowUtils } from '../../../workflow';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
   private readonly conditionExpression: jsonataBeta.Expression;
@@ -13,7 +14,11 @@ export class ConditionalStepExecutor extends ComposableStepExecutor {
 
   private async shouldSkipStep(input: any, executionBindings: ExecutionBindings) {
     const allBindings = Object.assign({}, super.getBindings(), executionBindings);
-    return !(await this.conditionExpression.evaluate(input, allBindings));
+    return !(await WorkflowUtils.evaluateJsonataBetaExpr(
+      this.conditionExpression,
+      input,
+      allBindings,
+    ));
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
