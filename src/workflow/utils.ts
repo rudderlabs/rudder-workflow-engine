@@ -2,6 +2,7 @@ import yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import jsonata from 'jsonata';
+import jsonataBeta from '../external_dependencies/jsonata';
 import { Dictionary } from '../common/types';
 import { WorkflowCreationError } from './errors';
 import { StatusError } from '../steps';
@@ -127,5 +128,25 @@ export class WorkflowUtils {
         resolve(response);
       });
     }).then(WorkflowUtils.cleanUpArrays);
+  }
+
+  static async evaluateJsonataBetaExpr(
+    expr: jsonataBeta.Expression,
+    data: any,
+    bindings: Record<string, any>,
+  ) {
+    try {
+      const retVal = await expr.evaluate(data, bindings);
+      return WorkflowUtils.cleanUpArrays(retVal);
+    } catch (error) {
+      if ((error as jsonataBeta.JsonataError).token === 'doReturn') {
+        return WorkflowUtils.cleanUpArrays((error as any).result);
+      }
+
+      if (WorkflowUtils.isAssertError(error)) {
+        throw new StatusError((error as jsonataBeta.JsonataError).message, 400);
+      }
+      throw error;
+    }
   }
 }
