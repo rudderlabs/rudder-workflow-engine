@@ -1,4 +1,4 @@
-import jsonata from 'jsonata';
+import jsonataBeta from '../../../external_dependencies/jsonata';
 import { WorkflowUtils } from '../../../workflow/utils';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
@@ -14,16 +14,16 @@ type CustomData = {
  * and then invokes step executor with the custom data
  */
 export class CustomDataStepExecutor extends ComposableStepExecutor {
-  private readonly inputTemplateExpression?: jsonata.Expression;
-  private readonly contextTemplateExpression?: jsonata.Expression;
+  private readonly inputTemplateExpression?: jsonataBeta.Expression;
+  private readonly contextTemplateExpression?: jsonataBeta.Expression;
 
   constructor(step: Step, nextExecutor: StepExecutor) {
     super(nextExecutor);
     if (step.inputTemplate) {
-      this.inputTemplateExpression = jsonata(step.inputTemplate);
+      this.inputTemplateExpression = jsonataBeta(step.inputTemplate);
     }
     if (step.contextTemplate) {
-      this.contextTemplateExpression = jsonata(step.contextTemplate);
+      this.contextTemplateExpression = jsonataBeta(step.contextTemplate);
     }
   }
 
