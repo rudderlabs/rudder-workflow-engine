@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.7-beta](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.6-beta...v0.2.7-beta) (2022-11-04)
+
+
+### Bug Fixes
+
+* typescript config to include jsonata in bundle ([#44](https://github.com/rudderlabs/rudder-workflow-engine/issues/44)) ([4b26196](https://github.com/rudderlabs/rudder-workflow-engine/commit/4b2619695c12875f545f689139645729a4c4686a))
+
+
+### Miscellaneous
+
+* release 0.2.7-beta ([e58666b](https://github.com/rudderlabs/rudder-workflow-engine/commit/e58666b3a4954ed3ece513b3296797d64cbb7ad0))
+
 ## [0.2.6-beta](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.5...v0.2.6-beta) (2022-11-04)
 
 
