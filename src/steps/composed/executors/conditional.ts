@@ -1,28 +1,23 @@
-import jsonataBeta from '../../../external_dependencies/jsonata';
+import jsonata from 'jsonata';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
 import { StepExecutor, StepOutput } from '../../types';
-import { WorkflowUtils } from '../../../workflow';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
-  private readonly conditionExpression: jsonataBeta.Expression;
+  private readonly conditionExpression: jsonata.Expression;
 
   constructor(condition: string, nextExecutor: StepExecutor) {
     super(nextExecutor);
-    this.conditionExpression = jsonataBeta(condition);
+    this.conditionExpression = jsonata(condition);
   }
 
-  private async shouldSkipStep(input: any, executionBindings: ExecutionBindings) {
+  private shouldSkipStep(input: any, executionBindings: ExecutionBindings) {
     const allBindings = Object.assign({}, super.getBindings(), executionBindings);
-    return !(await WorkflowUtils.evaluateJsonataBetaExpr(
-      this.conditionExpression,
-      input,
-      allBindings,
-    ));
+    return !this.conditionExpression.evaluate(input, allBindings);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    if (await this.shouldSkipStep(input, executionBindings)) {
+    if (this.shouldSkipStep(input, executionBindings)) {
       return { skipped: true };
     }
     return super.execute(input, executionBindings);

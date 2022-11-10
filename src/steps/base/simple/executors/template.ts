@@ -1,4 +1,4 @@
-import jsonataBeta from '../../../../external_dependencies/jsonata';
+import jsonata from 'jsonata';
 import { Logger } from 'pino';
 import { WorkflowUtils } from '../../../../workflow/utils';
 import { ExecutionBindings } from '../../../../workflow/types';
@@ -7,11 +7,11 @@ import { BaseStepExecutor } from '../../executors/base';
 import { Step, StepOutput } from '../../../types';
 
 export class TemplateStepExecutor extends BaseStepExecutor {
-  private readonly templateExpression: jsonataBeta.Expression;
+  private readonly templateExpression: jsonata.Expression;
 
   constructor(template: string, step: Step, bindings: Dictionary<any>, parentLogger: Logger) {
     super(step, bindings, parentLogger.child({ type: 'Template' }));
-    this.templateExpression = jsonataBeta(template);
+    this.templateExpression = jsonata(template);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
@@ -21,7 +21,7 @@ export class TemplateStepExecutor extends BaseStepExecutor {
       executionBindings,
       this.getLoggerBindings(),
     );
-    const output = await WorkflowUtils.evaluateJsonataBetaExpr(
+    const output = await WorkflowUtils.evaluateJsonataExpr(
       this.templateExpression,
       input,
       allBindings,
