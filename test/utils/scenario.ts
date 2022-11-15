@@ -1,10 +1,10 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { WorkflowEngineFactory, WorkflowEngine, Executor } from '../../src';
-import { Sceanario } from '../types';
+import { Scenario } from '../types';
 
-export class SceanarioUtils {
-  static createWorkflowEngine(scenarioDir: string, sceanario: Sceanario): Promise<WorkflowEngine> {
+export class ScenarioUtils {
+  static createWorkflowEngine(scenarioDir: string, sceanario: Scenario): Promise<WorkflowEngine> {
     const workflowPath = join(scenarioDir, sceanario.workflowPath || 'workflow.yaml');
     return WorkflowEngineFactory.createFromFilePath(
       workflowPath,
@@ -13,12 +13,12 @@ export class SceanarioUtils {
     );
   }
 
-  private static async execute(executor: Executor, sceanario: Sceanario): Promise<any> {
+  private static async execute(executor: Executor, sceanario: Scenario): Promise<any> {
     let result = await executor.execute(sceanario.input, sceanario.bindings);
     return { output: result.output };
   }
 
-  static executeScenario(workflowEngine: WorkflowEngine, sceanario: Sceanario) {
+  static executeScenario(workflowEngine: WorkflowEngine, sceanario: Scenario) {
     let executor: Executor = workflowEngine;
     if (sceanario.stepName) {
       executor = workflowEngine.getStepExecutor(sceanario.stepName, sceanario.childStepName);
@@ -26,8 +26,8 @@ export class SceanarioUtils {
     return this.execute(executor, sceanario);
   }
 
-  static extractScenarios(scenarioDir: string): Sceanario[] {
+  static extractScenarios(scenarioDir: string): Scenario[] {
     const scenariosJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
-    return JSON.parse(scenariosJSON) as Sceanario[];
+    return JSON.parse(scenariosJSON) as Scenario[];
   }
 }

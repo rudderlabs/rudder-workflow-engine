@@ -1,8 +1,8 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { Command } from 'commander';
-import { Sceanario } from './types';
-import { SceanarioUtils } from './utils';
+import {Scenario } from './types';
+import { ScenarioUtils } from './utils';
 
 const command = new Command();
 command
@@ -12,21 +12,21 @@ command
   .parse();
 
 const opts = command.opts();
-const scenario = opts.scenario || process.argv[2] || 'basic_workflow';
+const scenarioName = opts.scenario || process.argv[2] || 'basic_workflow';
 const index = +(opts.index || process.argv[3] || 0);
 
-console.log(`Executing scenario: ${scenario} and test: ${index}`);
+console.log(`Executing scenario: ${scenarioName} and test: ${index}`);
 
 async function createAndExecuteWorkFlow() {
   try {
-    const scenarioDir = join(__dirname, 'scenarios', scenario);
-    const sceanariosJSON = await readFile(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
-    const sceanarios: Sceanario[] = JSON.parse(sceanariosJSON);
-    const sceanario: Sceanario = sceanarios[index] || sceanarios[0];
-    const workflowEngine = await SceanarioUtils.createWorkflowEngine(scenarioDir, sceanario);
-    const result = await SceanarioUtils.executeScenario(workflowEngine, sceanario);
+    const scenarioDir = join(__dirname, 'scenarios', scenarioName);
+    const scenariosJSON = await readFile(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
+    const scenarios: Scenario[] = JSON.parse(scenariosJSON);
+    const scenario: Scenario = scenarios[index] || scenarios[0];
+    const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
+    const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
     console.log('Actual result', JSON.stringify(result.output, null, 2));
-    console.log('Expected result', JSON.stringify(sceanario.output, null, 2));
+    console.log('Expected result', JSON.stringify(scenario.output, null, 2));
   } catch (error) {
     console.error(error);
   }

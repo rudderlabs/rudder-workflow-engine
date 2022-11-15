@@ -1,4 +1,4 @@
-import { FakeLogger, LogCounts, SceanarioError } from '../types';
+import { FakeLogger, LogCounts, ScenarioError } from '../types';
 
 export class CommonUtils {
   static getFakeLogger(): FakeLogger {
@@ -27,7 +27,7 @@ export class CommonUtils {
     expect(fakeLogger.error.mock.calls.length).toBeGreaterThanOrEqual(errorCount);
   }
 
-  static getErrorMatcher(error?: SceanarioError) {
+  static getErrorMatcher(error?: ScenarioError) {
     if (!error) {
       // Ideally shouldn't reach here.
       // Sending default error so that test case fails.
