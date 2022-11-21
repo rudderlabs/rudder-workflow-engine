@@ -3,7 +3,7 @@ const Pino = require('pino');
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { Command } from 'commander';
-import { SceanarioUtils } from './utils';
+import { ScenarioUtils } from './utils';
 import { CommonUtils } from './utils/common';
 
 const rootDirName = 'scenarios';
@@ -23,12 +23,12 @@ describe('Scenarios tests', () => {
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, rootDirName, scenario);
-      const sceanarios = SceanarioUtils.extractScenarios(scenarioDir);
+      const sceanarios = ScenarioUtils.extractScenarios(scenarioDir);
       sceanarios.forEach((scenario, index) => {
         it(`Scenario ${index}`, async () => {
           try {
-            const workflowEngine = await SceanarioUtils.createWorkflowEngine(scenarioDir, scenario);
-            const result = await SceanarioUtils.executeScenario(workflowEngine, scenario);
+            const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
+            const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
             expect(error).toMatchObject(CommonUtils.getErrorMatcher(scenario.error));
