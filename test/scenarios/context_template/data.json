@@ -1,5 +1,22 @@
 [
   {
+    "workflowPath": "jsontemplate.yaml",
+
+    "output": {
+      "foo": "bar"
+    }
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+
+    "input": {
+      "customContext": true
+    },
+    "output": {
+      "foo": "custom"
+    }
+  },
+  {
     "output": {
       "foo": "bar"
     }

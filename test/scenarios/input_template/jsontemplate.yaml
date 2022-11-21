@@ -1,0 +1,13 @@
+options:
+  templateType: jsontemplate
+steps:
+  - name: sum
+    # here input is customized
+    inputTemplate: |
+      {"a": Number(.a), "b": Number(.b)}
+    template: |
+      (.a + .b)
+  - name: combineResults
+    # here input is original
+    template: |
+      { "a": .a, "b": .b, "sum": $.outputs.sum }

@@ -5,15 +5,15 @@ import { Dictionary, Executor } from '../common/types';
 import { WorkflowUtils } from './utils';
 import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from '../steps';
-import { ExecutionBindings, WorkflowOutput } from './types';
+import { ExecutionBindings, WorkflowOutput, Workflow } from './types';
 
 export class WorkflowEngine implements Executor {
-  readonly workflowName: string;
+  readonly workflow: Workflow;
   private readonly logger: Logger;
   private readonly stepExecutors: StepExecutor[];
 
-  constructor(workflowName: string, logger: Logger, stepExecutors: StepExecutor[]) {
-    this.workflowName = workflowName;
+  constructor(workflow: Workflow, logger: Logger, stepExecutors: StepExecutor[]) {
+    this.workflow = workflow;
     this.logger = logger;
     this.stepExecutors = stepExecutors;
   }
@@ -79,7 +79,7 @@ export class WorkflowEngine implements Executor {
     throw new WorkflowExecutionError(
       error.message,
       WorkflowUtils.getErrorStatus(error),
-      this.workflowName,
+      this.workflow.name,
       stepName,
       error.childStepName,
       error.error,

@@ -1,5 +1,5 @@
 import { Dictionary } from '../common/types';
-import { Step } from '../steps/types';
+import { Step, TemplateType } from '../steps/types';
 
 export type Binding = {
   // exported value's name in bindings
@@ -23,6 +23,7 @@ export type Workflow = {
   name: string;
   bindings?: Binding[];
   steps: Step[];
+  options?: WorkflowOptions;
 };
 
 export type WorkflowOutput = {
@@ -30,4 +31,9 @@ export type WorkflowOutput = {
   outputs?: Dictionary<any>;
   status?: number;
   error?: any;
+};
+
+export type WorkflowOptions = {
+  bindingsPaths?: string[];
+  templateType?: TemplateType;
 };
