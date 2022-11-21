@@ -16,14 +16,14 @@ export type FakeLogger = {
   child: () => FakeLogger;
 };
 
-export type SceanarioError = {
+export type ScenarioError = {
   message?: string;
   status?: string;
   stepName?: string;
   childStepName?: string;
 };
 
-export type Sceanario = {
+export type Scenario = {
   description?: string;
   input?: any;
   workflowPath?: string;
@@ -32,7 +32,7 @@ export type Sceanario = {
   stepName?: string;
   childStepName?: string;
   output?: any;
-  error?: SceanarioError;
+  error?: ScenarioError;
   errorClass?: string;
   logger?: LogCounts;
 };
