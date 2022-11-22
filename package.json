@@ -63,7 +63,7 @@
     "lodash": "^4.17.21",
     "pino": "^8.6.0",
     "pino-caller": "^3.2.0",
-    "rudder-json-template-engine": "^0.2.0"
+    "rudder-json-template-engine": "^0.2.1"
   },
   "engines": {
     "node": ">=14.15.0 <15",
