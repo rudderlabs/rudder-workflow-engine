@@ -1,8 +1,9 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { Command } from 'commander';
-import {Scenario } from './types';
+import { Scenario } from './types';
 import { ScenarioUtils } from './utils';
+import { deepEqual } from 'assert';
 
 const command = new Command();
 command
@@ -12,8 +13,8 @@ command
   .parse();
 
 const opts = command.opts();
-const scenarioName = opts.scenario || process.argv[2] || 'basic_workflow';
-const index = +(opts.index || process.argv[3] || 0);
+const scenarioName = opts.scenario || 'basic_workflow';
+const index = +(opts.index || 0);
 
 console.log(`Executing scenario: ${scenarioName} and test: ${index}`);
 
@@ -27,6 +28,7 @@ async function createAndExecuteWorkFlow() {
     const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
     console.log('Actual result', JSON.stringify(result.output, null, 2));
     console.log('Expected result', JSON.stringify(scenario.output, null, 2));
+    deepEqual(result.output, scenario.output, 'matching failed');
   } catch (error) {
     console.error(error);
   }

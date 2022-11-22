@@ -1,8 +1,7 @@
-import jsonata from 'jsonata';
-import { WorkflowUtils } from '../../../workflow/utils';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
-import { Step, StepExecutor, StepOutput } from '../../types';
+import { Step, StepExecutor, StepOutput, TemplateStepExecutor } from '../../types';
+import { TemplateStepExecutorFactory } from '../../../steps/base/simple/executors/template';
 
 type CustomData = {
   input: any;
@@ -14,35 +13,40 @@ type CustomData = {
  * and then invokes step executor with the custom data
  */
 export class CustomDataStepExecutor extends ComposableStepExecutor {
-  private readonly inputTemplateExpression?: jsonata.Expression;
-  private readonly contextTemplateExpression?: jsonata.Expression;
+  private readonly inputTemplateExecutor?: TemplateStepExecutor;
+  private readonly contextTemplateExecutor?: TemplateStepExecutor;
 
   constructor(step: Step, nextExecutor: StepExecutor) {
     super(nextExecutor);
     if (step.inputTemplate) {
-      this.inputTemplateExpression = jsonata(step.inputTemplate);
+      this.inputTemplateExecutor = TemplateStepExecutorFactory.create(
+        nextExecutor.getWorkflow(),
+        step,
+        step.inputTemplate,
+        nextExecutor.getBindings(),
+        nextExecutor.getLogger(),
+      );
     }
     if (step.contextTemplate) {
-      this.contextTemplateExpression = jsonata(step.contextTemplate);
+      this.contextTemplateExecutor = TemplateStepExecutorFactory.create(
+        nextExecutor.getWorkflow(),
+        step,
+        step.contextTemplate,
+        nextExecutor.getBindings(),
+        nextExecutor.getLogger(),
+      );
     }
   }
 
   private async prepareData(input: any, executionBindings: ExecutionBindings): Promise<CustomData> {
-    const allBindings = Object.assign({}, super.getBindings(), executionBindings);
     const customData: CustomData = { input, context: executionBindings.context };
-    if (this.inputTemplateExpression) {
-      customData.input = await WorkflowUtils.evaluateJsonataExpr(
-        this.inputTemplateExpression,
-        input,
-        allBindings,
-      );
+    if (this.inputTemplateExecutor) {
+      const result = await this.inputTemplateExecutor.execute(input, executionBindings);
+      customData.input = result.output;
     }
-    if (this.contextTemplateExpression) {
-      customData.context = await WorkflowUtils.evaluateJsonataExpr(
-        this.contextTemplateExpression,
-        input,
-        allBindings,
-      );
+    if (this.contextTemplateExecutor) {
+      const result = await this.contextTemplateExecutor.execute(input, executionBindings);
+      customData.context = result.output;
     }
     return customData;
   }

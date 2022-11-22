@@ -1,0 +1,14 @@
+options:
+  templateType: jsontemplate
+steps:
+  - name: setContext
+    template: |
+      $.context.foo = "bar"
+  - name: returnCustomContext
+    condition: .customContext
+    contextTemplate: |
+        {"foo": "custom"}
+    template: $.context
+    onComplete: return
+  - name: returnOriginalContext
+    template: $.context

@@ -1,25 +1,35 @@
-import jsonata from 'jsonata';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
-import { StepExecutor, StepOutput } from '../../types';
+import { Step, StepExecutor, StepOutput, TemplateStepExecutor } from '../../types';
+import { TemplateStepExecutorFactory } from '../../../steps/base/simple/executors/template';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
-  private readonly conditionExpression: jsonata.Expression;
+  private readonly templateExecutor: TemplateStepExecutor;
 
-  constructor(condition: string, nextExecutor: StepExecutor) {
+  constructor(step: Step, nextExecutor: StepExecutor) {
     super(nextExecutor);
-    this.conditionExpression = jsonata(condition);
+    this.templateExecutor = TemplateStepExecutorFactory.create(
+      nextExecutor.getWorkflow(),
+      step,
+      step.condition as string,
+      nextExecutor.getBindings(),
+      nextExecutor.getLogger(),
+    );
   }
 
-  private shouldSkipStep(input: any, executionBindings: ExecutionBindings) {
-    const allBindings = Object.assign({}, super.getBindings(), executionBindings);
-    return !this.conditionExpression.evaluate(input, allBindings);
+  private async shouldExecuteStep(
+    input: any,
+    executionBindings: ExecutionBindings,
+  ): Promise<boolean> {
+    const result = await this.templateExecutor.execute(input, executionBindings);
+    return result.output;
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    if (this.shouldSkipStep(input, executionBindings)) {
-      return { skipped: true };
+    const shouldExecuteStep = await this.shouldExecuteStep(input, executionBindings);
+    if (shouldExecuteStep) {
+      return super.execute(input, executionBindings);
     }
-    return super.execute(input, executionBindings);
+    return { skipped: true };
   }
 }

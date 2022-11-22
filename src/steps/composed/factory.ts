@@ -16,7 +16,7 @@ export class ComposableExecutorFactory {
     }
 
     if (step.condition) {
-      stepExecutor = new ConditionalStepExecutor(step.condition, stepExecutor);
+      stepExecutor = new ConditionalStepExecutor(step, stepExecutor);
     }
 
     if (step.debug) {

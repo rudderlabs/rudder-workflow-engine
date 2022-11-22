@@ -1,6 +1,6 @@
 import { Logger } from 'pino';
 import { StepExecutionError } from '../../errors';
-import { ExecutionBindings } from '../../../workflow/types';
+import { ExecutionBindings, Workflow } from '../../../workflow/types';
 import { Dictionary } from '../../../common/types';
 import { WorkflowUtils } from '../../../workflow/utils';
 import { BaseStepExecutor } from './base';
@@ -8,12 +8,13 @@ import { StepExecutor, StepOutput, WorkflowStep } from '../../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
   constructor(
+    workflow: Workflow,
     stepExecutors: StepExecutor[],
     step: WorkflowStep,
     bindings: Dictionary<any>,
     logger: Logger,
   ) {
-    super(step, bindings, logger);
+    super(workflow, step, bindings, logger);
     this.stepExecutors = stepExecutors;
   }
 

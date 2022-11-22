@@ -1,4 +1,4 @@
-import { Dictionary } from '../src';
+import { Dictionary, WorkflowOptions } from '../src';
 
 export type LogCounts = {
   debug?: number;
@@ -27,7 +27,7 @@ export type Scenario = {
   description?: string;
   input?: any;
   workflowPath?: string;
-  bindingsPaths?: string[];
+  options?: WorkflowOptions;
   bindings?: Dictionary<any>;
   stepName?: string;
   childStepName?: string;
