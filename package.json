@@ -1,6 +1,6 @@
 {
   "name": "rudder-workflow-engine",
-  "version": "0.2.7-beta",
+  "version": "0.3.0",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
