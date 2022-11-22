@@ -1,5 +1,54 @@
 [
   {
+    "workflowPath": "jsontemplate.yaml",
+    "input": {
+      "a": "1",
+      "b": "2"
+    },
+    "output": {
+      "a": "1",
+      "b": "2",
+      "sum": 3
+    }
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+    "input": {
+      "a": 1,
+      "b": "2"
+    },
+    "output": {
+      "a": 1,
+      "b": "2",
+      "sum": 3
+    }
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+
+    "input": {
+      "a": "1",
+      "b": 2
+    },
+    "output": {
+      "a": "1",
+      "b": 2,
+      "sum": 3
+    }
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+    "input": {
+      "a": 1,
+      "b": 2
+    },
+    "output": {
+      "a": 1,
+      "b": 2,
+      "sum": 3
+    }
+  },
+  {
     "input": {
       "a": "1",
       "b": "2"

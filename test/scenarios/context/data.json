@@ -1,5 +1,23 @@
 [
   {
+    "workflowPath": "jsontemplate.yaml",
+    "input": {
+      "foo": true
+    },
+    "output": "foo"
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+    "input": {
+      "bar": true
+    },
+    "output": "bar"
+  },
+  {
+    "workflowPath": "jsontemplate.yaml",
+    "output": "default"
+  },
+  {
     "input": {
       "foo": true
     },

@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { Logger } from 'pino';
+import { Workflow } from 'src/workflow';
 import { Dictionary } from '../../common/types';
 import { WorkflowUtils } from '../../workflow/utils';
 import { StepCreationError } from '../errors';
@@ -22,6 +23,7 @@ export class BaseStepUtils {
   }
 
   static createSimpleStepExecutors(
+    workflow: Workflow,
     workflowStep: WorkflowStep,
     rootPath: string,
     bindings: Dictionary<any>,
@@ -29,7 +31,7 @@ export class BaseStepUtils {
   ): Promise<StepExecutor[]> {
     const steps = workflowStep.steps as SimpleStep[];
     return Promise.all(
-      steps.map((step) => StepExecutorFactory.create(step, rootPath, bindings, logger)),
+      steps.map((step) => StepExecutorFactory.create(workflow, step, rootPath, bindings, logger)),
     );
   }
 

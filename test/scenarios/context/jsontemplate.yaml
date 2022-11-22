@@ -1,0 +1,17 @@
+options:
+  templateType: jsontemplate
+steps:
+  - name: setDefaultContext
+    template: |
+      $.context.something = "default"
+  - name: setContextForFoo
+    condition: .foo
+    template: |
+      $.context.something = "foo"
+  - name: setContextForB
+    condition: .bar
+    template: |
+      $.context.something = "bar"
+  - name: returnContext
+    template: |
+      $.context.something

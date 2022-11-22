@@ -1,0 +1,6 @@
+options:
+  templateType: jsontemplate
+steps:
+  - name: sample
+    template: |
+      .a.b.c

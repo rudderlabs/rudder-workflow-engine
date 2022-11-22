@@ -1,6 +1,6 @@
 {
   "name": "rudder-workflow-engine",
-  "version": "0.2.7-beta",
+  "version": "0.3.0",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -62,7 +62,8 @@
     "jsonata": "^1.8.6",
     "lodash": "^4.17.21",
     "pino": "^8.6.0",
-    "pino-caller": "^3.2.0"
+    "pino-caller": "^3.2.0",
+    "rudder-json-template-engine": "^0.2.1"
   },
   "engines": {
     "node": ">=14.15.0 <15",

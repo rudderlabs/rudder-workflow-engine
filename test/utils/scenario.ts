@@ -1,16 +1,14 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { WorkflowEngineFactory, WorkflowEngine, Executor } from '../../src';
+import { WorkflowEngineFactory, WorkflowEngine, Executor, TemplateType } from '../../src';
 import { Scenario } from '../types';
 
 export class ScenarioUtils {
   static createWorkflowEngine(scenarioDir: string, sceanario: Scenario): Promise<WorkflowEngine> {
     const workflowPath = join(scenarioDir, sceanario.workflowPath || 'workflow.yaml');
-    return WorkflowEngineFactory.createFromFilePath(
-      workflowPath,
-      scenarioDir,
-      sceanario.bindingsPaths,
-    );
+    sceanario.options = sceanario.options || {};
+    sceanario.options.templateType = sceanario.options.templateType || TemplateType.JSONATA;
+    return WorkflowEngineFactory.createFromFilePath(workflowPath, scenarioDir, sceanario.options);
   }
 
   private static async execute(executor: Executor, sceanario: Scenario): Promise<any> {

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.7-beta...v0.3.0) (2022-11-22)
+
+
+### Features
+
+* add support json template engine ([#49](https://github.com/rudderlabs/rudder-workflow-engine/issues/49)) ([7e99ab1](https://github.com/rudderlabs/rudder-workflow-engine/commit/7e99ab1fe3452fdf0a9b8fbfe22576bc34103814))
+
+
+### Bug Fixes
+
+* **tests:** correct spelling mistakes in tests ([#48](https://github.com/rudderlabs/rudder-workflow-engine/issues/48)) ([53a59d7](https://github.com/rudderlabs/rudder-workflow-engine/commit/53a59d75106a0c5ee9a0726db6c18c0d2385e21c))
+
+
+### Miscellaneous
+
+* change doc to docs in allowed scopes ([623f3e2](https://github.com/rudderlabs/rudder-workflow-engine/commit/623f3e23f86b14543962268413d918a1f7f13254))
+* remove jsonata beta version ([#46](https://github.com/rudderlabs/rudder-workflow-engine/issues/46)) ([1c7fd77](https://github.com/rudderlabs/rudder-workflow-engine/commit/1c7fd77d2b89dc7fcb5c9fa87cf2dccb6dccb371))
+* turn off single commit checks in prs ([bbdc72d](https://github.com/rudderlabs/rudder-workflow-engine/commit/bbdc72df4100346581f9feaf19507c195d1de287))
+
 ## [0.2.7-beta](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.6-beta...v0.2.7-beta) (2022-11-04)
 
 

@@ -4,18 +4,19 @@ import { Dictionary } from '../../../../common/types';
 import { BaseStepExecutor } from '../../executors/base';
 import { SimpleStep, StepOutput } from '../../../types';
 import { StepExecutionError } from '../../../errors';
-import { ExecutionBindings } from '../../../../workflow/types';
+import { ExecutionBindings, Workflow } from '../../../../workflow/types';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;
 
   constructor(
+    workflow: Workflow,
     workflowEngine: WorkflowEngine,
     step: SimpleStep,
     bindings: Dictionary<any>,
     parentLogger: Logger,
   ) {
-    super(step, bindings, parentLogger.child({ type: 'ExternalWorkflow' }));
+    super(workflow, step, bindings, parentLogger.child({ type: 'ExternalWorkflow' }));
     this.workflowEngine = workflowEngine;
   }
 

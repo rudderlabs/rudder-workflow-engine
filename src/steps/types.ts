@@ -1,10 +1,15 @@
 import { Logger } from 'pino';
-import { ExecutionBindings, Binding } from '../workflow/types';
+import { ExecutionBindings, Binding, WorkflowOptions, Workflow } from '../workflow/types';
 import { Dictionary, Executor } from '../common/types';
 import { BaseStepExecutor } from './base';
 import { StatusError } from './errors';
+import { JsonataStepExecutor, JsonTemplateStepExecutor } from './base/simple/executors/template';
 
 export interface StepExecutor extends Executor {
+  /**
+   * Returns the workflow
+   */
+  getWorkflow(): Workflow;
   /**
    * Returns the name of the step which executor is operating
    */
@@ -45,6 +50,11 @@ export enum StepType {
   Unknown = 'unknow',
 }
 
+export enum TemplateType {
+  JSONATA = 'jsonata',
+  JSON_TEMPLATE = 'jsontemplate',
+}
+
 export enum StepExitAction {
   Return = 'return',
   Continue = 'continue',
@@ -55,7 +65,7 @@ export type ExternalWorkflow = {
   path: string;
   // root path for resolving dependencies
   rootPath?: string;
-  bindingPaths?: string[];
+  options?: WorkflowOptions;
 };
 
 export type StepCommon = {
@@ -85,6 +95,8 @@ export type Template = {
   content?: string;
   path?: string;
 };
+
+export type TemplateStepExecutor = JsonTemplateStepExecutor | JsonataStepExecutor;
 
 export type WorkflowStep = StepCommon & {
   bindings?: Binding[];
