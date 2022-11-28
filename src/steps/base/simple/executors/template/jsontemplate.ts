@@ -16,7 +16,7 @@ export class JsonTemplateStepExecutor extends BaseStepExecutor {
     parentLogger: Logger,
   ) {
     super(workflow, step, bindings, parentLogger.child({ type: 'JsonTemplate' }));
-    this.templateEngine = new JsonTemplateEngine(template);
+    this.templateEngine = JsonTemplateEngine.create(template, bindings);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {

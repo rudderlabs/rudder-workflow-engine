@@ -1,0 +1,9 @@
+steps:
+  - name: ifelse
+    condition: a <= 5
+    template: |
+      {"aIsLessThanOrEqualTo5": true}
+    else:
+      name: aIsGreaterThan5
+      template: |
+        {"aIsGreaterThan5": true}

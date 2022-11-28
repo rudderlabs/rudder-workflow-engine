@@ -30,15 +30,5 @@
       "op": "/"
     },
     "output": 5
-  },
-  {
-    "input": {
-      "a": 10,
-      "b": 0,
-      "op": "/"
-    },
-    "error": {
-      "message": "division by zero is not allowed"
-    }
   }
 ]

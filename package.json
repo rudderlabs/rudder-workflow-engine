@@ -8,6 +8,7 @@
     "test": "jest --coverage --verbose",
     "build": "tsc",
     "clean": "rm -rf build",
+    "clean-build": "npm run clean && npm run build",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . || exit 1",
     "format": "prettier --write '**/*.ts' '**/*.json'",
@@ -63,7 +64,7 @@
     "lodash": "^4.17.21",
     "pino": "^8.6.0",
     "pino-caller": "^3.2.0",
-    "rudder-json-template-engine": "^0.2.1"
+    "rudder-json-template-engine": "file:../rudder-json-template-engine"
   },
   "engines": {
     "node": ">=14.15.0 <15",

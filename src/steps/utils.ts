@@ -24,6 +24,9 @@ export class StepUtils {
   static populateSteps(steps: Step[]) {
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
+      if(step.else) {
+        step.else.type = StepUtils.getStepType(step.else);
+      }
     }
   }
 
@@ -51,7 +54,7 @@ export class StepUtils {
     }
 
     if (!allowedStepTypes.includes(step.type as StepType)) {
-      throw new StepCreationError('Invalid step configuration', step.name);
+      throw new StepCreationError('unsupported step type', step.name);
     }
 
     if (step.onComplete === StepExitAction.Return && !step.condition) {
@@ -59,6 +62,10 @@ export class StepUtils {
         '"onComplete = return" should be used in a step with condition',
         step.name,
       );
+    }
+
+    if (step.else && !step.condition) {
+      throw new StepCreationError('else step should be used in a step with condition', step.name);
     }
   }
 }

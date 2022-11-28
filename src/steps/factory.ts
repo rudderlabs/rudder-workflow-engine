@@ -22,7 +22,7 @@ export class StepExecutorFactory {
         bindings,
         parentLogger,
       );
-      stepExecutor = ComposableExecutorFactory.create(step, stepExecutor);
+      stepExecutor = await ComposableExecutorFactory.create(step, rootPath, stepExecutor);
       return stepExecutor;
     } catch (error: any) {
       if (error instanceof StepCreationError) {

@@ -11,16 +11,19 @@ steps:
         condition: op = "+"
         template: |
           $add(a, b)
+        onComplete: return
       - name: subtract
         description: Do subtraction
         condition: op = "-"
         template: |
           $subtract(a, b)
+        onComplete: return
       - name: multiply
         description: Do multiplication
         condition: op = "*"
         template: |
           $multiply(a, b)
+        onComplete: return
       - name: divide
         description: Do division
         condition: op = "/"

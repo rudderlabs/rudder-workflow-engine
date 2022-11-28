@@ -73,6 +73,7 @@ export type StepCommon = {
   description?: string;
   type?: StepType;
   condition?: string;
+  else?: Step;
   inputTemplate?: string;
   contextTemplate?: string;
   loopOverInput?: boolean;

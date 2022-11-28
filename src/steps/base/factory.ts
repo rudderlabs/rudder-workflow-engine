@@ -16,7 +16,7 @@ export class BaseStepExecutorFactory {
     bindings: Dictionary<any>,
     parentLogger: Logger,
   ): Promise<StepExecutor> {
-    if (step.type == StepType.Simple) {
+    if (step.type === StepType.Simple) {
       return SimpleStepExecutorFactory.create(workflow, step, rootPath, bindings, parentLogger);
     } else {
       return this.createWorkflowStepExecutor(workflow, step, rootPath, bindings, parentLogger);
