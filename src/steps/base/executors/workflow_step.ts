@@ -1,8 +1,6 @@
 import { Logger } from 'pino';
-import { StepExecutionError } from '../../errors';
 import { ExecutionBindings, Workflow } from '../../../workflow/types';
-import { Dictionary } from '../../../common/types';
-import { WorkflowUtils } from '../../../workflow/utils';
+import { Dictionary, ErrorUtils } from '../../../common/';
 import { BaseStepExecutor } from './base';
 import { StepExecutor, StepExitAction, StepOutput, WorkflowStep } from '../../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {
@@ -36,12 +34,10 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
     try {
       return await childExector.execute(input, executionBindings);
     } catch (error: any) {
-      throw new StepExecutionError(
-        error.message,
-        WorkflowUtils.getErrorStatus(error),
-        this.getStepName(),
-        error.stepName,
+      throw ErrorUtils.createStepExecutionError(
         error.error,
+        this.getStepName(),
+        childExector.getStepName(),
       );
     }
   }

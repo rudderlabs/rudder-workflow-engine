@@ -4,7 +4,7 @@ import { readFile } from 'fs/promises';
 import { Dictionary } from '../../../common/types';
 import { ExternalWorkflow, SimpleStep } from '../../types';
 import { FunctionStepExecutor } from './executors/function';
-import { WorkflowEngineFactory, Workflow } from '../../../workflow';
+import { WorkflowEngineFactory, Workflow, WorkflowUtils } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { ExternalWorkflowStepExecutor } from './executors';
 import { TemplateStepExecutorFactory } from './executors/template';
@@ -53,17 +53,21 @@ export class SimpleStepExecutorFactory {
     workflow: Workflow,
     step: SimpleStep,
     rootPath: string,
-    bindings: Dictionary<any>,
+    parentBindings: Dictionary<string>,
     parentLogger: Logger,
   ): Promise<ExternalWorkflowStepExecutor> {
-    const externalWorkflow = step.externalWorkflow as ExternalWorkflow;
-    const workflowPath = join(rootPath, externalWorkflow.path);
-    const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
-    const workflowEngine = await WorkflowEngineFactory.createFromFilePath(
-      workflowPath,
-      externalWorkflowRootPath,
-      Object.assign({}, workflow.options, externalWorkflow.options),
+    const externalWorkflowConfig = step.externalWorkflow as ExternalWorkflow;
+    const externalWorkflowPath = join(rootPath, externalWorkflowConfig.path);
+    const externalWorkflowRootPath = join(rootPath, externalWorkflowConfig.rootPath || '');
+    const externalWorkflow = await WorkflowUtils.createWorkflowFromFilePath(externalWorkflowPath);
+    externalWorkflow.bindings = (externalWorkflow.bindings || []).concat(
+      externalWorkflowConfig.bindings || [],
     );
-    return new ExternalWorkflowStepExecutor(workflow, workflowEngine, step, bindings, parentLogger);
+    const externalWorkflowEngine = await WorkflowEngineFactory.create(
+      externalWorkflow,
+      externalWorkflowRootPath,
+      Object.assign({}, workflow.options, externalWorkflow.options, { parentBindings }),
+    );
+    return new ExternalWorkflowStepExecutor(workflow, externalWorkflowEngine, step, parentLogger);
   }
 }

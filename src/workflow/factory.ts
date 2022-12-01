@@ -24,14 +24,10 @@ export class WorkflowEngineFactory {
   ): Promise<WorkflowEngine> {
     try {
       this.prepareWorkflow(workflow, options);
-      const bindings = await this.prepareBindings(
-        rootPath,
-        workflow.bindings,
-        options?.bindingsPaths,
-      );
+      const bindings = await this.prepareBindings(rootPath, workflow.bindings, options);
       const logger = getLogger(workflow.name);
       const stepExecutors = await this.createStepExecutors(workflow, rootPath, bindings, logger);
-      return new WorkflowEngine(workflow, logger, stepExecutors);
+      return new WorkflowEngine(workflow, bindings, logger, stepExecutors);
     } catch (error: any) {
       if (error instanceof WorkflowCreationError) {
         throw error;
@@ -62,13 +58,13 @@ export class WorkflowEngineFactory {
   private static async prepareBindings(
     rootPath: string,
     workflowBindings?: Binding[],
-    bindingsPaths?: string[],
+    options?: WorkflowOptions,
   ): Promise<Dictionary<any>> {
     return Object.assign(
       {},
       libraryBindings,
-      await WorkflowUtils.extractBindingsFromPaths(rootPath, bindingsPaths),
-      await WorkflowUtils.extractBindings(rootPath, workflowBindings),
+      await WorkflowUtils.extractBindingsFromPaths(rootPath, options?.bindingsPaths),
+      await WorkflowUtils.extractBindings(rootPath, workflowBindings, options?.parentBindings),
     );
   }
 

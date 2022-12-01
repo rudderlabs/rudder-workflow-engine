@@ -1,18 +1,23 @@
-import cloneDeep from 'lodash/cloneDeep';
 import { Logger } from 'pino';
 import { StepExecutor, StepExitAction } from '../steps/types';
-import { Dictionary, Executor } from '../common/types';
-import { WorkflowUtils } from './utils';
+import { Dictionary, Executor, ErrorUtils } from '../common';
 import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from '../steps';
 import { ExecutionBindings, WorkflowOutput, Workflow } from './types';
 
 export class WorkflowEngine implements Executor {
   readonly workflow: Workflow;
+  readonly bindings: Dictionary<any>;
   private readonly logger: Logger;
   private readonly stepExecutors: StepExecutor[];
 
-  constructor(workflow: Workflow, logger: Logger, stepExecutors: StepExecutor[]) {
+  constructor(
+    workflow: Workflow,
+    bindings: Dictionary<any>,
+    logger: Logger,
+    stepExecutors: StepExecutor[],
+  ) {
+    this.bindings = bindings;
     this.workflow = workflow;
     this.logger = logger;
     this.stepExecutors = stepExecutors;
@@ -39,10 +44,9 @@ export class WorkflowEngine implements Executor {
   }
 
   async execute(input: any, bindings: Dictionary<any> = {}): Promise<WorkflowOutput> {
-    const newBindings = cloneDeep(bindings);
-    const context = newBindings.context || {};
+    const context = {};
     const executionBindings: ExecutionBindings = {
-      ...newBindings,
+      ...bindings,
       outputs: {},
       context,
       setContext: (key, value) => {
@@ -78,7 +82,7 @@ export class WorkflowEngine implements Executor {
   handleError(error: any, stepName: string) {
     throw new WorkflowExecutionError(
       error.message,
-      WorkflowUtils.getErrorStatus(error),
+      ErrorUtils.getErrorStatus(error),
       this.workflow.name,
       stepName,
       error.childStepName,

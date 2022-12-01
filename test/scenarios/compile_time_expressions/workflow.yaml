@@ -3,26 +3,25 @@ options:
 bindings:
   - name: ops
     path: ./ops
-    exportAll: true
   - path: ./functions
 steps:
   - name: add
     description: Do addition
-    condition: .op === {{$.ops.plus}}
+    condition: .op === {{$.ops.PLUS}}
     template: |
       $.add(.a, .b)
   - name: subtract
     description: Do subtraction
-    condition: .op === {{$.ops.minus}}
+    condition: .op === {{$.ops.MINUS}}
     template: |
       $.subtract(.a, .b)
   - name: multiply
     description: Do multiplication
-    condition: .op === {{$.ops.multiply}}
+    condition: .op === {{$.ops.MULTIPLY}}
     template: |
       $.multiply(.a, .b)
   - name: divide
     description: Do division
-    condition: .op === {{$.ops.divide}}
+    condition: .op === {{$.ops.DIVIDE}}
     template: |
       $.divide(.a, .b)

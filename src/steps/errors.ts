@@ -1,10 +1,4 @@
-export class StatusError extends Error {
-  status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = +status;
-  }
-}
+import { StatusError } from '../common/errors';
 
 export class StepCreationError extends StatusError {
   stepName?: string;

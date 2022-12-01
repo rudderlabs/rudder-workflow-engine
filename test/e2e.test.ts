@@ -25,7 +25,7 @@ describe('Scenarios tests', () => {
       const scenarioDir = join(__dirname, rootDirName, scenario);
       const sceanarios = ScenarioUtils.extractScenarios(scenarioDir);
       sceanarios.forEach((scenario, index) => {
-        it(`Scenario ${index}`, async () => {
+        it(`Scenario ${index}: ${scenario.workflowPath || 'workflow.yaml'}`, async () => {
           try {
             const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
             const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);

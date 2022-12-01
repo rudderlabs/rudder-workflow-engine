@@ -1,16 +1,29 @@
 import { Dictionary } from '../common/types';
 import { Step, TemplateType } from '../steps/types';
 
-export type Binding = {
+export type PathBinding = {
   // exported value's name in bindings
   // if not specified then all paths will be exported
   name?: string;
+  value?: any;
   // the file from which the export has to be looked at
-  // defaults to bindings.js
+  // defaults to bindings.js / bindings.ts
   path?: string;
   // Export all when name specified
   exportAll?: true;
 };
+
+export type ValueBinding = {
+  name: string;
+  value: any;
+};
+
+export type ParentBinding = {
+  name: string;
+  fromParent: true;
+};
+
+export type Binding = PathBinding | ValueBinding | ParentBinding;
 
 export type ExecutionBindings = {
   [key: string]: any;
@@ -36,4 +49,5 @@ export type WorkflowOutput = {
 export type WorkflowOptions = {
   bindingsPaths?: string[];
   templateType?: TemplateType;
+  parentBindings?: Dictionary<any>;
 };

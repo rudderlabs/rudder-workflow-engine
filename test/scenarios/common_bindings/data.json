@@ -1,5 +1,24 @@
 [
   {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.d", "a.b[1].e", "a.c"],
+    "output": 1
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.non_existing", "a.b[1].e", "a.c"],
+    "output": 2
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.non_existing", "a.b[1].non_existing", "a.c"],
+    "output": { "f": 3 }
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "description": "no input so no output"
+  },
+  {
     "workflowPath": "get_by_paths.yaml",
     "input": ["a.b.0.d", "a.b[1].e", "a.c"],
     "output": [

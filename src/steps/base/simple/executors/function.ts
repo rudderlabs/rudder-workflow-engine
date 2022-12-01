@@ -34,12 +34,7 @@ export class FunctionStepExecutor extends BaseStepExecutor {
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    const allBindings = Object.assign(
-      {},
-      this.bindings,
-      executionBindings,
-      this.getLoggerBindings(),
-    );
+    const allBindings = this.getAllExecutionBindings(executionBindings);
     return this.fn(input, allBindings);
   }
 }

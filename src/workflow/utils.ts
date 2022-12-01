@@ -1,11 +1,9 @@
 import yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
-import jsonata from 'jsonata';
 import { Dictionary } from '../common/types';
 import { WorkflowCreationError } from './errors';
-import { StatusError } from '../steps';
-import { Binding, Workflow } from './types';
+import { Binding, ParentBinding, PathBinding, ValueBinding, Workflow } from './types';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -68,64 +66,38 @@ export class WorkflowUtils {
     return Object.assign({}, ...bindings);
   }
 
-  static async extractBindings(rootPath: string, bindings?: Binding[]): Promise<Dictionary<any>> {
-    if (!bindings?.length) {
+  static async extractBindings(
+    rootPath: string,
+    bindings: Binding[] = [],
+    parentBindings: Dictionary<any> = {},
+  ): Promise<Dictionary<any>> {
+    if (!bindings.length) {
       return {};
     }
     let bindingsObj: Record<string, any> = {};
     for (const binding of bindings) {
-      const bindingSource = await import(path.join(rootPath, binding.path || 'bindings'));
-      if (binding.name) {
-        bindingsObj[binding.name] = binding.exportAll ? bindingSource : bindingSource[binding.name];
+      const parentBinding = binding as ParentBinding;
+      if (parentBinding.fromParent) {
+        bindingsObj[parentBinding.name] = parentBindings[parentBinding.name];
+        continue;
+      }
+
+      const valueBinding = binding as ValueBinding;
+      if (valueBinding.value) {
+        bindingsObj[valueBinding.name] = valueBinding.value;
+        continue;
+      }
+
+      const pathBinding = binding as PathBinding;
+      const bindingSource = await import(path.join(rootPath, pathBinding.path || 'bindings'));
+      if (pathBinding.name) {
+        bindingsObj[pathBinding.name] = pathBinding.exportAll
+          ? bindingSource
+          : bindingSource[pathBinding.name];
       } else {
         bindingsObj = Object.assign(bindingsObj, bindingSource);
       }
     }
     return bindingsObj;
-  }
-
-  static isAssertError(error: any) {
-    return error.token === 'assert';
-  }
-
-  static getErrorStatus(error: any) {
-    return error.response?.status || error.status || 500;
-  }
-
-  /**
-   * JSONata adds custom properties to arrays for internal processing
-   * hence it fails the comparison so we need to cleanup.
-   * Reference: https://github.com/jsonata-js/jsonata/issues/296
-   */
-  private static cleanUpArrays(obj: any) {
-    if (Array.isArray(obj)) {
-      obj = obj.map(WorkflowUtils.cleanUpArrays);
-    } else if (obj instanceof Object) {
-      Object.keys(obj).forEach((key) => {
-        obj[key] = WorkflowUtils.cleanUpArrays(obj[key]);
-      });
-    }
-    return obj;
-  }
-
-  static evaluateJsonataExpr(
-    expr: jsonata.Expression,
-    data: any,
-    bindings: Record<string, any>,
-  ): Promise<any> {
-    return new Promise(function (resolve, reject) {
-      expr.evaluate(data, bindings, function (error, response) {
-        if (error) {
-          if (error.token === 'doReturn') {
-            return resolve((error as any).result);
-          }
-          if (WorkflowUtils.isAssertError(error)) {
-            return reject(new StatusError(error.message, 400));
-          }
-          return reject(error);
-        }
-        resolve(response);
-      });
-    }).then(WorkflowUtils.cleanUpArrays);
   }
 }

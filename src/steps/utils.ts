@@ -1,4 +1,4 @@
-import { CommonUtils } from '../common/utils';
+import { CommonUtils } from '../common/utils/common';
 import { StepCreationError } from './errors';
 import { SimpleStep, Step, StepExitAction, StepType, WorkflowStep } from './types';
 
@@ -24,7 +24,7 @@ export class StepUtils {
   static populateSteps(steps: Step[]) {
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
-      if(step.else) {
+      if (step.else) {
         step.else.type = StepUtils.getStepType(step.else);
       }
     }

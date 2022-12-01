@@ -1,11 +1,19 @@
 import { at, identity } from 'lodash';
-import { ReturnResultError, StatusError } from '../steps';
-import { Dictionary } from '../common/types';
+import { ReturnResultError } from '../steps';
+import { Dictionary, StatusError } from '../common';
 
 export { chunk } from 'lodash';
 
 export function values(obj: Dictionary<any>): any[] {
   return Object.values(obj);
+}
+
+export function getOneByPaths(obj: any, paths: string | string[]): any {
+  const newPaths = toArray(paths);
+  if (!obj || !newPaths || !newPaths.length) {
+    return undefined;
+  }
+  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
 }
 
 export function getByPaths(obj: any, paths: string | string[]): any {
@@ -31,16 +39,10 @@ export function doThrow(message: string, status: number = 500) {
   throw new StatusError(message, +status);
 }
 
-export function assert(val: any, message = 'Assertion failed', status = 400) {
-  if (!val) {
-    throw new StatusError(message, status);
-  }
-}
-
 export function toMilliseconds(timestamp: string): number {
   return new Date(timestamp).getTime();
 }
 
 export function toSeconds(timestamp: string): number {
-  return Math.floor(toMilliseconds(timestamp)/1000);
+  return Math.floor(toMilliseconds(timestamp) / 1000);
 }

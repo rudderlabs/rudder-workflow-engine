@@ -3,4 +3,4 @@ options:
 steps:
   - name: sample
     template: |
-      .a.b.c
+      ~r .a.b.c

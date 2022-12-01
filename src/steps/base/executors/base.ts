@@ -12,7 +12,7 @@ export abstract class BaseStepExecutor implements StepExecutor {
     this.workflow = workflow;
     this.step = step;
     this.logger = this.prepareLogger(logger);
-    this.bindings = bindings;
+    this.bindings = Object.assign({}, this.getLoggerBindings(), bindings);
   }
 
   getWorkflow(): Workflow {
@@ -42,6 +42,10 @@ export abstract class BaseStepExecutor implements StepExecutor {
       warn: (message: string, ...args) => this.getLogger().warn(args, message),
       error: (message: string, ...args) => this.getLogger().error(args, message),
     };
+  }
+
+  getAllExecutionBindings(executionBindings: ExecutionBindings): Dictionary<any> {
+    return Object.assign({}, this.bindings, executionBindings);
   }
 
   getStepName(): string {

@@ -8,23 +8,25 @@
     }
   },
   {
-    "input": [
-      {
-        "description": "I will return error",
-        "error": {
-          "message": "some error"
+    "input": {
+      "elements": [
+        {
+          "description": "I will return error",
+          "error": {
+            "message": "some error"
+          }
+        },
+        {
+          "description": "I will return the same output",
+          "output": {
+            "hello": "world"
+          }
+        },
+        {
+          "description": "I will return custom output"
         }
-      },
-      {
-        "description": "I will return the same output",
-        "output": {
-          "hello": "world"
-        }
-      },
-      {
-        "description": "I will return custom output"
-      }
-    ],
+      ]
+    },
     "output": [
       {
         "error": {

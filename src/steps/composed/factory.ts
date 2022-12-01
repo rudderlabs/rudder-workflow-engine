@@ -2,7 +2,7 @@ import { TemplateStepExecutorFactory } from '../base';
 import { StepExecutorFactory } from '../factory';
 import { Step, StepExecutor } from '../types';
 import { ConditionalStepExecutor } from './executors/conditional';
-import { CustomDataStepExecutor } from './executors/custom_data';
+import { CustomInputStepExecutor } from './executors/custom_input';
 import { DebuggableStepExecutor } from './executors/debuggable';
 import { ErrorWrapStepExecutor } from './executors/error_wrap';
 import { LoopStepExecutor } from './executors/loop';
@@ -17,12 +17,12 @@ export class ComposableExecutorFactory {
       stepExecutor = new LoopStepExecutor(stepExecutor);
     }
 
-    if (step.inputTemplate || step.contextTemplate) {
-      stepExecutor = new CustomDataStepExecutor(step, stepExecutor);
+    if (step.inputTemplate) {
+      stepExecutor = this.createCustomInputStepExecutor(step, stepExecutor);
     }
 
     if (step.condition) {
-      stepExecutor = await this.createConditionalExecutor(step, rootPath, stepExecutor);
+      stepExecutor = await this.createConditionalStepExecutor(step, rootPath, stepExecutor);
     }
 
     if (step.debug) {
@@ -32,7 +32,21 @@ export class ComposableExecutorFactory {
     return stepExecutor;
   }
 
-  static async createConditionalExecutor(
+  static createCustomInputStepExecutor(
+    step: Step,
+    stepExecutor: StepExecutor,
+  ): CustomInputStepExecutor {
+    const templateExecutor = TemplateStepExecutorFactory.create(
+      stepExecutor.getWorkflow(),
+      step,
+      step.inputTemplate as string,
+      stepExecutor.getBindings(),
+      stepExecutor.getLogger(),
+    );
+    return new CustomInputStepExecutor(templateExecutor, stepExecutor);
+  }
+
+  static async createConditionalStepExecutor(
     step: Step,
     rootPath: string,
     thenExecutor: StepExecutor,

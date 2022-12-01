@@ -2,7 +2,6 @@ import { Logger } from 'pino';
 import { ExecutionBindings, Binding, WorkflowOptions, Workflow } from '../workflow/types';
 import { Dictionary, Executor } from '../common/types';
 import { BaseStepExecutor } from './base';
-import { StatusError } from './errors';
 import { JsonataStepExecutor, JsonTemplateStepExecutor } from './base/simple/executors/template';
 
 export interface StepExecutor extends Executor {
@@ -38,7 +37,11 @@ export interface StepExecutor extends Executor {
 }
 
 export type StepOutput = {
-  error?: StatusError;
+  error?: {
+    message: string;
+    status: number;
+    originalError?: Error;
+  };
   skipped?: boolean;
   output?: any;
   outputs?: Dictionary<any>;
@@ -65,6 +68,7 @@ export type ExternalWorkflow = {
   path: string;
   // root path for resolving dependencies
   rootPath?: string;
+  bindings?: Binding[];
   options?: WorkflowOptions;
 };
 
@@ -75,7 +79,6 @@ export type StepCommon = {
   condition?: string;
   else?: Step;
   inputTemplate?: string;
-  contextTemplate?: string;
   loopOverInput?: boolean;
   onComplete?: StepExitAction;
   onError?: StepExitAction;
