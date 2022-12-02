@@ -1,9 +1,15 @@
 import yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
-import { Dictionary } from '../common/types';
 import { WorkflowCreationError } from './errors';
-import { Binding, ParentBinding, PathBinding, ValueBinding, Workflow } from './types';
+import {
+  Binding,
+  ParentBinding,
+  PathBinding,
+  ValueBinding,
+  Workflow,
+  WorkflowOptionsInternal,
+} from './types';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -48,18 +54,17 @@ export class WorkflowUtils {
   }
 
   static async extractBindingsFromPaths(
-    rootPath: string,
-    bindingsPaths?: string[],
-  ): Promise<Dictionary<any>> {
-    if (!bindingsPaths?.length) {
+    options: WorkflowOptionsInternal,
+  ): Promise<Record<string, any>> {
+    if (!options.bindingsPaths?.length) {
       return {};
     }
 
     const bindings = await Promise.all(
-      bindingsPaths.map(async (bindingPath) => {
+      options.bindingsPaths.map(async (bindingPath) => {
         return (
           (await this.getModuleExports(bindingPath)) ||
-          this.getModuleExports(path.join(rootPath, bindingPath), true)
+          this.getModuleExports(path.join(options.rootPath, bindingPath), true)
         );
       }),
     );
@@ -67,14 +72,14 @@ export class WorkflowUtils {
   }
 
   static async extractBindings(
-    rootPath: string,
     bindings: Binding[] = [],
-    parentBindings: Dictionary<any> = {},
-  ): Promise<Dictionary<any>> {
-    if (!bindings.length) {
-      return {};
-    }
+    options: WorkflowOptionsInternal,
+  ): Promise<Record<string, any>> {
     let bindingsObj: Record<string, any> = {};
+    if (!bindings.length) {
+      return bindingsObj;
+    }
+    const parentBindings = options.parentBindings || {};
     for (const binding of bindings) {
       const parentBinding = binding as ParentBinding;
       if (parentBinding.fromParent) {
@@ -89,7 +94,9 @@ export class WorkflowUtils {
       }
 
       const pathBinding = binding as PathBinding;
-      const bindingSource = await import(path.join(rootPath, pathBinding.path || 'bindings'));
+      const bindingSource = await import(
+        path.join(options.rootPath, pathBinding.path || 'bindings')
+      );
       if (pathBinding.name) {
         bindingsObj[pathBinding.name] = pathBinding.exportAll
           ? bindingSource

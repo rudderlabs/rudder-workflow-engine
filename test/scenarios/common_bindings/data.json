@@ -66,6 +66,15 @@
     "description": "no input so no output"
   },
   {
+    "workflowPath": "logger.yaml",
+    "logLevel": 0
+  },
+  {
+    "workflowPath": "sum.yaml",
+    "input": [1, 2, 3, 4],
+    "output": 10
+  },
+  {
     "workflowPath": "to_milli_seconds.yaml",
     "output": 1650965724561
   },

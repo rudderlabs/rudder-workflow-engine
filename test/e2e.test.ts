@@ -1,10 +1,9 @@
-jest.mock('pino');
-const Pino = require('pino');
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { Command } from 'commander';
 import { ScenarioUtils } from './utils';
 import { CommonUtils } from './utils/common';
+import { logger } from '../src';
 
 const rootDirName = 'scenarios';
 const command = new Command();
@@ -16,16 +15,18 @@ let scenarios = opts.scenarios.split(/[, ]/);
 if (scenarios[0] === 'all') {
   scenarios = readdirSync(join(__dirname, rootDirName));
 }
-const fakeLogger = CommonUtils.getFakeLogger();
-Pino.mockImplementation(() => fakeLogger);
 
 describe('Scenarios tests', () => {
   scenarios.forEach((scenario) => {
     describe(`${scenario}`, () => {
       const scenarioDir = join(__dirname, rootDirName, scenario);
-      const sceanarios = ScenarioUtils.extractScenarios(scenarioDir);
-      sceanarios.forEach((scenario, index) => {
+      const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
+      scenarios.forEach((scenario, index) => {
         it(`Scenario ${index}: ${scenario.workflowPath || 'workflow.yaml'}`, async () => {
+          const previousLogLevel = logger.getLogLevel();
+          if (scenario.logLevel !== undefined) {
+            logger.setLogLevel(scenario.logLevel);
+          }
           try {
             const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
             const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
@@ -35,9 +36,10 @@ describe('Scenarios tests', () => {
             if (scenario.errorClass) {
               expect(error.error?.constructor.name).toEqual(scenario.errorClass);
             }
-          }
-          if (scenario.logger) {
-            CommonUtils.testLogger(fakeLogger, scenario.logger);
+          } finally {
+            if (scenario.logLevel !== undefined) {
+              logger.setLogLevel(previousLogLevel);
+            }
           }
         });
       });

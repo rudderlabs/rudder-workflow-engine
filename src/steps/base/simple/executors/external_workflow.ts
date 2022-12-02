@@ -1,31 +1,19 @@
-import { Logger } from 'pino';
 import { WorkflowEngine } from '../../../../workflow/engine';
 import { ErrorUtils } from '../../../../common';
 import { BaseStepExecutor } from '../../executors/base';
 import { SimpleStep, StepOutput } from '../../../types';
-import { ExecutionBindings, Workflow } from '../../../../workflow/types';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;
 
-  constructor(
-    workflow: Workflow,
-    workflowEngine: WorkflowEngine,
-    step: SimpleStep,
-    parentLogger: Logger,
-  ) {
-    super(
-      workflow,
-      step,
-      workflowEngine.bindings,
-      parentLogger.child({ type: 'ExternalWorkflow' }),
-    );
+  constructor(workflowEngine: WorkflowEngine, step: SimpleStep) {
+    super(step);
     this.workflowEngine = workflowEngine;
   }
 
-  async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
+  async execute(input: any): Promise<StepOutput> {
     try {
-      return await this.workflowEngine.execute(input, executionBindings);
+      return await this.workflowEngine.execute(input);
     } catch (error: any) {
       throw ErrorUtils.createStepExecutionError(error, this.getStepName());
     }

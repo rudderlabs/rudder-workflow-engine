@@ -1,7 +1,5 @@
 import { join } from 'path';
-import { Logger } from 'pino';
-import { Workflow } from 'src/workflow';
-import { Dictionary } from '../../common/types';
+import { WorkflowOptionsInternal } from 'src/workflow';
 import { WorkflowUtils } from '../../workflow/utils';
 import { StepCreationError } from '../errors';
 import { StepExecutorFactory } from '../factory';
@@ -9,10 +7,13 @@ import { SimpleStep, StepExecutor, StepType, WorkflowStep } from '../types';
 import { StepUtils } from '../utils';
 
 export class BaseStepUtils {
-  static async prepareWorkflowStep(step: WorkflowStep, rootPath: string): Promise<WorkflowStep> {
+  static async prepareWorkflowStep(
+    step: WorkflowStep,
+    options: WorkflowOptionsInternal,
+  ): Promise<WorkflowStep> {
     let newStep = step;
     if (step.workflowStepPath) {
-      const workflowStepPath = join(rootPath, step.workflowStepPath);
+      const workflowStepPath = join(options.rootPath, step.workflowStepPath);
       const workflowStepFromPath = await WorkflowUtils.createFromFilePath<WorkflowStep>(
         workflowStepPath,
       );
@@ -23,16 +24,11 @@ export class BaseStepUtils {
   }
 
   static createSimpleStepExecutors(
-    workflow: Workflow,
     workflowStep: WorkflowStep,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    logger: Logger,
+    options: WorkflowOptionsInternal,
   ): Promise<StepExecutor[]> {
     const steps = workflowStep.steps as SimpleStep[];
-    return Promise.all(
-      steps.map((step) => StepExecutorFactory.create(workflow, step, rootPath, bindings, logger)),
-    );
+    return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 
   static validateWorkflowStep(workflowStep: WorkflowStep) {

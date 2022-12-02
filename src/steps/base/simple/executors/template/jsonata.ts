@@ -1,7 +1,5 @@
 import jsonata from 'jsonata';
-import { Logger } from 'pino';
-import { ExecutionBindings, Workflow } from '../../../../../workflow/types';
-import { Dictionary } from '../../../../../common/types';
+import { ExecutionBindings } from '../../../../../workflow/types';
 import { BaseStepExecutor } from '../../../executors/base';
 import { SimpleStep, StepOutput } from '../../../../types';
 import { ErrorUtils, StatusError } from '../../../../../common';
@@ -9,23 +7,16 @@ import { ErrorUtils, StatusError } from '../../../../../common';
 export class JsonataStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;
 
-  constructor(
-    workflow: Workflow,
-    step: SimpleStep,
-    template: string,
-    bindings: Dictionary<any>,
-    parentLogger: Logger,
-  ) {
-    super(workflow, step, bindings, parentLogger.child({ type: 'Jsonata' }));
+  constructor(step: SimpleStep, template: string) {
+    super(step);
     this.templateExpression = jsonata(template);
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    const allBindings = this.getAllExecutionBindings(executionBindings);
     const output = await JsonataStepExecutor.evaluateJsonataExpr(
       this.templateExpression,
       input,
-      allBindings,
+      executionBindings,
     );
     return { output };
   }

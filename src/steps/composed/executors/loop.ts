@@ -29,9 +29,10 @@ export class LoopStepExecutor extends ComposableStepExecutor {
     if (!Array.isArray(input)) {
       throw new StepExecutionError('loopOverInput requires array input', 400, this.getStepName());
     }
-    const promises = input.map((element) =>
-      this.executeForInputElement(element, executionBindings),
-    );
+    const promises: Promise<StepOutput>[] = new Array(input.length);
+    for (let i = 0; i < input.length; i++) {
+      promises[i] = this.executeForInputElement(input[i], executionBindings);
+    }
     return { output: await Promise.all(promises) };
   }
 }

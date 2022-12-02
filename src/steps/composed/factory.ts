@@ -1,6 +1,7 @@
+import { WorkflowOptionsInternal } from 'src/workflow';
 import { TemplateStepExecutorFactory } from '../base';
 import { StepExecutorFactory } from '../factory';
-import { Step, StepExecutor } from '../types';
+import { StepExecutor } from '../types';
 import { ConditionalStepExecutor } from './executors/conditional';
 import { CustomInputStepExecutor } from './executors/custom_input';
 import { DebuggableStepExecutor } from './executors/debuggable';
@@ -9,20 +10,20 @@ import { LoopStepExecutor } from './executors/loop';
 
 export class ComposableExecutorFactory {
   static async create(
-    step: Step,
-    rootPath: string,
     stepExecutor: StepExecutor,
+    options: WorkflowOptionsInternal,
   ): Promise<StepExecutor> {
+    const step = stepExecutor.getStep();
     if (step.loopOverInput) {
       stepExecutor = new LoopStepExecutor(stepExecutor);
     }
 
     if (step.inputTemplate) {
-      stepExecutor = this.createCustomInputStepExecutor(step, stepExecutor);
+      stepExecutor = this.createCustomInputStepExecutor(stepExecutor, options);
     }
 
     if (step.condition) {
-      stepExecutor = await this.createConditionalStepExecutor(step, rootPath, stepExecutor);
+      stepExecutor = await this.createConditionalStepExecutor(stepExecutor, options);
     }
 
     if (step.debug) {
@@ -33,40 +34,31 @@ export class ComposableExecutorFactory {
   }
 
   static createCustomInputStepExecutor(
-    step: Step,
     stepExecutor: StepExecutor,
+    options: WorkflowOptionsInternal,
   ): CustomInputStepExecutor {
+    const step = stepExecutor.getStep();
     const templateExecutor = TemplateStepExecutorFactory.create(
-      stepExecutor.getWorkflow(),
       step,
       step.inputTemplate as string,
-      stepExecutor.getBindings(),
-      stepExecutor.getLogger(),
+      options,
     );
     return new CustomInputStepExecutor(templateExecutor, stepExecutor);
   }
 
   static async createConditionalStepExecutor(
-    step: Step,
-    rootPath: string,
     thenExecutor: StepExecutor,
+    options: WorkflowOptionsInternal,
   ): Promise<ConditionalStepExecutor> {
+    const step = thenExecutor.getStep();
     const condtionalExecutor = TemplateStepExecutorFactory.create(
-      thenExecutor.getWorkflow(),
       step,
       step.condition as string,
-      thenExecutor.getBindings(),
-      thenExecutor.getLogger(),
+      options,
     );
     let elseExecutor: StepExecutor | undefined;
     if (step.else) {
-      elseExecutor = await StepExecutorFactory.create(
-        thenExecutor.getWorkflow(),
-        step.else,
-        rootPath,
-        thenExecutor.getBindings(),
-        thenExecutor.getLogger(),
-      );
+      elseExecutor = await StepExecutorFactory.create(step.else, options);
     }
     return new ConditionalStepExecutor(condtionalExecutor, thenExecutor, elseExecutor);
   }

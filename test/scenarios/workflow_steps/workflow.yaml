@@ -1,10 +1,10 @@
+bindings:
+  - path: functions
 steps:
   - name: validateInput
     workflowStepPath: ./validation_workflow_step.yaml
   - name: operations
     description: Do operations using workflow step
-    bindings:
-      - path: functions
     steps:
       - name: add
         description: Do addition

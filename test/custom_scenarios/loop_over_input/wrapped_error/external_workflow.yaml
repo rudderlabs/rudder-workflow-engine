@@ -1,7 +1,7 @@
 steps:
   - name: sample
+    debug: true
     template: |
-      (
-        $exists(error) ? $doThrow(error.message, 500);
-        $exists(output) ? output : { "foo": "bar" }
-      )
+      .error ? $.doThrow(.error.message, 500);
+      .output ? .output : { "foo": "bar" }
+      

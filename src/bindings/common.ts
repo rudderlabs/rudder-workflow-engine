@@ -1,10 +1,12 @@
 import { at, identity } from 'lodash';
 import { ReturnResultError } from '../steps';
-import { Dictionary, StatusError } from '../common';
+import { StatusError } from '../common';
 
-export { chunk } from 'lodash';
+export { debug, info, warn, error } from '../common/logger';
 
-export function values(obj: Dictionary<any>): any[] {
+export { chunk, sum } from 'lodash';
+
+export function values(obj: Record<string, any>): any[] {
   return Object.values(obj);
 }
 
@@ -36,13 +38,21 @@ export function doReturn(obj?: any) {
 }
 
 export function doThrow(message: string, status: number = 500) {
-  throw new StatusError(message, +status);
+  throw new StatusError(message, Number(status));
 }
 
-export function toMilliseconds(timestamp: string): number {
-  return new Date(timestamp).getTime();
+export function toMilliseconds(timestamp: string): number | undefined {
+  const time = new Date(timestamp).getTime();
+  if (!time) {
+    return undefined;
+  }
+  return time;
 }
 
-export function toSeconds(timestamp: string): number {
-  return Math.floor(toMilliseconds(timestamp) / 1000);
+export function toSeconds(timestamp: string): number | undefined {
+  const timeInMillis = toMilliseconds(timestamp);
+  if (!timeInMillis) {
+    return undefined;
+  }
+  return Math.floor(timeInMillis / 1000);
 }

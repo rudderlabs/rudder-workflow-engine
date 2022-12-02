@@ -1,25 +1,17 @@
-import { Logger } from 'pino';
 import { StepExecutor, StepExitAction } from '../steps/types';
-import { Dictionary, Executor, ErrorUtils } from '../common';
+import { Executor, ErrorUtils, logger } from '../common';
 import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from '../steps';
-import { ExecutionBindings, WorkflowOutput, Workflow } from './types';
+import { ExecutionBindings, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
-  readonly workflow: Workflow;
-  readonly bindings: Dictionary<any>;
-  private readonly logger: Logger;
+  readonly name: string;
+  readonly bindings: Record<string, any>;
   private readonly stepExecutors: StepExecutor[];
 
-  constructor(
-    workflow: Workflow,
-    bindings: Dictionary<any>,
-    logger: Logger,
-    stepExecutors: StepExecutor[],
-  ) {
+  constructor(name: string, bindings: Record<string, any>, stepExecutors: StepExecutor[]) {
     this.bindings = bindings;
-    this.workflow = workflow;
-    this.logger = logger;
+    this.name = name;
     this.stepExecutors = stepExecutors;
   }
 
@@ -43,10 +35,11 @@ export class WorkflowEngine implements Executor {
     return stepExecutor;
   }
 
-  async execute(input: any, bindings: Dictionary<any> = {}): Promise<WorkflowOutput> {
+  async execute(input: any): Promise<WorkflowOutput> {
     const context = {};
+
     const executionBindings: ExecutionBindings = {
-      ...bindings,
+      ...this.bindings,
       outputs: {},
       context,
       setContext: (key, value) => {
@@ -69,7 +62,7 @@ export class WorkflowEngine implements Executor {
         }
       } catch (error) {
         if (step.onError === StepExitAction.Continue) {
-          this.logger.error(`step: ${step.name} failed`, error);
+          logger.info(`step: ${step.name} failed`, error);
           continue;
         }
         this.handleError(error, step.name);
@@ -83,7 +76,7 @@ export class WorkflowEngine implements Executor {
     throw new WorkflowExecutionError(
       error.message,
       ErrorUtils.getErrorStatus(error),
-      this.workflow.name,
+      this.name,
       stepName,
       error.childStepName,
       error.error,

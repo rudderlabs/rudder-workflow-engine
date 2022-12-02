@@ -1,18 +1,12 @@
-import { Logger } from 'pino';
-import { ExecutionBindings, Workflow } from '../../../workflow/types';
-import { Dictionary, ErrorUtils } from '../../../common/';
+import { ExecutionBindings } from '../../../workflow/types';
+import { ErrorUtils } from '../../../common/';
 import { BaseStepExecutor } from './base';
 import { StepExecutor, StepExitAction, StepOutput, WorkflowStep } from '../../types';
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
-  constructor(
-    workflow: Workflow,
-    stepExecutors: StepExecutor[],
-    step: WorkflowStep,
-    bindings: Dictionary<any>,
-    logger: Logger,
-  ) {
-    super(workflow, step, bindings, logger);
+
+  constructor(step: WorkflowStep, stepExecutors: StepExecutor[]) {
+    super(step);
     this.stepExecutors = stepExecutors;
   }
 

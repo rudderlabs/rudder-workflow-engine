@@ -1,5 +1,4 @@
-options:
-  templateType: jsontemplate
+templateType: jsontemplate
 bindings:
   - name: ops
     path: ./ops
