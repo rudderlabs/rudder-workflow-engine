@@ -1,0 +1,9 @@
+steps:
+  - name: InvalidElseStep
+    description: else step should be used only in a conditional step
+    template: |
+      { "foo": "bar" }
+    else:
+      name: someOtherStep
+      template: |
+        { "hello": "bar" }

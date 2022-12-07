@@ -1,0 +1,6 @@
+steps:
+  - name: debugStep
+    debug: true
+    template: |
+      "I will be logged"
+      

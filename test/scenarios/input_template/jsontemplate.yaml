@@ -1,5 +1,4 @@
-options:
-  templateType: jsontemplate
+templateType: jsontemplate
 steps:
   - name: sum
     # here input is customized

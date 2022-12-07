@@ -1,48 +1,30 @@
-import { Logger } from 'pino';
 import { join } from 'path';
 import { readFile } from 'fs/promises';
-import { Dictionary } from '../../../common/types';
 import { ExternalWorkflow, SimpleStep } from '../../types';
 import { FunctionStepExecutor } from './executors/function';
-import { WorkflowEngineFactory, Workflow } from '../../../workflow';
+import { WorkflowEngineFactory, WorkflowUtils, WorkflowOptionsInternal } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { ExternalWorkflowStepExecutor } from './executors';
 import { TemplateStepExecutorFactory } from './executors/template';
 
 export class SimpleStepExecutorFactory {
   static async create(
-    workflow: Workflow,
     step: SimpleStep,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    parentLogger: Logger,
+    options: WorkflowOptionsInternal,
   ): Promise<BaseStepExecutor> {
-    const simpleStepLogger = parentLogger.child({ step: step.name });
     if (step.externalWorkflow) {
-      return this.createExternalWorkflowEngineExecutor(
-        workflow,
-        step,
-        rootPath,
-        bindings,
-        simpleStepLogger,
-      );
+      return this.createExternalWorkflowEngineExecutor(step, options);
     }
 
     if (step.functionName) {
-      return new FunctionStepExecutor(workflow, step, bindings, simpleStepLogger);
+      return new FunctionStepExecutor(step, options.currentBindings);
     }
 
     if (step.templatePath) {
-      step.template = await this.extractTemplate(rootPath, step.templatePath);
+      step.template = await this.extractTemplate(options.rootPath, step.templatePath);
     }
 
-    return TemplateStepExecutorFactory.create(
-      workflow,
-      step,
-      step.template as string,
-      bindings,
-      simpleStepLogger,
-    );
+    return TemplateStepExecutorFactory.create(step, step.template as string, options);
   }
 
   private static extractTemplate(rootPath: string, templatePath: string): Promise<string> {
@@ -50,20 +32,23 @@ export class SimpleStepExecutorFactory {
   }
 
   private static async createExternalWorkflowEngineExecutor(
-    workflow: Workflow,
     step: SimpleStep,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    parentLogger: Logger,
+    options: WorkflowOptionsInternal,
   ): Promise<ExternalWorkflowStepExecutor> {
-    const externalWorkflow = step.externalWorkflow as ExternalWorkflow;
-    const workflowPath = join(rootPath, externalWorkflow.path);
-    const externalWorkflowRootPath = join(rootPath, externalWorkflow.rootPath || '');
-    const workflowEngine = await WorkflowEngineFactory.createFromFilePath(
-      workflowPath,
-      externalWorkflowRootPath,
-      Object.assign({}, workflow.options, externalWorkflow.options),
+    const externalWorkflowConfig = step.externalWorkflow as ExternalWorkflow;
+    const externalWorkflowPath = join(options.rootPath, externalWorkflowConfig.path);
+    const externalWorkflowRootPath = join(options.rootPath, externalWorkflowConfig.rootPath || '');
+    const externalWorkflow = await WorkflowUtils.createWorkflowFromFilePath(externalWorkflowPath);
+    externalWorkflow.bindings = (externalWorkflow.bindings || []).concat(
+      externalWorkflowConfig.bindings || [],
     );
-    return new ExternalWorkflowStepExecutor(workflow, workflowEngine, step, bindings, parentLogger);
+    const externalWorkflowEngine = await WorkflowEngineFactory.create(
+      externalWorkflow,
+      Object.assign({}, options, {
+        parentBindings: options.currentBindings,
+        rootPath: externalWorkflowRootPath,
+      }),
+    );
+    return new ExternalWorkflowStepExecutor(externalWorkflowEngine, step);
   }
 }

@@ -16,14 +16,17 @@ const opts = command.opts();
 const scenarioName = opts.scenario || 'basic_workflow';
 const index = +(opts.index || 0);
 
-console.log(`Executing scenario: ${scenarioName} and test: ${index}`);
-
 async function createAndExecuteWorkFlow() {
   try {
     const scenarioDir = join(__dirname, 'scenarios', scenarioName);
     const scenariosJSON = await readFile(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
     const scenarios: Scenario[] = JSON.parse(scenariosJSON);
     const scenario: Scenario = scenarios[index] || scenarios[0];
+    console.log(
+      `Executing scenario: ${scenarioName}, test: ${index}, workflow: ${
+        scenario.workflowPath || 'workflow.yaml'
+      }`,
+    );
     const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
     const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
     console.log('Actual result', JSON.stringify(result.output, null, 2));

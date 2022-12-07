@@ -1,0 +1,9 @@
+bindings:
+  - name: foo
+steps:
+  - name: useExternalWorkflow
+    externalWorkflow:
+      path: ./workflow.yaml
+      bindings: 
+        - name: foo
+          fromParent: true

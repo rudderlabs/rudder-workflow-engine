@@ -1,0 +1,13 @@
+steps:
+  - name: debug
+    template:
+      $debug("some log")
+  - name: info
+    template:
+      $info("some log")
+  - name: warn
+    template:
+      $warn("some log")
+  - name: error
+    template:
+      $error("some log")
