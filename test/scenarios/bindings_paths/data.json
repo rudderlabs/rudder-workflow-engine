@@ -49,17 +49,6 @@
     },
     "input": {
       "a": 10,
-      "b": 2,
-      "op": "/"
-    },
-    "output": 5
-  },
-  {
-    "options": {
-      "bindingsPaths": ["functions", "ops"]
-    },
-    "input": {
-      "a": 10,
       "b": 0,
       "op": "/"
     },

@@ -1,5 +1,3 @@
-options:
-  templateType: jsonata
 steps:
   - name: loopOverInput
     loopOverInput: true

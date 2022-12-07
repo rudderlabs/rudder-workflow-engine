@@ -1,5 +1,12 @@
-export type Dictionary<T> = Record<string, T>;
+import { ExecutionBindings } from 'src/workflow';
 
 export interface Executor {
-  execute(input: any, bindings?: Dictionary<any>): Promise<any>;
+  execute(input: any, bindings?: ExecutionBindings): Promise<any>;
+}
+
+export enum LogLevel {
+  DEBUG = 0,
+  INFO,
+  WARN,
+  ERROR,
 }

@@ -1,37 +1,27 @@
-import { Dictionary } from '../common/types';
 import { WorkflowUtils } from './utils';
 import * as libraryBindings from '../bindings';
 import { WorkflowCreationError } from './errors';
 import { StepCreationError } from '../steps/errors';
 import { WorkflowEngine } from './engine';
-import { StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
-import { getLogger } from '../common/logger';
-import { Logger } from 'pino';
-import { Binding, Workflow, WorkflowOptions } from './types';
+import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
+import { Binding, Workflow, WorkflowOptions, WorkflowOptionsInternal } from './types';
 
 export class WorkflowEngineFactory {
-  private static prepareWorkflow(workflow: Workflow, options?: WorkflowOptions) {
+  private static prepareWorkflow(workflow: Workflow, options: WorkflowOptions) {
     WorkflowUtils.validateWorkflow(workflow);
-    workflow.options = Object.assign({}, options, workflow.options);
+    options.templateType = workflow.templateType || options.templateType;
     StepUtils.populateSteps(workflow.steps);
     StepUtils.validateSteps(workflow.steps, [StepType.Simple, StepType.Workflow]);
   }
 
-  static async create(
-    workflow: Workflow,
-    rootPath: string,
-    options?: WorkflowOptions,
-  ): Promise<WorkflowEngine> {
+  static async create(workflow: Workflow, options: WorkflowOptions): Promise<WorkflowEngine> {
     try {
       this.prepareWorkflow(workflow, options);
-      const bindings = await this.prepareBindings(
-        rootPath,
-        workflow.bindings,
-        options?.bindingsPaths,
-      );
-      const logger = getLogger(workflow.name);
-      const stepExecutors = await this.createStepExecutors(workflow, rootPath, bindings, logger);
-      return new WorkflowEngine(workflow, logger, stepExecutors);
+      const optionsInteranl = options as WorkflowOptionsInternal;
+      const bindings = await this.prepareBindings(workflow.bindings || [], optionsInteranl);
+      optionsInteranl.currentBindings = bindings;
+      const stepExecutors = await this.createStepExecutors(workflow.steps, optionsInteranl);
+      return new WorkflowEngine(workflow.name, bindings, stepExecutors);
     } catch (error: any) {
       if (error instanceof WorkflowCreationError) {
         throw error;
@@ -52,36 +42,29 @@ export class WorkflowEngineFactory {
 
   static async createFromFilePath(
     workflowPath: string,
-    rootPath: string,
-    options?: WorkflowOptions,
+    options: WorkflowOptions,
   ): Promise<WorkflowEngine> {
     const workflow = await WorkflowUtils.createWorkflowFromFilePath(workflowPath);
-    return this.create(workflow, rootPath, options);
+    return this.create(workflow, options);
   }
 
   private static async prepareBindings(
-    rootPath: string,
-    workflowBindings?: Binding[],
-    bindingsPaths?: string[],
-  ): Promise<Dictionary<any>> {
+    workflowBindings: Binding[],
+    options: WorkflowOptionsInternal,
+  ): Promise<Record<string, any>> {
     return Object.assign(
       {},
       libraryBindings,
-      await WorkflowUtils.extractBindingsFromPaths(rootPath, bindingsPaths),
-      await WorkflowUtils.extractBindings(rootPath, workflowBindings),
+      await WorkflowUtils.extractBindingsFromPaths(options),
+      await WorkflowUtils.extractBindings(workflowBindings, options),
+      options.creationTimeBindings,
     );
   }
 
   private static createStepExecutors(
-    workflow: Workflow,
-    rootPath: string,
-    bindings: Dictionary<any>,
-    logger: Logger,
+    steps: Step[],
+    options: WorkflowOptionsInternal,
   ): Promise<StepExecutor[]> {
-    return Promise.all(
-      workflow.steps.map((step) =>
-        StepExecutorFactory.create(workflow, step, rootPath, bindings, logger),
-      ),
-    );
+    return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 }

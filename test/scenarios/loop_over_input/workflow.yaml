@@ -1,6 +1,7 @@
 steps:
   - name: loopOverInput
     loopOverInput: true
+    inputTemplate: elements
     template: |
       (
         $exists(error) ? $doThrow(error.message, 500);

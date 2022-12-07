@@ -1,11 +1,21 @@
 import { at, identity } from 'lodash';
-import { ReturnResultError, StatusError } from '../steps';
-import { Dictionary } from '../common/types';
+import { ReturnResultError } from '../steps';
+import { StatusError } from '../common';
 
-export { chunk } from 'lodash';
+export { debug, info, warn, error } from '../common/logger';
 
-export function values(obj: Dictionary<any>): any[] {
+export { chunk, sum } from 'lodash';
+
+export function values(obj: Record<string, any>): any[] {
   return Object.values(obj);
+}
+
+export function getOneByPaths(obj: any, paths: string | string[]): any {
+  const newPaths = toArray(paths);
+  if (!obj || !newPaths || !newPaths.length) {
+    return undefined;
+  }
+  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
 }
 
 export function getByPaths(obj: any, paths: string | string[]): any {
@@ -16,7 +26,7 @@ export function getByPaths(obj: any, paths: string | string[]): any {
   return Array.isArray(paths) ? result : result[0];
 }
 
-export function toArray(obj: any): any[] {
+export function toArray(obj: any): any[] | undefined {
   if (obj === undefined) {
     return obj;
   }
@@ -28,5 +38,21 @@ export function doReturn(obj?: any) {
 }
 
 export function doThrow(message: string, status: number = 500) {
-  throw new StatusError(message, +status);
+  throw new StatusError(message, Number(status));
+}
+
+export function toMilliseconds(timestamp: string): number | undefined {
+  const time = new Date(timestamp).getTime();
+  if (!time) {
+    return undefined;
+  }
+  return time;
+}
+
+export function toSeconds(timestamp: string): number | undefined {
+  const timeInMillis = toMilliseconds(timestamp);
+  if (!timeInMillis) {
+    return undefined;
+  }
+  return Math.floor(timeInMillis / 1000);
 }

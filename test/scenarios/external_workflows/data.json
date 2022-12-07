@@ -1,18 +1,14 @@
 [
   {
-    "input": {
-      "foo": "bar"
-    },
-    "output": {
-      "foo": "bar"
-    }
+    "workflowPath": "external_workflow_parent_binding.yaml",
+    "output": "overridden by parent"
   },
   {
-    "input": {
-      "foo": "hello"
-    },
-    "output": {
-      "foo": "hello"
-    }
+    "workflowPath": "external_workflow_value_binding.yaml",
+    "output": "overridden by value"
+  },
+  {
+    "workflowPath": "external_workflow.yaml",
+    "output": "original"
   }
 ]

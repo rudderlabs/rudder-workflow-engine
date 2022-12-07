@@ -2,7 +2,7 @@ import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
 import { StepExecutor, StepOutput } from '../../types';
 import { StepExecutionError } from '../../errors';
-import { WorkflowUtils } from '../../../workflow/utils';
+import { ErrorUtils } from '../../../common';
 
 export class ErrorWrapStepExecutor extends ComposableStepExecutor {
   constructor(nextExecutor: StepExecutor) {
@@ -16,13 +16,7 @@ export class ErrorWrapStepExecutor extends ComposableStepExecutor {
       if (error instanceof StepExecutionError) {
         throw error;
       }
-      throw new StepExecutionError(
-        error.message,
-        WorkflowUtils.getErrorStatus(error),
-        this.getStepName(),
-        undefined,
-        error,
-      );
+      throw ErrorUtils.createStepExecutionError(error, this.getStepName());
     }
   }
 }

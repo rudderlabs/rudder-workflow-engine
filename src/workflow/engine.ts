@@ -1,20 +1,17 @@
-import cloneDeep from 'lodash/cloneDeep';
-import { Logger } from 'pino';
 import { StepExecutor, StepExitAction } from '../steps/types';
-import { Dictionary, Executor } from '../common/types';
-import { WorkflowUtils } from './utils';
+import { Executor, ErrorUtils, logger } from '../common';
 import { WorkflowExecutionError } from './errors';
 import { WorkflowStepExecutor } from '../steps';
-import { ExecutionBindings, WorkflowOutput, Workflow } from './types';
+import { ExecutionBindings, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
-  readonly workflow: Workflow;
-  private readonly logger: Logger;
+  readonly name: string;
+  readonly bindings: Record<string, any>;
   private readonly stepExecutors: StepExecutor[];
 
-  constructor(workflow: Workflow, logger: Logger, stepExecutors: StepExecutor[]) {
-    this.workflow = workflow;
-    this.logger = logger;
+  constructor(name: string, bindings: Record<string, any>, stepExecutors: StepExecutor[]) {
+    this.bindings = bindings;
+    this.name = name;
     this.stepExecutors = stepExecutors;
   }
 
@@ -38,11 +35,11 @@ export class WorkflowEngine implements Executor {
     return stepExecutor;
   }
 
-  async execute(input: any, bindings: Dictionary<any> = {}): Promise<WorkflowOutput> {
-    const newBindings = cloneDeep(bindings);
-    const context = newBindings.context || {};
+  async execute(input: any): Promise<WorkflowOutput> {
+    const context = {};
+
     const executionBindings: ExecutionBindings = {
-      ...newBindings,
+      ...this.bindings,
       outputs: {},
       context,
       setContext: (key, value) => {
@@ -65,7 +62,7 @@ export class WorkflowEngine implements Executor {
         }
       } catch (error) {
         if (step.onError === StepExitAction.Continue) {
-          this.logger.error(`step: ${step.name} failed`, error);
+          logger.info(`step: ${step.name} failed`, error);
           continue;
         }
         this.handleError(error, step.name);
@@ -78,8 +75,8 @@ export class WorkflowEngine implements Executor {
   handleError(error: any, stepName: string) {
     throw new WorkflowExecutionError(
       error.message,
-      WorkflowUtils.getErrorStatus(error),
-      this.workflow.name,
+      ErrorUtils.getErrorStatus(error),
+      this.name,
       stepName,
       error.childStepName,
       error.error,

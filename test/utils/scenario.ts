@@ -1,27 +1,36 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { WorkflowEngineFactory, WorkflowEngine, Executor, TemplateType } from '../../src';
+import {
+  WorkflowEngineFactory,
+  WorkflowEngine,
+  Executor,
+  TemplateType,
+  WorkflowOptions,
+} from '../../src';
 import { Scenario } from '../types';
 
 export class ScenarioUtils {
-  static createWorkflowEngine(scenarioDir: string, sceanario: Scenario): Promise<WorkflowEngine> {
-    const workflowPath = join(scenarioDir, sceanario.workflowPath || 'workflow.yaml');
-    sceanario.options = sceanario.options || {};
-    sceanario.options.templateType = sceanario.options.templateType || TemplateType.JSONATA;
-    return WorkflowEngineFactory.createFromFilePath(workflowPath, scenarioDir, sceanario.options);
+  static createWorkflowEngine(scenarioDir: string, scenario: Scenario): Promise<WorkflowEngine> {
+    const workflowPath = join(scenarioDir, scenario.workflowPath || 'workflow.yaml');
+    const defaultOptions: WorkflowOptions = {
+      rootPath: scenarioDir,
+      templateType: TemplateType.JSONATA,
+    };
+    scenario.options = Object.assign({}, defaultOptions, scenario.options);
+    return WorkflowEngineFactory.createFromFilePath(workflowPath, scenario.options);
   }
 
-  private static async execute(executor: Executor, sceanario: Scenario): Promise<any> {
-    let result = await executor.execute(sceanario.input, sceanario.bindings);
+  private static async execute(executor: Executor, scenario: Scenario): Promise<any> {
+    let result = await executor.execute(scenario.input);
     return { output: result.output };
   }
 
-  static executeScenario(workflowEngine: WorkflowEngine, sceanario: Scenario) {
+  static executeScenario(workflowEngine: WorkflowEngine, scenario: Scenario) {
     let executor: Executor = workflowEngine;
-    if (sceanario.stepName) {
-      executor = workflowEngine.getStepExecutor(sceanario.stepName, sceanario.childStepName);
+    if (scenario.stepName) {
+      executor = workflowEngine.getStepExecutor(scenario.stepName, scenario.childStepName);
     }
-    return this.execute(executor, sceanario);
+    return this.execute(executor, scenario);
   }
 
   static extractScenarios(scenarioDir: string): Scenario[] {

@@ -1,0 +1,85 @@
+[
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.d", "a.b[1].e", "a.c"],
+    "output": 1
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.non_existing", "a.b[1].e", "a.c"],
+    "output": 2
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "input": ["a.b.0.non_existing", "a.b[1].non_existing", "a.c"],
+    "output": { "f": 3 }
+  },
+  {
+    "workflowPath": "get_one_by_paths.yaml",
+    "description": "no input so no output"
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "input": ["a.b.0.d", "a.b[1].e", "a.c"],
+    "output": [
+      1,
+      2,
+      {
+        "f": 3
+      }
+    ]
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "input": ["a.b[0].d", "a.c.f"],
+    "output": [1, 3]
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "input": ["a.c.f", "iDontExist", "a.c"],
+    "output": [
+      3,
+      {
+        "f": 3
+      }
+    ]
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "input": "a.b",
+    "output": [
+      {
+        "d": 1
+      },
+      {
+        "e": 2
+      }
+    ]
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "input": "a.c.f",
+    "output": 3
+  },
+  {
+    "workflowPath": "get_by_paths.yaml",
+    "description": "no input so no output"
+  },
+  {
+    "workflowPath": "logger.yaml",
+    "logLevel": 0
+  },
+  {
+    "workflowPath": "sum.yaml",
+    "input": [1, 2, 3, 4],
+    "output": 10
+  },
+  {
+    "workflowPath": "to_milli_seconds.yaml",
+    "output": 1650965724561
+  },
+  {
+    "workflowPath": "to_seconds.yaml",
+    "output": 1650965724
+  }
+]

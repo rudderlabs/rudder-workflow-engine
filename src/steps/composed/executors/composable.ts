@@ -1,6 +1,4 @@
-import { Logger } from 'pino';
-import { ExecutionBindings, Workflow } from '../../../workflow/types';
-import { Dictionary } from '../../../common/types';
+import { ExecutionBindings } from '../../../workflow/types';
 import { BaseStepExecutor } from '../../base';
 import { Step, StepExecutor, StepOutput } from '../../types';
 
@@ -13,18 +11,6 @@ export class ComposableStepExecutor implements StepExecutor {
 
   constructor(stepExecutor: StepExecutor) {
     this.stepExecutor = stepExecutor;
-  }
-
-  getWorkflow(): Workflow {
-    return this.stepExecutor.getWorkflow();
-  }
-
-  getBindings(): Dictionary<any> {
-    return this.stepExecutor.getBindings();
-  }
-
-  getLogger(): Logger {
-    return this.stepExecutor.getLogger();
   }
 
   getStep(): Step {

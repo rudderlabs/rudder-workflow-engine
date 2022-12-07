@@ -1,5 +1,23 @@
 [
   {
+    "workflowPath": "else_step.yaml",
+    "input": {
+      "a": 1
+    },
+    "output": {
+      "aIsLessThanOrEqualTo5": true
+    }
+  },
+  {
+    "workflowPath": "else_step.yaml",
+    "input": {
+      "a": 6
+    },
+    "output": {
+      "aIsGreaterThan5": true
+    }
+  },
+  {
     "workflowPath": "using_context.yaml",
     "input": {
       "a": "1"

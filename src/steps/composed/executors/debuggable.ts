@@ -1,6 +1,7 @@
 import { ComposableStepExecutor } from './composable';
 import { StepExecutor, StepOutput } from '../../types';
 import { ExecutionBindings } from '../../../workflow/types';
+import { logger } from '../../../common';
 
 /**
  * DebuggableStepExecutor logs the input and output of step and also
@@ -12,11 +13,10 @@ export class DebuggableStepExecutor extends ComposableStepExecutor {
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    this.getLogger().debug({ input });
-    this.getLogger().debug({ bindings: this.getBindings() });
-    this.getLogger().debug(executionBindings);
+    logger.mustDebug('input = ', JSON.stringify(input));
+    logger.mustDebug('bindings = ', JSON.stringify(executionBindings));
     const output = await super.execute(input, executionBindings);
-    this.getLogger().debug({ output });
+    logger.mustDebug('output = ', JSON.stringify(output));
     return output;
   }
 }
