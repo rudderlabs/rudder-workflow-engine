@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.3.0...v0.4.0) (2022-12-07)
+
+
+### Features
+
+* upgrade json template version and refactor bindings ([#50](https://github.com/rudderlabs/rudder-workflow-engine/issues/50)) ([578888d](https://github.com/rudderlabs/rudder-workflow-engine/commit/578888d63f15c2b382adeda1106c9476af971834))
+
 ## [0.3.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.2.7-beta...v0.3.0) (2022-11-22)
 
 
