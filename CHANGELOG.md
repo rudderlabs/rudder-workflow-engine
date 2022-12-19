@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.0...v0.4.1) (2022-12-19)
+
+
+### Features
+
+* upgrade template engines ([#52](https://github.com/rudderlabs/rudder-workflow-engine/issues/52)) ([001ef43](https://github.com/rudderlabs/rudder-workflow-engine/commit/001ef43f7af58df501a06daa11a896e8970104db))
+
 ## [0.4.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.3.0...v0.4.0) (2022-12-07)
 
 
