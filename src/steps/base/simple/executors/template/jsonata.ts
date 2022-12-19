@@ -18,7 +18,7 @@ export class JsonataStepExecutor extends BaseStepExecutor {
       input,
       executionBindings,
     );
-    return { output };
+    return { output: JsonataStepExecutor.cleanUpArrays(output) };
   }
 
   /**
@@ -42,20 +42,16 @@ export class JsonataStepExecutor extends BaseStepExecutor {
     data: any,
     bindings: Record<string, any>,
   ): Promise<any> {
-    const output = await new Promise(function (resolve, reject) {
-      expr.evaluate(data, bindings, function (error, response) {
-        if (error) {
-          if (error.token === 'doReturn') {
-            return resolve((error as any).result);
-          }
-          if (ErrorUtils.isAssertError(error)) {
-            return reject(new StatusError(error.message, 400));
-          }
-          return reject(error);
-        }
-        resolve(response);
-      });
-    });
-    return this.cleanUpArrays(output);
+    try {
+      return await expr.evaluate(data, bindings);
+    } catch (error: any) {
+      if (error.token === 'doReturn') {
+        return error.result;
+      }
+      if (ErrorUtils.isAssertError(error)) {
+        throw new StatusError(error.message, 400);
+      }
+      throw error;
+    }
   }
 }
