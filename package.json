@@ -14,7 +14,8 @@
     "format": "prettier --write '**/*.ts' '**/*.json'",
     "prepare": "husky install",
     "jest:scenarios": "jest e2e.test.ts --verbose",
-    "test:scenario": "ts-node test/test_scenario.ts"
+    "test:scenario": "ts-node test/test_scenario.ts",
+    "test:stryker": "stryker run"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
+    "@stryker-mutator/core": "^6.3.1",
     "@types/jest": "^29.0.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.18",
