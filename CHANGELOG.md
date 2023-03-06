@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.1...v0.4.2) (2023-03-06)
+
+
+### Features
+
+* add mutation testing support ([#55](https://github.com/rudderlabs/rudder-workflow-engine/issues/55)) ([a704e29](https://github.com/rudderlabs/rudder-workflow-engine/commit/a704e29bdb84e8224e2720289e0b6fc7041f0171))
+
+
+### Miscellaneous
+
+* **deps:** bump json5 from 1.0.1 to 1.0.2 ([#54](https://github.com/rudderlabs/rudder-workflow-engine/issues/54)) ([e759ff0](https://github.com/rudderlabs/rudder-workflow-engine/commit/e759ff0fcb3c33cf744801418418fb3f93702757))
+* upgrade to node v18 ([#57](https://github.com/rudderlabs/rudder-workflow-engine/issues/57)) ([729736c](https://github.com/rudderlabs/rudder-workflow-engine/commit/729736c019595854d321698799df8a49052d7a94))
+
 ## [0.4.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.0...v0.4.1) (2022-12-19)
 
 
