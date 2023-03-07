@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.2...v0.4.3) (2023-03-07)
+
+
+### Miscellaneous
+
+* upgrade json template engine version ([#58](https://github.com/rudderlabs/rudder-workflow-engine/issues/58)) ([04eec96](https://github.com/rudderlabs/rudder-workflow-engine/commit/04eec96bac9801d485da58ebc9701bf10cd3caad))
+
 ## [0.4.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.1...v0.4.2) (2023-03-06)
 
 
