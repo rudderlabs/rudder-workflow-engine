@@ -19,9 +19,10 @@
 ---
 
 # rudder-workflow-engine
-In transformer service, we are doing data transformation from customer events to destination events, and we can organize the transformation process into logically separated steps for better understanding and maintainability.
+
 ## Overview
-**Some of the steps of transformation:** 
+In transformer service, we are doing data transformation from customer events to destination events, and we want organize the transformation process into logically separated steps for better understanding and maintainability so we have created a workflow engine to address the following requirements.
+
 - Validation
     - Event validation
     - Destination config validation
