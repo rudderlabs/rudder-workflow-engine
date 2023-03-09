@@ -20,9 +20,10 @@
 ---
 
 # rudder-workflow-engine
-In transformer service, we are doing data transformation from customer events to destination events, and we can organize the transformation process into logically separated steps for better understanding and maintainability.
+
 ## Overview
-**Some of the steps of transformation:** 
+In transformer service, we are doing data transformation from customer events to destination events, and we want organize the transformation process into logically separated steps for better understanding and maintainability so we have created a workflow engine to address the following requirements.
+
 - Validation
     - Event validation
     - Destination config validation
@@ -77,7 +78,7 @@ steps:
 ```
 ## Getting started
 * `npm install rudder-workflow-engine`
-```
+```js
 const workflowEngine = WorkflowEngineFactory.createFromFilePath("workflow.yaml", options);
 workflowEngine.execute(input);
 
@@ -184,7 +185,7 @@ Supports importing of external functions and data using bindings.
         template: |
           ( common validations for events )
       - name: ValidateInputOfTrackEvent
-        **condition: message.type = EventType.Track**
+        condition: message.type = EventType.Track
         template: |
           ( some validations specific to track events)
     ```
@@ -266,7 +267,7 @@ Supports importing of external functions and data using bindings.
       condition: someCondition
       template: |
         (doSomeProcessing)
-      **onComplete: return**
+      onComplete: return
     - name: step3
       template: |
         (doSomeProcessing)
@@ -283,7 +284,7 @@ Supports importing of external functions and data using bindings.
     - name: **step2**
       template: |
         (doSomeProcessing)
-      **onError: continue**
+      onError: continue
     - name: step3
       template: |
         (doSomeProcessing)
@@ -300,13 +301,13 @@ Supports importing of external functions and data using bindings.
       path: ./transform # actual file name is transform.js**
   steps:
     - name: processTrackEvent
-      **functionName: processTrackEvent**
+      functionName: processTrackEvent
   ```
   
   - We can omit **.js** extension while defining the bindings.
   - **processTrackEvent** must have the following definition.
   
-  ```tsx
+  ```ts
   (input: any, bindings: Record<string, any>) => { 
     error?: any, 
     output?: any 
@@ -315,13 +316,13 @@ Supports importing of external functions and data using bindings.
 - A simple step can be a JSONata template.
   ```yaml
   name: processTrackEvent
-  **template: |
+  template: |
     (JSONata template to process track events)**
   ```
   - The template also can be imported from the file path.
-    ```jsx
+    ```yaml
     name: processTrackEvent
-    **templatePath: ./trackTemplate.yaml**
+    templatePath: ./trackTemplate.yaml
     ```
 - We can use an **external workflow** in a simple step.
   ```yaml
@@ -378,7 +379,7 @@ Supports importing of external functions and data using bindings.
     ```yaml
     steps:
       - name: processECommerace
-        **workflowStepPath: ./ecomWorkflow.yaml**
+        workflowStepPath: ./ecomWorkflow.yaml
     ```
     
 - Supports additional **Bindings**
