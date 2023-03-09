@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.3...v0.4.4) (2023-03-09)
+
+
+### Miscellaneous
+
+* add codecov-action ([#61](https://github.com/rudderlabs/rudder-workflow-engine/issues/61)) ([7896200](https://github.com/rudderlabs/rudder-workflow-engine/commit/78962007021a03dfb7c6cb7984e8e47ef5efd9a7))
+* update readme ([7ab84ba](https://github.com/rudderlabs/rudder-workflow-engine/commit/7ab84bac16089320b3ebc44524580490f43d5cf9))
+
 ## [0.4.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.2...v0.4.3) (2023-03-07)
 
 
