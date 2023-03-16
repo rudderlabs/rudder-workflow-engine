@@ -42,7 +42,7 @@ Currently, most steps are implemented using Javascript code, which provides the 
 
 Since we want to express the transformation of the logic using easy to read and write template based language. We support following template languages: 
 * [JSONata](https://github.com/jsonata-js/jsonata)
-* [JsonTemplate](https://github.com/rudderlabs/rudder-json-template-engine).
+* [JsonTemplate](https://github.com/rudderlabs/rudder-json-template-engine)
 *  Easily extendable to [more template languages](https://github.com/rudderlabs/rudder-workflow-engine/tree/main/src/steps/base/simple/executors/template).
 **Workflow Example using Jsonata:**
 ```yaml
