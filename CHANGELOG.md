@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.4...v0.4.5) (2023-04-18)
+
+
+### Features
+
+* add support for nested else ([e6d9402](https://github.com/rudderlabs/rudder-workflow-engine/commit/e6d9402085938c5911789c8ca05e32a0d94f3776))
+
 ## [0.4.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.3...v0.4.4) (2023-03-09)
 
 
