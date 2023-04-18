@@ -137,6 +137,13 @@
     }
   },
   {
+    "workflowPath": "invalid_usage_nested_else_step.yaml",
+    "error": {
+      "message": "else step should be used in a step with condition",
+      "stepName": "someOtherStep"
+    }
+  },
+  {
     "workflowPath": "invalid_usage_oncomplete.yaml",
     "error": {
       "message": "\"onComplete = return\" should be used in a step with condition",

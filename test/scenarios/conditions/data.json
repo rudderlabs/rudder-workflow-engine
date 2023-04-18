@@ -5,7 +5,7 @@
       "a": 1
     },
     "output": {
-      "aIsLessThanOrEqualTo5": true
+      "aIsLessThan5": true
     }
   },
   {
@@ -15,6 +15,15 @@
     },
     "output": {
       "aIsGreaterThan5": true
+    }
+  },
+  {
+    "workflowPath": "else_step.yaml",
+    "input": {
+      "a": 5
+    },
+    "output": {
+      "aIs5": true
     }
   },
   {

@@ -21,12 +21,16 @@ export class StepUtils {
     return !!step.template || !!step.templatePath || !!step.functionName || !!step.externalWorkflow;
   }
 
+  static populateElseStep(step: Step) {
+    if (step.else) {
+      step.else.type = StepUtils.getStepType(step.else);
+      this.populateElseStep(step.else)
+    }
+  }
   static populateSteps(steps: Step[]) {
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
-      if (step.else) {
-        step.else.type = StepUtils.getStepType(step.else);
-      }
+      this.populateElseStep(step)
     }
   }
 
@@ -64,8 +68,12 @@ export class StepUtils {
       );
     }
 
-    if (step.else && !step.condition) {
-      throw new StepCreationError('else step should be used in a step with condition', step.name);
+    if (step.else) {
+      if (!step.condition) {
+        throw new StepCreationError('else step should be used in a step with condition', step.name);
+      } else {
+        this.validateStep(step.else, index, allowedStepTypes);
+      }
     }
   }
 }

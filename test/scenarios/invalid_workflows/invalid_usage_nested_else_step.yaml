@@ -1,0 +1,14 @@
+steps:
+  - name: InvalidElseStep
+    description: else step should be used only in a conditional step
+    condition: a = 2
+    template: |
+      { "foo": "bar" }
+    else:
+      name: someOtherStep
+      template: |
+        { "hello": "bar" }
+      else:
+        name: someNestedElseStep
+        template: |
+          { "world": "bar" }
