@@ -1,6 +1,7 @@
 import { at, identity } from 'lodash';
 import { ReturnResultError } from '../steps';
 import { StatusError } from '../common';
+import sha256 from 'sha256';
 
 export { debug, info, warn, error } from '../common/logger';
 
@@ -55,4 +56,11 @@ export function toSeconds(timestamp: string): number | undefined {
     return undefined;
   }
   return Math.floor(timeInMillis / 1000);
+}
+
+export function toSHA256(text: string | number | undefined) {
+  if (!text) {
+    return undefined;
+  }
+  return sha256(text);
 }

@@ -64,7 +64,8 @@
     "js-yaml": "^4.1.0",
     "jsonata": "^2.0.3",
     "lodash": "^4.17.21",
-    "rudder-json-template-engine": "^0.5.1"
+    "rudder-json-template-engine": "^0.5.1",
+    "sha256": "^0.2.0"
   },
   "lint-staged": {
     "*.(ts|json)": "prettier --write"
