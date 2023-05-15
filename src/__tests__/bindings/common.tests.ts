@@ -1,4 +1,4 @@
-import { toMilliseconds, toSeconds, toArray, toSHA256 } from '../../bindings';
+import { toMilliseconds, toSeconds, toArray, SHA256 } from '../../bindings';
 
 describe('Common Bindings', () => {
   describe('toMilliseconds', () => {
@@ -35,14 +35,14 @@ describe('Common Bindings', () => {
       expect(toArray(undefined)).toBeUndefined();
     });
   });
-  describe('toSHA256', () => {
-    it('should return sha256 hashed data if input is string or number', () => {
-      expect(toSHA256('value')).toEqual(
+  describe('SHA256', () => {
+    it('should return sha256 hashed data if input is string or number', async () => {
+      expect(await SHA256('value')).toEqual(
         'cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619',
       );
     });
-    it('should return undefined if input is undefined', () => {
-      expect(toSHA256(undefined)).toEqual(undefined);
+    it('should return undefined if input is undefined', async () => {
+      expect(await SHA256(undefined)).toEqual(undefined);
     });
   });
 });
