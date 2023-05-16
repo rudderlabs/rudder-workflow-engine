@@ -58,13 +58,13 @@ export function toSeconds(timestamp: string): number | undefined {
   return Math.floor(timeInMillis / 1000);
 }
 
-export async function SHA256(text: string | number | undefined) {
+export function SHA256(text: string | number | undefined) {
   if (!text) {
     return undefined;
   }
   const hash = new Sha256();
   hash.update(`${text}`);
-  const digest = await hash.digest();
+  const digest = hash.digestSync();
   const result = Buffer.from(digest).toString('hex');
   return result;
 }
