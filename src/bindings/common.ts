@@ -1,6 +1,7 @@
 import { at, identity } from 'lodash';
 import { ReturnResultError } from '../steps';
 import { StatusError } from '../common';
+import { Sha256 } from '@aws-crypto/sha256-js';
 
 export { debug, info, warn, error } from '../common/logger';
 
@@ -55,4 +56,15 @@ export function toSeconds(timestamp: string): number | undefined {
     return undefined;
   }
   return Math.floor(timeInMillis / 1000);
+}
+
+export function SHA256(text: string | number | undefined) {
+  if (!text) {
+    return undefined;
+  }
+  const hash = new Sha256();
+  hash.update(`${text}`);
+  const digest = hash.digestSync();
+  const result = Buffer.from(digest).toString('hex');
+  return result;
 }
