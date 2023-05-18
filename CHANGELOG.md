@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.5...v0.4.6) (2023-05-18)
+
+
+### Features
+
+* add support for sha256 hashing ([#66](https://github.com/rudderlabs/rudder-workflow-engine/issues/66)) ([7506e83](https://github.com/rudderlabs/rudder-workflow-engine/commit/7506e8376c15fb1de67c3e8321b75698d524f267))
+
+
+### Miscellaneous
+
+* **deps:** bump yaml from 2.2.1 to 2.2.2 ([#63](https://github.com/rudderlabs/rudder-workflow-engine/issues/63)) ([c08dbf0](https://github.com/rudderlabs/rudder-workflow-engine/commit/c08dbf0790ffb842577b71a940e967202f6dae86))
+* upgrade jsonata from 2.0.2 to 2.0.3 ([#64](https://github.com/rudderlabs/rudder-workflow-engine/issues/64)) ([6910653](https://github.com/rudderlabs/rudder-workflow-engine/commit/691065387cc24868dc18f6088822666637e5cd7e))
+
 ## [0.4.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.4...v0.4.5) (2023-04-18)
 
 
