@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.6...v0.4.7) (2023-05-22)
+
+
+### Features
+
+* add tests for sha256 binding ([#67](https://github.com/rudderlabs/rudder-workflow-engine/issues/67)) ([64ce912](https://github.com/rudderlabs/rudder-workflow-engine/commit/64ce912410e8fc45acdd9779a1b438bb40ce1cfc))
+
 ## [0.4.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.5...v0.4.6) (2023-05-18)
 
 
