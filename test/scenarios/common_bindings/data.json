@@ -75,6 +75,21 @@
     "output": 10
   },
   {
+    "workflowPath": "sha256-json-template.yaml",
+    "input": 1234,
+    "output": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+  },
+  {
+    "workflowPath": "sha256.yaml",
+    "input": "hello world",
+    "output": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+  },
+  {
+    "workflowPath": "sha256.yaml",
+    "input": 1234,
+    "output": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+  },
+  {
     "workflowPath": "to_milli_seconds.yaml",
     "output": 1650965724561
   },
