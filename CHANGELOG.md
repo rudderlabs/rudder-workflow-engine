@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.7...v0.4.8) (2023-08-09)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump word-wrap from 1.2.3 to 1.2.4 ([#72](https://github.com/rudderlabs/rudder-workflow-engine/issues/72)) ([5c46d29](https://github.com/rudderlabs/rudder-workflow-engine/commit/5c46d29507a37aa1b067a4d4d8b71b876e270139))
+
 ## [0.4.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.6...v0.4.7) (2023-06-26)
 
 
