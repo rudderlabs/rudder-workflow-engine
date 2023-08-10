@@ -1,4 +1,6 @@
+import { Executor } from '../common';
 import { Step, TemplateType } from '../steps/types';
+import { WorkflowEngine } from './engine';
 
 export type PathBinding = {
   // exported value's name in bindings
@@ -50,9 +52,14 @@ export type WorkflowOptions = {
   rootPath: string;
   creationTimeBindings?: Record<string, any>;
   templateType?: TemplateType;
+  executor?: WorkflowExecutor;
 };
 
 export type WorkflowOptionsInternal = WorkflowOptions & {
   currentBindings: Record<string, any>;
   parentBindings?: Record<string, any>;
 };
+
+export interface WorkflowExecutor {
+  execute(engine: WorkflowEngine, input: any): Promise<WorkflowOutput>;
+}
