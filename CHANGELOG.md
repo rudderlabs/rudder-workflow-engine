@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.7...v0.4.8) (2023-08-09)
+
+
+### Miscellaneous
+
+* **deps-dev:** bump word-wrap from 1.2.3 to 1.2.4 ([#72](https://github.com/rudderlabs/rudder-workflow-engine/issues/72)) ([5c46d29](https://github.com/rudderlabs/rudder-workflow-engine/commit/5c46d29507a37aa1b067a4d4d8b71b876e270139))
+
+## [0.4.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.6...v0.4.7) (2023-06-26)
+
+
+### Features
+
+* add binding for containsAll and add test cases ([#71](https://github.com/rudderlabs/rudder-workflow-engine/issues/71)) ([cf35ac8](https://github.com/rudderlabs/rudder-workflow-engine/commit/cf35ac8383f1cf85f133a9a4c0ea44fe40580126))
+* add tests for sha256 binding ([#67](https://github.com/rudderlabs/rudder-workflow-engine/issues/67)) ([64ce912](https://github.com/rudderlabs/rudder-workflow-engine/commit/64ce912410e8fc45acdd9779a1b438bb40ce1cfc))
+
+
+### Bug Fixes
+
+* print error step log ([#69](https://github.com/rudderlabs/rudder-workflow-engine/issues/69)) ([7873a54](https://github.com/rudderlabs/rudder-workflow-engine/commit/7873a54ffbd60233015897950b2188b0ad83dc41))
+
 ## [0.4.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.5...v0.4.6) (2023-05-18)
 
 

@@ -1,4 +1,4 @@
-import { toMilliseconds, toSeconds, toArray, SHA256 } from '../../bindings';
+import { toMilliseconds, toSeconds, toArray, SHA256, containsAll } from '../../bindings';
 
 describe('Common Bindings', () => {
   describe('toMilliseconds', () => {
@@ -43,6 +43,24 @@ describe('Common Bindings', () => {
     });
     it('should return undefined if input is undefined', () => {
       expect(SHA256(undefined)).toEqual(undefined);
+    });
+  });
+
+  describe('containsAll', () => {
+    it('should return true if array2 contains all of array1', () => {
+      expect(containsAll(['pizza', 'cola'], ['pizza', 'cake', 'cola'])).toEqual(true);
+    });
+    it('should return false if array2 does not contain all of array1', () => {
+      expect(containsAll(['pizza', 'cola', 'cheese'], ['pizza', 'cake', 'cola'])).toEqual(false);
+    });
+    it('should return true if array1 is empty array', () => {
+      expect(containsAll([], ['pizza', 'cake', 'cola'])).toEqual(true);
+    });
+    it('should return false if array2 empty array', () => {
+      expect(containsAll(['pizza', 'cola', 'cheese'], [])).toEqual(false);
+    });
+    it('should return true if both array1 and array2 empty array', () => {
+      expect(containsAll([], [])).toEqual(true);
     });
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "rudder-workflow-engine",
-  "version": "0.4.6",
+  "version": "0.4.8",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -65,7 +65,7 @@
     "js-yaml": "^4.1.0",
     "jsonata": "^2.0.3",
     "lodash": "^4.17.21",
-    "rudder-json-template-engine": "^0.5.1"
+    "rudder-json-template-engine": "^0.5.2"
   },
   "lint-staged": {
     "*.(ts|json)": "prettier --write"

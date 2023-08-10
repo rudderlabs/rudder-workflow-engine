@@ -61,8 +61,9 @@ export class WorkflowEngine implements Executor {
           break;
         }
       } catch (error) {
+        logger.error(`step: ${step.name} failed with error:`);
         if (step.onError === StepExitAction.Continue) {
-          logger.info(`step: ${step.name} failed`, error);
+          logger.error(error);
           continue;
         }
         this.handleError(error, step.name);

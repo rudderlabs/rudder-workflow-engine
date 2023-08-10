@@ -68,3 +68,10 @@ export function SHA256(text: string | number | undefined) {
   const result = Buffer.from(digest).toString('hex');
   return result;
 }
+
+// Check if arr1 is subset of arr2
+export function containsAll(arr1: any[], arr2: any[]): boolean {
+  return arr1.every((element) => {
+    return arr2.includes(element);
+  });
+}

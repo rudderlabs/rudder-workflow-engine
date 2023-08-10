@@ -1,0 +1,4 @@
+steps:
+  - name: sha256
+    template: |
+      $SHA256($)
