@@ -1,18 +1,24 @@
-import { StepExecutor, StepExitAction } from '../steps/types';
-import { Executor, ErrorUtils, logger } from '../common';
-import { WorkflowExecutionError } from './errors';
+import { StepExecutor } from '../steps/types';
+import { Executor } from '../common';
 import { WorkflowStepExecutor } from '../steps';
-import { ExecutionBindings, WorkflowOutput } from './types';
+import { WorkflowExecutor, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
   readonly name: string;
   readonly bindings: Record<string, any>;
-  private readonly stepExecutors: StepExecutor[];
+  readonly stepExecutors: StepExecutor[];
+  private readonly executor: WorkflowExecutor;
 
-  constructor(name: string, bindings: Record<string, any>, stepExecutors: StepExecutor[]) {
+  constructor(
+    name: string,
+    executor: WorkflowExecutor,
+    bindings: Record<string, any>,
+    stepExecutors: StepExecutor[],
+  ) {
     this.bindings = bindings;
     this.name = name;
     this.stepExecutors = stepExecutors;
+    this.executor = executor;
   }
 
   getStepExecutor(stepName: string, childStepName?: string): StepExecutor {
@@ -36,51 +42,6 @@ export class WorkflowEngine implements Executor {
   }
 
   async execute(input: any): Promise<WorkflowOutput> {
-    const context = {};
-
-    const executionBindings: ExecutionBindings = {
-      ...this.bindings,
-      outputs: {},
-      context,
-      setContext: (key, value) => {
-        context[key] = value;
-      },
-    };
-
-    let finalOutput: any;
-    for (const stepExecutor of this.stepExecutors) {
-      const step = stepExecutor.getStep();
-      try {
-        const { skipped, output } = await stepExecutor.execute(input, executionBindings);
-        if (skipped) {
-          continue;
-        }
-        executionBindings.outputs[step.name] = output;
-        finalOutput = output;
-        if (step.onComplete === StepExitAction.Return) {
-          break;
-        }
-      } catch (error) {
-        logger.error(`step: ${step.name} failed with error:`);
-        if (step.onError === StepExitAction.Continue) {
-          logger.error(error);
-          continue;
-        }
-        this.handleError(error, step.name);
-      }
-    }
-
-    return { output: finalOutput, outputs: executionBindings.outputs };
-  }
-
-  handleError(error: any, stepName: string) {
-    throw new WorkflowExecutionError(
-      error.message,
-      ErrorUtils.getErrorStatus(error),
-      this.name,
-      stepName,
-      error.childStepName,
-      error.error,
-    );
+    return this.executor.execute(this, input);
   }
 }
