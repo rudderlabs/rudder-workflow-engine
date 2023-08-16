@@ -13,7 +13,6 @@ export type Scenario = {
   workflowPath?: string;
   options?: WorkflowOptions;
   stepName?: string;
-  childStepName?: string;
   output?: any;
   error?: ScenarioError;
   errorClass?: string;

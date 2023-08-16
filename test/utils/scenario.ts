@@ -28,7 +28,7 @@ export class ScenarioUtils {
   static executeScenario(workflowEngine: WorkflowEngine, scenario: Scenario) {
     let executor: Executor = workflowEngine;
     if (scenario.stepName) {
-      executor = workflowEngine.getStepExecutor(scenario.stepName, scenario.childStepName);
+      executor = workflowEngine.getStepExecutor(scenario.stepName);
     }
     return this.execute(executor, scenario);
   }

@@ -10,16 +10,6 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
     this.stepExecutors = stepExecutors;
   }
 
-  getStepExecutor(childStepName: string): StepExecutor {
-    const stepExecutor = this.stepExecutors.find(
-      (stepExecutor) => stepExecutor.getStepName() === childStepName,
-    );
-    if (!stepExecutor) {
-      throw new Error(`${this.getStepName()}:${childStepName} was not found`);
-    }
-    return stepExecutor;
-  }
-
   async executeChildStep(
     childExector: StepExecutor,
     input: any,

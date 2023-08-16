@@ -1,6 +1,5 @@
 import { ExecutionBindings, Binding } from '../workflow/types';
 import { Executor } from '../common/types';
-import { BaseStepExecutor } from './base';
 import { JsonataStepExecutor, JsonTemplateStepExecutor } from './base/simple/executors/template';
 
 export interface StepExecutor extends Executor {
@@ -12,10 +11,6 @@ export interface StepExecutor extends Executor {
    * Returns the step which executor is operating
    */
   getStep(): Step;
-  /**
-   * Return the base step executor
-   */
-  getBaseExecutor(): BaseStepExecutor;
   /**
    * Executes the step
    */

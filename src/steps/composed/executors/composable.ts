@@ -1,5 +1,4 @@
 import { ExecutionBindings } from '../../../workflow/types';
-import { BaseStepExecutor } from '../../base';
 import { Step, StepExecutor, StepOutput } from '../../types';
 
 /**
@@ -19,10 +18,6 @@ export class ComposableStepExecutor implements StepExecutor {
 
   getStepName(): string {
     return this.stepExecutor.getStepName();
-  }
-
-  getBaseExecutor(): BaseStepExecutor {
-    return this.stepExecutor.getBaseExecutor();
   }
 
   execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
