@@ -15,9 +15,5 @@ export abstract class BaseStepExecutor implements StepExecutor {
     return this.step.name;
   }
 
-  getBaseExecutor(): BaseStepExecutor {
-    return this;
-  }
-
   abstract execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput>;
 }
