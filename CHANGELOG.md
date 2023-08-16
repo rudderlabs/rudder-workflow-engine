@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.9...v0.4.10) (2023-08-16)
+
+
+### Miscellaneous
+
+* remove support for getting child step executor ([#77](https://github.com/rudderlabs/rudder-workflow-engine/issues/77)) ([7717d5c](https://github.com/rudderlabs/rudder-workflow-engine/commit/7717d5cf936598aaf956acad478b3fd78cf6f425))
+
 ## [0.4.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.8...v0.4.9) (2023-08-11)
 
 
