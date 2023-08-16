@@ -5,6 +5,7 @@ import { StepCreationError } from '../steps/errors';
 import { WorkflowEngine } from './engine';
 import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
 import { Binding, Workflow, WorkflowOptions, WorkflowOptionsInternal } from './types';
+import { DefaultWorkflowExecutor } from './default_executor';
 
 export class WorkflowEngineFactory {
   private static prepareWorkflow(workflow: Workflow, options: WorkflowOptions) {
@@ -21,7 +22,12 @@ export class WorkflowEngineFactory {
       const bindings = await this.prepareBindings(workflow.bindings || [], optionsInteranl);
       optionsInteranl.currentBindings = bindings;
       const stepExecutors = await this.createStepExecutors(workflow.steps, optionsInteranl);
-      return new WorkflowEngine(workflow.name, bindings, stepExecutors);
+      return new WorkflowEngine(
+        workflow.name,
+        options.executor || DefaultWorkflowExecutor.INSTANCE,
+        bindings,
+        stepExecutors,
+      );
     } catch (error: any) {
       if (error instanceof WorkflowCreationError) {
         throw error;
