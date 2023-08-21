@@ -8,8 +8,10 @@ import {
   PathBinding,
   ValueBinding,
   Workflow,
+  WorkflowExecutor,
   WorkflowOptionsInternal,
 } from './types';
+import { DefaultWorkflowExecutor } from './default_executor';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -53,6 +55,16 @@ export class WorkflowUtils {
     }
   }
 
+  private static async getModuleExportsFromAllPaths(
+    rootPath: string,
+    bindingPath: string,
+  ): Promise<any> {
+    return (
+      (await this.getModuleExports(bindingPath)) ||
+      (await this.getModuleExports(path.join(rootPath, bindingPath), true))
+    );
+  }
+
   static async extractBindingsFromPaths(
     options: WorkflowOptionsInternal,
   ): Promise<Record<string, any>> {
@@ -62,10 +74,7 @@ export class WorkflowUtils {
 
     const bindings = await Promise.all(
       options.bindingsPaths.map(async (bindingPath) => {
-        return (
-          (await this.getModuleExports(bindingPath)) ||
-          this.getModuleExports(path.join(options.rootPath, bindingPath), true)
-        );
+        return this.getModuleExportsFromAllPaths(options.rootPath, bindingPath);
       }),
     );
     return Object.assign({}, ...bindings);
@@ -106,5 +115,27 @@ export class WorkflowUtils {
       }
     }
     return bindingsObj;
+  }
+
+  static async getExecutor(
+    workflow: Workflow,
+    options: WorkflowOptionsInternal,
+  ): Promise<WorkflowExecutor> {
+    if (workflow?.executor?.path) {
+      let executor = await this.getModuleExportsFromAllPaths(
+        options.rootPath,
+        workflow.executor.path,
+      );
+
+      if (
+        !executor ||
+        !executor[workflow.executor.name] ||
+        !executor[workflow.executor.name].execute
+      ) {
+        throw new WorkflowCreationError('Workflow executor not found', workflow.name);
+      }
+      return executor[workflow.executor.name];
+    }
+    return options.executor || DefaultWorkflowExecutor.INSTANCE;
   }
 }

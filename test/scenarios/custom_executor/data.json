@@ -1,0 +1,11 @@
+[
+  {
+    "output": "custom executor output"
+  },
+  {
+    "workflowPath": "./bad_executor.yaml",
+    "error": {
+      "message": "Workflow executor not found"
+    }
+  }
+]
