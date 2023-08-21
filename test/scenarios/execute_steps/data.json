@@ -16,41 +16,9 @@
     "output": 8
   },
   {
-    "stepName": "moreOps",
-    "childStepName": "multiply",
-    "input": {
-      "a": 10,
-      "b": 2
-    },
-    "output": 20
-  },
-  {
-    "stepName": "moreOps",
-    "childStepName": "divide",
-    "input": {
-      "a": 10,
-      "b": 2
-    },
-    "output": 5
-  },
-  {
     "stepName": "invalid_step",
     "error": {
       "message": "invalid_step was not found"
-    }
-  },
-  {
-    "stepName": "add",
-    "childStepName": "not_workflow_step",
-    "error": {
-      "message": "add is not a workflow step"
-    }
-  },
-  {
-    "stepName": "moreOps",
-    "childStepName": "invalid_child_step",
-    "error": {
-      "message": "moreOps:invalid_child_step was not found"
     }
   }
 ]

@@ -21,21 +21,13 @@ export class WorkflowEngine implements Executor {
     this.executor = executor;
   }
 
-  getStepExecutor(stepName: string, childStepName?: string): StepExecutor {
+  getStepExecutor(stepName: string): StepExecutor {
     let stepExecutor = this.stepExecutors.find(
       (stepExecutor) => stepExecutor.getStepName() === stepName,
     );
 
     if (!stepExecutor) {
       throw new Error(`${stepName} was not found`);
-    }
-
-    if (childStepName) {
-      const baseExecutor = stepExecutor.getBaseExecutor();
-      if (baseExecutor instanceof WorkflowStepExecutor) {
-        return baseExecutor.getStepExecutor(childStepName);
-      }
-      throw new Error(`${stepName} is not a workflow step`);
     }
 
     return stepExecutor;
