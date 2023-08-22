@@ -1,6 +1,5 @@
 import { StepExecutor } from '../steps/types';
 import { Executor } from '../common';
-import { WorkflowStepExecutor } from '../steps';
 import { WorkflowExecutor, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {

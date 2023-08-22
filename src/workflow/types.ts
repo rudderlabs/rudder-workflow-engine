@@ -1,4 +1,3 @@
-import { Executor } from '../common';
 import { Step, TemplateType } from '../steps/types';
 import { WorkflowEngine } from './engine';
 
@@ -38,6 +37,10 @@ export type Workflow = {
   bindings?: Binding[];
   steps: Step[];
   templateType?: TemplateType;
+  executor?: {
+    name: string;
+    path: string;
+  };
 };
 
 export type WorkflowOutput = {
