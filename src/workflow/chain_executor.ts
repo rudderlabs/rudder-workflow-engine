@@ -5,9 +5,10 @@ import { ExecutionBindings, WorkflowExecutor, WorkflowOutput } from './types';
 import { WorkflowEngine } from './engine';
 
 interface DefaultWorkflowExecutorOptions {
-  // In chainOutputs use set then => input -> step -> step2 -> step3 -> output
   chainOutputs?: boolean
 }
+
+// input -> step -> step2 -> step3 -> output
 
 export class DefaultWorkflowExecutor implements WorkflowExecutor {
 

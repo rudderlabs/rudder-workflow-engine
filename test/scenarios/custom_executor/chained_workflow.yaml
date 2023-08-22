@@ -1,0 +1,4 @@
+steps:
+  - name: dummy
+    template: |
+      "this will be ignored by custom executor"
