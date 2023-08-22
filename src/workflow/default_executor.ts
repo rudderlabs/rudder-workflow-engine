@@ -6,11 +6,10 @@ import { WorkflowEngine } from './engine';
 
 interface DefaultWorkflowExecutorOptions {
   // In chainOutputs use set then => input -> step -> step2 -> step3 -> output
-  chainOutputs?: boolean
+  chainOutputs?: boolean;
 }
 
 export class DefaultWorkflowExecutor implements WorkflowExecutor {
-
   readonly options: DefaultWorkflowExecutorOptions;
   constructor(options?: DefaultWorkflowExecutorOptions) {
     this.options = options || {};
@@ -26,7 +25,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       setContext: (key, value) => {
         context[key] = value;
       },
-      originalInput: input
+      originalInput: input,
     };
 
     let state: any = input;
@@ -71,4 +70,4 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
   }
 }
 
-export const chainExecutor = new DefaultWorkflowExecutor({chainOutputs: true});
+export const chainExecutor = new DefaultWorkflowExecutor({ chainOutputs: true });

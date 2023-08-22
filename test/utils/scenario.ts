@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import {
   WorkflowEngineFactory,
@@ -33,8 +33,16 @@ export class ScenarioUtils {
     return this.execute(executor, scenario);
   }
 
-  static extractScenarios(scenarioDir: string): Scenario[] {
+  static extractScenariosJSON(scenarioDir: string): Scenario[] {
     const scenariosJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
     return JSON.parse(scenariosJSON) as Scenario[];
+  }
+
+  static extractScenarios(scenarioDir: string): Scenario[] {
+    if (existsSync(join(scenarioDir, 'data.json'))) {
+      return this.extractScenariosJSON(scenarioDir);
+    }
+    const { data } = require(join(scenarioDir, 'data.ts'));
+    return data as Scenario[];
   }
 }
