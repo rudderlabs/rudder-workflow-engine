@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.10...v0.5.0) (2023-08-22)
+
+
+### Features
+
+* **INT-443:** add support to declare custom workflow executor in yaml ([#79](https://github.com/rudderlabs/rudder-workflow-engine/issues/79)) ([81043e5](https://github.com/rudderlabs/rudder-workflow-engine/commit/81043e5ca6b94d5f09e73cf7251ca474299e014a))
+
 ## [0.4.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.9...v0.4.10) (2023-08-16)
 
 
