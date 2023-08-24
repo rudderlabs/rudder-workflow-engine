@@ -28,19 +28,18 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       originalInput: input,
     };
 
-    let state: any = input;
-    let currentInput: any = input;
+    let prevStepOutput: any;
+    let currStepInput: any = input;
     for (const stepExecutor of engine.stepExecutors) {
       const step = stepExecutor.getStep();
       try {
-        const { skipped, output } = await stepExecutor.execute(currentInput, executionBindings);
+        const { skipped, output } = await stepExecutor.execute(currStepInput, executionBindings);
         if (skipped) {
           continue;
         }
-        executionBindings.outputs[step.name] = output;
-        state = output;
+        prevStepOutput = executionBindings.outputs[step.name] = output;
         if (this.options.chainOutputs) {
-          currentInput = state;
+          currStepInput = prevStepOutput;
         }
         if (step.onComplete === StepExitAction.Return) {
           break;
@@ -55,7 +54,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       }
     }
 
-    return { output: state, outputs: executionBindings.outputs };
+    return { output: prevStepOutput, outputs: executionBindings.outputs };
   }
 
   handleError(error: any, workflowName: string, stepName: string) {
