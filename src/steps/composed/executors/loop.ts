@@ -33,6 +33,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
     for (let i = 0; i < input.length; i++) {
       promises[i] = this.executeForInputElement(input[i], executionBindings);
     }
-    return { output: await Promise.all(promises) };
+    const stepOutput = { output: await Promise.all(promises) };
+    return stepOutput;
   }
 }
