@@ -103,8 +103,9 @@ export class WorkflowUtils {
       }
 
       const pathBinding = binding as PathBinding;
-      const bindingSource = await import(
-        path.join(options.rootPath, pathBinding.path || 'bindings')
+      const bindingSource = await this.getModuleExportsFromAllPaths(
+        options.rootPath,
+        pathBinding.path || 'bindings',
       );
       if (pathBinding.name) {
         bindingsObj[pathBinding.name] = pathBinding.exportAll

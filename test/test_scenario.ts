@@ -19,8 +19,7 @@ const index = +(opts.index || 0);
 async function createAndExecuteWorkFlow() {
   try {
     const scenarioDir = join(__dirname, 'scenarios', scenarioName);
-    const scenariosJSON = await readFile(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
-    const scenarios: Scenario[] = JSON.parse(scenariosJSON);
+    const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
     const scenario: Scenario = scenarios[index] || scenarios[0];
     console.log(
       `Executing scenario: ${scenarioName}, test: ${index}, workflow: ${

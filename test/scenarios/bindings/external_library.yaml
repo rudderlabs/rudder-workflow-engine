@@ -1,0 +1,8 @@
+bindings: 
+  - name: flatten
+    path: lodash
+
+steps:
+  - name: flatten
+    template: |
+      $flatten($)
