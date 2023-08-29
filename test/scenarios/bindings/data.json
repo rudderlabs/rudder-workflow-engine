@@ -50,5 +50,10 @@
     "error": {
       "message": "unsupported operation"
     }
+  },
+  {
+    "workflowPath": "./external_library.yaml",
+    "input": [[1], [2, 3]],
+    "output": [1, 2, 3]
   }
 ]

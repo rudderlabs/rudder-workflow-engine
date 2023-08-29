@@ -1,0 +1,7 @@
+steps:
+  - name: produceA
+    template: |
+      {"a": a + 1}
+  - name: cubeA
+    template: |
+      a * a * a

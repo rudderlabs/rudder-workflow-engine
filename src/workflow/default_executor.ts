@@ -4,7 +4,17 @@ import { WorkflowExecutionError } from './errors';
 import { ExecutionBindings, WorkflowExecutor, WorkflowOutput } from './types';
 import { WorkflowEngine } from './engine';
 
+interface DefaultWorkflowExecutorOptions {
+  // In chainOutputs use set then => input -> step -> step2 -> step3 -> output
+  chainOutputs?: boolean;
+}
+
 export class DefaultWorkflowExecutor implements WorkflowExecutor {
+  readonly options: DefaultWorkflowExecutorOptions;
+  constructor(options?: DefaultWorkflowExecutorOptions) {
+    this.options = options || {};
+  }
+
   static readonly INSTANCE = new DefaultWorkflowExecutor();
   async execute(engine: WorkflowEngine, input: any): Promise<WorkflowOutput> {
     const context = {};
@@ -15,18 +25,22 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       setContext: (key, value) => {
         context[key] = value;
       },
+      originalInput: input,
     };
 
-    let finalOutput: any;
+    let prevStepOutput: any;
+    let currStepInput: any = input;
     for (const stepExecutor of engine.stepExecutors) {
       const step = stepExecutor.getStep();
       try {
-        const { skipped, output } = await stepExecutor.execute(input, executionBindings);
+        const { skipped, output } = await stepExecutor.execute(currStepInput, executionBindings);
         if (skipped) {
           continue;
         }
-        executionBindings.outputs[step.name] = output;
-        finalOutput = output;
+        prevStepOutput = executionBindings.outputs[step.name] = output;
+        if (this.options.chainOutputs) {
+          currStepInput = prevStepOutput;
+        }
         if (step.onComplete === StepExitAction.Return) {
           break;
         }
@@ -40,7 +54,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       }
     }
 
-    return { output: finalOutput, outputs: executionBindings.outputs };
+    return { output: prevStepOutput, outputs: executionBindings.outputs };
   }
 
   handleError(error: any, workflowName: string, stepName: string) {
@@ -54,3 +68,5 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
     );
   }
 }
+
+export const chainExecutor = new DefaultWorkflowExecutor({ chainOutputs: true });

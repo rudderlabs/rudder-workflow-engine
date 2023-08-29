@@ -76,6 +76,13 @@
     }
   },
   {
+    "workflowPath": "invalid_loop_condition_step.yaml",
+    "error": {
+      "message": "loopCondition should be used with loopOverInput",
+      "stepName": "invalidLoopConditionStep"
+    }
+  },
+  {
     "workflowPath": "invalid_step_in_workflowstep.yaml",
     "error": {
       "message": "unsupported step type",
