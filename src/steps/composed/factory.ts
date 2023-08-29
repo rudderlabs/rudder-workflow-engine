@@ -15,7 +15,7 @@ export class ComposableExecutorFactory {
   ): Promise<StepExecutor> {
     const step = stepExecutor.getStep();
     if (step.loopOverInput) {
-      stepExecutor = new LoopStepExecutor(stepExecutor);
+      stepExecutor = this.createLoopStepExecutor(stepExecutor, options);
     }
 
     if (step.inputTemplate) {
@@ -61,5 +61,22 @@ export class ComposableExecutorFactory {
       elseExecutor = await StepExecutorFactory.create(step.else, options);
     }
     return new ConditionalStepExecutor(condtionalExecutor, thenExecutor, elseExecutor);
+  }
+
+  static createLoopStepExecutor(
+    stepExecutor: StepExecutor,
+    options: WorkflowOptionsInternal,
+  ): LoopStepExecutor {
+    const step = stepExecutor.getStep();
+    let wrappedStepExecutor = stepExecutor;
+    if (step.loopCondition) {
+      const condtionalExecutor = TemplateStepExecutorFactory.create(
+        step,
+        step.loopCondition as string,
+        options,
+      );
+      wrappedStepExecutor = new ConditionalStepExecutor(condtionalExecutor, wrappedStepExecutor);
+    }
+    return new LoopStepExecutor(wrappedStepExecutor);
   }
 }

@@ -24,13 +24,13 @@ export class StepUtils {
   static populateElseStep(step: Step) {
     if (step.else) {
       step.else.type = StepUtils.getStepType(step.else);
-      this.populateElseStep(step.else)
+      this.populateElseStep(step.else);
     }
   }
   static populateSteps(steps: Step[]) {
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
-      this.populateElseStep(step)
+      this.populateElseStep(step);
     }
   }
 
@@ -74,6 +74,10 @@ export class StepUtils {
       } else {
         this.validateStep(step.else, index, allowedStepTypes);
       }
+    }
+
+    if (step.loopCondition && !step.loopOverInput) {
+      throw new StepCreationError('loopCondition should be used with loopOverInput', step.name);
     }
   }
 }

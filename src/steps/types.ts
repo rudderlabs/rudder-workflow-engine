@@ -60,6 +60,7 @@ export type StepCommon = {
   else?: Step;
   inputTemplate?: string;
   loopOverInput?: boolean;
+  loopCondition?: string;
   onComplete?: StepExitAction;
   onError?: StepExitAction;
   debug?: boolean;
