@@ -56,6 +56,7 @@ export type WorkflowOptions = {
   creationTimeBindings?: Record<string, any>;
   templateType?: TemplateType;
   executor?: WorkflowExecutor;
+  bindingProvider?: WorkflowBindingProvider;
 };
 
 export type WorkflowOptionsInternal = WorkflowOptions & {
@@ -65,4 +66,8 @@ export type WorkflowOptionsInternal = WorkflowOptions & {
 
 export interface WorkflowExecutor {
   execute(engine: WorkflowEngine, input: any): Promise<WorkflowOutput>;
+}
+
+export interface WorkflowBindingProvider {
+  provide(name: string): Promise<any>;
 }
