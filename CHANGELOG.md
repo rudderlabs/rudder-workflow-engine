@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.0...v0.5.1) (2023-08-29)
+
+
+### Features
+
+* **INT-443:** add initial support for execution chaining ([#81](https://github.com/rudderlabs/rudder-workflow-engine/issues/81)) ([f85b083](https://github.com/rudderlabs/rudder-workflow-engine/commit/f85b083ccd9deee8b62e59d36784798f9b11e435))
+* **INT-500:** add support loop condition ([#83](https://github.com/rudderlabs/rudder-workflow-engine/issues/83)) ([c1e3dd7](https://github.com/rudderlabs/rudder-workflow-engine/commit/c1e3dd720171da66bab2da01a024ff22f382fa31))
+
 ## [0.5.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.4.10...v0.5.0) (2023-08-22)
 
 
