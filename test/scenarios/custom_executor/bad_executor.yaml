@@ -1,6 +1,5 @@
-executor:
-  path: ./custom_executors
-  name: invalidExecutor
+executor: invalidExecutor
+
 steps:
   - name: dummy
     template: |

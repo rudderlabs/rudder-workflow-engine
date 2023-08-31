@@ -1,6 +1,8 @@
-executor:
-  path: ./custom_executors
-  name: customWorkflowExecutor
+bindings:
+  - path: ./custom_executors
+    name: customWorkflowExecutor
+
+executor: customWorkflowExecutor
 steps:
   - name: dummy
     template: |
