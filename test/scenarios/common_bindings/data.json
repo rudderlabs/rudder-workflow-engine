@@ -1,5 +1,12 @@
 [
   {
+    "workflowPath": "assert_throw.yaml",
+    "error": {
+      "message": "some error",
+      "class": "CustomError"
+    }
+  },
+  {
     "workflowPath": "get_one_by_paths.yaml",
     "input": ["a.b.0.d", "a.b[1].e", "a.c"],
     "output": 1
