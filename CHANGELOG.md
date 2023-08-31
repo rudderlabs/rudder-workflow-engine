@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.1...v0.5.2) (2023-08-31)
+
+
+### Features
+
+* add assert throw binding ([#89](https://github.com/rudderlabs/rudder-workflow-engine/issues/89)) ([475be10](https://github.com/rudderlabs/rudder-workflow-engine/commit/475be10839cae21085879dd85a39ac098e761f4c))
+* add support for binding provider ([#85](https://github.com/rudderlabs/rudder-workflow-engine/issues/85)) ([b2aba5a](https://github.com/rudderlabs/rudder-workflow-engine/commit/b2aba5ac1eee4a40ee25f6191e987941873151f4))
+
+
+### Miscellaneous
+
+* customer workflow executor loading from yaml ([#88](https://github.com/rudderlabs/rudder-workflow-engine/issues/88)) ([a1cfb6c](https://github.com/rudderlabs/rudder-workflow-engine/commit/a1cfb6cb0391427ea177e740c54853b60502c4be))
+* loop step executor ([#86](https://github.com/rudderlabs/rudder-workflow-engine/issues/86)) ([4db8f5f](https://github.com/rudderlabs/rudder-workflow-engine/commit/4db8f5fcde8bb93330a5ed245f981281004f3cdf))
+
 ## [0.5.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.0...v0.5.1) (2023-08-29)
 
 
