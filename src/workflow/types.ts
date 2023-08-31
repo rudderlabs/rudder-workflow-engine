@@ -37,10 +37,8 @@ export type Workflow = {
   bindings?: Binding[];
   steps: Step[];
   templateType?: TemplateType;
-  executor?: {
-    name: string;
-    path: string;
-  };
+  // Executor name will be searched in the bindings
+  executor?: string;
 };
 
 export type WorkflowOutput = {
