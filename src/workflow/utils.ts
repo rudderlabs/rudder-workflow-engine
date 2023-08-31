@@ -8,6 +8,7 @@ import {
   PathBinding,
   ValueBinding,
   Workflow,
+  WorkflowBindingProvider,
   WorkflowExecutor,
   WorkflowOptionsInternal,
 } from './types';
@@ -55,13 +56,26 @@ export class WorkflowUtils {
     }
   }
 
+  private static async getModuleExportsFromProvider(
+    modulePath: string,
+    provider: WorkflowBindingProvider,
+  ): Promise<any> {
+    try {
+      return await provider.provide(modulePath);
+    } catch (error: any) {
+      // Ignoring error
+    }
+  }
+
   private static async getModuleExportsFromAllPaths(
-    rootPath: string,
     bindingPath: string,
+    options: WorkflowOptionsInternal,
   ): Promise<any> {
     return (
-      (await this.getModuleExports(bindingPath)) ||
-      (await this.getModuleExports(path.join(rootPath, bindingPath), true))
+      (options.bindingProvider
+        ? await this.getModuleExportsFromProvider(bindingPath, options.bindingProvider)
+        : await this.getModuleExports(bindingPath)) ??
+      (await this.getModuleExports(path.join(options.rootPath, bindingPath), true))
     );
   }
 
@@ -74,7 +88,7 @@ export class WorkflowUtils {
 
     const bindings = await Promise.all(
       options.bindingsPaths.map(async (bindingPath) => {
-        return this.getModuleExportsFromAllPaths(options.rootPath, bindingPath);
+        return this.getModuleExportsFromAllPaths(bindingPath, options);
       }),
     );
     return Object.assign({}, ...bindings);
@@ -104,8 +118,8 @@ export class WorkflowUtils {
 
       const pathBinding = binding as PathBinding;
       const bindingSource = await this.getModuleExportsFromAllPaths(
-        options.rootPath,
         pathBinding.path || 'bindings',
+        options,
       );
       if (pathBinding.name) {
         bindingsObj[pathBinding.name] = pathBinding.exportAll
@@ -123,10 +137,7 @@ export class WorkflowUtils {
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowExecutor> {
     if (workflow?.executor?.path) {
-      let executor = await this.getModuleExportsFromAllPaths(
-        options.rootPath,
-        workflow.executor.path,
-      );
+      let executor = await this.getModuleExportsFromAllPaths(workflow.executor.path, options);
 
       if (
         !executor ||
