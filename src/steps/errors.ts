@@ -13,8 +13,8 @@ export class StepCreationError extends StatusError {
 export class StepExecutionError extends StatusError {
   stepName: string;
   childStepName?: string;
-  error?: Error;
-  originalError?: Error;
+  error: Error;
+  originalError: Error;
   constructor(
     message: string,
     status: number,
@@ -25,7 +25,7 @@ export class StepExecutionError extends StatusError {
     super(message, status);
     this.stepName = stepName;
     this.childStepName = childStepName;
-    this.error = error;
+    this.error = error || this;
     this.originalError = (error as any)?.originalError || error;
   }
 }
