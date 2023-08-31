@@ -32,9 +32,9 @@ describe('Scenarios tests', () => {
             const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
-            expect(error).toMatchObject(CommonUtils.getErrorMatcher(scenario.error));
-            if (scenario.errorClass) {
-              expect(error.error?.constructor.name).toEqual(scenario.errorClass);
+            CommonUtils.matchError(error, scenario.error);
+            if (scenario.error?.errorClass) {
+              expect(error.error?.constructor.name).toEqual(scenario.error.errorClass);
             }
           } finally {
             if (scenario.logLevel !== undefined) {

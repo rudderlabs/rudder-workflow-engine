@@ -5,6 +5,7 @@ export type ScenarioError = {
   status?: string;
   stepName?: string;
   childStepName?: string;
+  errorClass?: string;
 };
 
 export type Scenario = {
@@ -15,6 +16,5 @@ export type Scenario = {
   stepName?: string;
   output?: any;
   error?: ScenarioError;
-  errorClass?: string;
   logLevel?: LogLevel;
 };
