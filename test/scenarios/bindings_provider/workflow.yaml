@@ -1,0 +1,9 @@
+bindings:
+  # this will be resolved using custom binding provider
+  - path: message
+  - name: anotherMessage
+
+steps:
+  - name: getMessage
+    template: |
+      $message & $anotherMessage
