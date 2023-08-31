@@ -1,0 +1,7 @@
+templateType: jsontemplate
+bindings:
+  - name: CustomError
+steps:
+  - name: assertThrow
+    template: |
+      $.assertThrow(false, new $.CustomError("some error"))

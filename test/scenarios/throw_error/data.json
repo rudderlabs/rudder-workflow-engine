@@ -9,7 +9,7 @@
       "status": 400,
       "stepName": "assertError"
     },
-    "errorClass": "StatusError"
+    "class": "StatusError"
   },
   {
     "input": {
@@ -24,7 +24,7 @@
       "stepName": "workflowErrors",
       "childStepName": "templateError"
     },
-    "errorClass": "StatusError"
+    "class": "StatusError"
   },
   {
     "input": {
@@ -39,7 +39,7 @@
       "stepName": "workflowErrors",
       "childStepName": "functionError"
     },
-    "errorClass": "BadFunctionError"
+    "class": "BadFunctionError"
   },
   {
     "input": {
@@ -53,7 +53,7 @@
       "stepName": "workflowErrors",
       "childStepName": "functionError"
     },
-    "errorClass": "BadFunctionError"
+    "class": "BadFunctionError"
   },
   {
     "input": {
@@ -67,6 +67,6 @@
       "stepName": "workflowErrors",
       "childStepName": "externalWorkflowError"
     },
-    "errorClass": "WorkflowExecutionError"
+    "class": "WorkflowExecutionError"
   }
 ]

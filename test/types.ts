@@ -5,7 +5,7 @@ export type ScenarioError = {
   status?: string;
   stepName?: string;
   childStepName?: string;
-  errorClass?: string;
+  class?: string;
 };
 
 export type Scenario = {

@@ -38,6 +38,12 @@ export function doReturn(obj?: any) {
   throw new ReturnResultError(obj);
 }
 
+export function assertThrow(val: any, error: Error) {
+  if (!val) {
+    throw error;
+  }
+}
+
 export function doThrow(message: string, status: number = 500) {
   throw new StatusError(message, Number(status));
 }
