@@ -22,7 +22,7 @@ export type StepOutput = {
   error?: {
     message: string;
     status: number;
-    originalError?: Error;
+    originalError: Error;
     error: StepExecutionError;
   };
   skipped?: boolean;
