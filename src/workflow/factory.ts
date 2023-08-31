@@ -19,9 +19,9 @@ export class WorkflowEngineFactory {
     try {
       this.prepareWorkflow(workflow, options);
       const optionsInteranl = options as WorkflowOptionsInternal;
-      const executor = await WorkflowUtils.getExecutor(workflow, optionsInteranl);
       const bindings = await this.prepareBindings(workflow.bindings || [], optionsInteranl);
       optionsInteranl.currentBindings = bindings;
+      const executor = await WorkflowUtils.getExecutor(workflow, optionsInteranl);
       const stepExecutors = await this.createStepExecutors(workflow.steps, optionsInteranl);
       return new WorkflowEngine(workflow.name, executor, bindings, stepExecutors);
     } catch (error: any) {

@@ -136,17 +136,12 @@ export class WorkflowUtils {
     workflow: Workflow,
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowExecutor> {
-    if (workflow?.executor?.path) {
-      let executor = await this.getModuleExportsFromAllPaths(workflow.executor.path, options);
-
-      if (
-        !executor ||
-        !executor[workflow.executor.name] ||
-        !executor[workflow.executor.name].execute
-      ) {
-        throw new WorkflowCreationError('Workflow executor not found', workflow.name);
+    if (workflow?.executor) {
+      let executor = options.currentBindings[workflow.executor];
+      if (!executor?.execute) {
+        throw new WorkflowCreationError('Workflow executor not found', workflow.executor);
       }
-      return executor[workflow.executor.name];
+      return executor;
     }
     return options.executor || DefaultWorkflowExecutor.INSTANCE;
   }
