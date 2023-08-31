@@ -18,6 +18,7 @@ describe('Custom Scenarios tests', () => {
           },
         },
       ]);
+      expect(result.output[0].error?.error.message).toEqual('some error');
       expect(result.output[0].error?.originalError?.message).toEqual('some error');
     });
   });

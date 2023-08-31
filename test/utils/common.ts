@@ -1,16 +1,23 @@
 import { ScenarioError } from '../types';
 
 export class CommonUtils {
-  static getErrorMatcher(error?: ScenarioError) {
-    if (!error) {
+  static matchError(actual: any, expected?: ScenarioError) {
+    if (!expected) {
       // Ideally shouldn't reach here.
       // Sending default error so that test case fails.
       return { message: 'should fail' };
     }
-    let errorMatcher = error;
-    if (error.message) {
-      errorMatcher.message = expect.stringContaining(error.message);
+    if (expected.message) {
+      expect(actual.message).toEqual(expect.stringContaining(expected.message));
     }
-    return errorMatcher;
+    if (expected.status) {
+      expect(actual.status).toEqual(expected.status);
+    }
+    if (expected.stepName) {
+      expect(actual.stepName).toEqual(expected.stepName);
+    }
+    if (expected.childStepName) {
+      expect(actual.childStepName).toEqual(expected.childStepName);
+    }
   }
 }

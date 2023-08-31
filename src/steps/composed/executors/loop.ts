@@ -2,6 +2,7 @@ import { StepExecutionError } from '../../errors';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
 import { StepExecutor, StepOutput } from '../../types';
+import { ErrorUtils } from '../../../common';
 
 export class LoopStepExecutor extends ComposableStepExecutor {
   constructor(nextExecutor: StepExecutor) {
@@ -15,11 +16,13 @@ export class LoopStepExecutor extends ComposableStepExecutor {
     try {
       return await super.execute(element, executionBindings);
     } catch (error: any) {
+      const stepExecutionError = ErrorUtils.createStepExecutionError(error, this.getStepName());
       return {
         error: {
-          message: error.message,
-          status: error.status,
-          originalError: error.originalError,
+          message: stepExecutionError.message,
+          status: stepExecutionError.status,
+          error: stepExecutionError,
+          originalError: stepExecutionError.originalError,
         },
       };
     }

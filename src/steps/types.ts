@@ -1,6 +1,7 @@
 import { ExecutionBindings, Binding } from '../workflow/types';
 import { Executor } from '../common/types';
 import { JsonataStepExecutor, JsonTemplateStepExecutor } from './base/simple/executors/template';
+import { StepExecutionError } from './errors';
 
 export interface StepExecutor extends Executor {
   /**
@@ -22,6 +23,7 @@ export type StepOutput = {
     message: string;
     status: number;
     originalError?: Error;
+    error: StepExecutionError;
   };
   skipped?: boolean;
   output?: any;
