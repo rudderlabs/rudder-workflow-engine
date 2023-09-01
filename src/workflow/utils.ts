@@ -137,7 +137,7 @@ export class WorkflowUtils {
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowExecutor> {
     if (workflow?.executor) {
-      let executor = options.currentBindings[workflow.executor];
+      let executor = options.currentBindings[workflow.executor] as WorkflowExecutor;
       if (!executor?.execute) {
         throw new WorkflowCreationError('Workflow executor not found', workflow.executor);
       }
