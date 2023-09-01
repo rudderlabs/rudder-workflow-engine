@@ -112,7 +112,7 @@ export type BatchStep = StepCommon & {
 };
 
 export interface BatchExecutor {
-  execute(input: any[]): Promise<BatchResult[]>;
+  execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]>;
 }
 
 export type TemplateStepExecutor = JsonTemplateStepExecutor | JsonataStepExecutor;
@@ -124,4 +124,4 @@ export type WorkflowStep = StepCommon & {
   workflowStepPath?: string;
 };
 
-export type Step = SimpleStep | WorkflowStep;
+export type Step = SimpleStep | WorkflowStep | BatchStep;

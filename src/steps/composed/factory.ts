@@ -71,7 +71,7 @@ export class ComposableExecutorFactory {
     let wrappedStepExecutor = stepExecutor;
     if (step.loopCondition) {
       const condtionalExecutor = TemplateStepExecutorFactory.create(
-        step,
+        stepExecutor.getStep(),
         step.loopCondition as string,
         options,
       );
