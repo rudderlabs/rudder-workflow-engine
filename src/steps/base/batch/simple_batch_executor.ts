@@ -1,4 +1,3 @@
-import { chunk } from 'lodash';
 import {
   BatchConfig,
   BatchExecutor,
@@ -17,17 +16,13 @@ export class SimpleBatchExecutor implements BatchExecutor {
     this.filterExector = filterExector;
   }
   async execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]> {
-    const filteredIndices = Array.from(input.keys());
-    const filteredInput = input;
+    let filteredIndices: number[] = input;
+    let filteredInput: any[] = Array.from(input.keys());
     if (this.filterExector) {
       // Filter executor internally invokes the loop step executor
       const filterResult = (await this.filterExector.execute(input, bindings)) as LoopStepOutput;
-      filterResult.output.forEach((value, index) => {
-        if (value.skipped) {
-          filteredIndices.splice(index, 1);
-          filteredInput.splice(index, 1);
-        }
-      });
+      filteredInput = filteredInput.filter((_, index) => filterResult.output[index].output);
+      filteredIndices = filteredIndices.filter((_, index) => filterResult.output[index].output);
     }
     const { items: itemArrays, indices } = BatchUtils.chunkArrayBySizeAndLength(
       filteredInput,

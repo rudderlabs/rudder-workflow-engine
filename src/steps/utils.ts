@@ -7,7 +7,7 @@ export class StepUtils {
     if (StepUtils.isBatchStep(step)) {
       return StepType.Batch;
     }
-    
+
     if (StepUtils.isWorkflowStep(step)) {
       return StepType.Workflow;
     }
@@ -16,8 +16,9 @@ export class StepUtils {
     }
     return StepType.Unknown;
   }
+
   static isBatchStep(step: BatchStep) {
-    return (step.batches || step.executor) && step.type === StepType.Batch;
+    return step.type === StepType.Batch;
   }
 
   static isWorkflowStep(step: WorkflowStep): boolean {
@@ -92,7 +93,7 @@ export class StepUtils {
   }
 
   static ValidateBatchStep(step: BatchStep) {
-    if (!step.batches || !step.executor) {
+    if (!step.batches && !step.executor) {
       throw new StepCreationError('batches or executor is required for batch step', step.name);
     }
   }

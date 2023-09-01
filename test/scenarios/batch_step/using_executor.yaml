@@ -1,0 +1,8 @@
+bindings:
+  - name: batchExecutor
+steps:
+  - name: batchData
+    type: batch
+    executor: batchExecutor
+
+      

@@ -1,10 +1,6 @@
 import sizeof from 'object-sizeof';
 export class BatchUtils {
   static chunkArrayBySizeAndLength(array: any[], maxSizeInBytes?: number, maxItems?: number) {
-    if (!maxSizeInBytes && !maxItems) {
-      throw new Error('Either maxSizeInBytes or maxItems is required');
-    }
-
     const items: any[][] = [];
     const indices: number[][] = [];
     let currentChunk: any[] = [];
@@ -30,6 +26,7 @@ export class BatchUtils {
 
     if (currentChunk.length > 0) {
       items.push(currentChunk);
+      indices.push(currentIndices);
     }
 
     return { items, indices };
@@ -44,6 +41,6 @@ export class BatchUtils {
   }
 
   private static isLengthLimitReached(currentLength: number, maxLength?: number) {
-    return maxLength && currentLength > maxLength;
+    return maxLength && currentLength + 1 > maxLength;
   }
 }

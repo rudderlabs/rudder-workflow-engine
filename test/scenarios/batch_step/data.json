@@ -1,0 +1,315 @@
+[
+  {
+    "input": [
+      {
+        "type": "hero",
+        "name": "Rikimaru"
+      },
+      {
+        "type": "hero",
+        "name": "Juggernaut"
+      },
+      {
+        "type": "hero",
+        "name": "Invoker"
+      },
+      {
+        "type": "hero",
+        "name": "Drow Ranger"
+      },
+      {
+        "type": "hero",
+        "name": "Pudge"
+      },
+      {
+        "type": "hero",
+        "name": "Crystal Maiden"
+      },
+      {
+        "type": "hero",
+        "name": "Sniper"
+      },
+      {
+        "type": "hero",
+        "name": "Anti-Mage"
+      },
+      {
+        "type": "hero",
+        "name": "Lina"
+      },
+      {
+        "type": "hero",
+        "name": "Axe"
+      },
+      {
+        "type": "villain",
+        "name": "Dendi"
+      },
+      {
+        "type": "villain",
+        "name": "Viper"
+      },
+      {
+        "type": "villain",
+        "name": "Zeus"
+      },
+      {
+        "type": "villain",
+        "name": "Lich"
+      },
+      {
+        "type": "villain",
+        "name": "Necrophos"
+      },
+      {
+        "type": "villain",
+        "name": "Pudge"
+      },
+      {
+        "type": "villain",
+        "name": "Lion"
+      },
+      {
+        "type": "villain",
+        "name": "Shadow Fiend"
+      },
+      {
+        "type": "villain",
+        "name": "Slark"
+      },
+      {
+        "type": "villain",
+        "name": "Bloodseeker"
+      }
+    ],
+    "output": [
+      {
+        "items": [
+          {
+            "type": "hero",
+            "name": "Rikimaru"
+          },
+          {
+            "type": "hero",
+            "name": "Juggernaut"
+          },
+          {
+            "type": "hero",
+            "name": "Invoker"
+          }
+        ],
+        "indices": [0, 1, 2],
+        "key": "heros"
+      },
+      {
+        "items": [
+          {
+            "type": "hero",
+            "name": "Drow Ranger"
+          },
+          {
+            "type": "hero",
+            "name": "Pudge"
+          },
+          {
+            "type": "hero",
+            "name": "Crystal Maiden"
+          }
+        ],
+        "indices": [3, 4, 5],
+        "key": "heros"
+      },
+      {
+        "items": [
+          {
+            "type": "hero",
+            "name": "Sniper"
+          },
+          {
+            "type": "hero",
+            "name": "Anti-Mage"
+          },
+          {
+            "type": "hero",
+            "name": "Lina"
+          }
+        ],
+        "indices": [6, 7, 8],
+        "key": "heros"
+      },
+      {
+        "items": [
+          {
+            "type": "hero",
+            "name": "Axe"
+          }
+        ],
+        "indices": [9],
+        "key": "heros"
+      },
+      {
+        "items": [
+          {
+            "type": "villain",
+            "name": "Dendi"
+          },
+          {
+            "type": "villain",
+            "name": "Viper"
+          },
+          {
+            "type": "villain",
+            "name": "Zeus"
+          }
+        ],
+        "indices": [10, 11, 12],
+        "key": "villains"
+      },
+      {
+        "items": [
+          {
+            "type": "villain",
+            "name": "Lich"
+          },
+          {
+            "type": "villain",
+            "name": "Necrophos"
+          }
+        ],
+        "indices": [13, 14],
+        "key": "villains"
+      },
+      {
+        "items": [
+          {
+            "type": "villain",
+            "name": "Pudge"
+          },
+          {
+            "type": "villain",
+            "name": "Lion"
+          }
+        ],
+        "indices": [15, 16],
+        "key": "villains"
+      },
+      {
+        "items": [
+          {
+            "type": "villain",
+            "name": "Shadow Fiend"
+          },
+          {
+            "type": "villain",
+            "name": "Slark"
+          }
+        ],
+        "indices": [17, 18],
+        "key": "villains"
+      },
+      {
+        "items": [
+          {
+            "type": "villain",
+            "name": "Bloodseeker"
+          }
+        ],
+        "indices": [19],
+        "key": "villains"
+      }
+    ]
+  },
+  {
+    "workflowPath": "using_executor.yaml",
+    "input": [
+      {
+        "type": "hero",
+        "name": "Rikimaru"
+      },
+      {
+        "type": "hero",
+        "name": "Juggernaut"
+      },
+      {
+        "type": "hero",
+        "name": "Invoker"
+      },
+      {
+        "type": "villain",
+        "name": "Lion"
+      },
+      {
+        "type": "villain",
+        "name": "Shadow Fiend"
+      },
+      {
+        "type": "villain",
+        "name": "Slark"
+      },
+      {
+        "type": "villain",
+        "name": "Bloodseeker"
+      }
+    ],
+    "output": [
+      {
+        "items": [0, 1],
+        "indices": [
+          {
+            "type": "hero",
+            "name": "Rikimaru"
+          },
+          {
+            "type": "hero",
+            "name": "Juggernaut"
+          }
+        ],
+        "key": "one"
+      },
+      {
+        "items": [2, 3],
+        "indices": [
+          {
+            "type": "hero",
+            "name": "Invoker"
+          },
+          {
+            "type": "villain",
+            "name": "Lion"
+          }
+        ],
+        "key": "one"
+      },
+      {
+        "items": [4, 5],
+        "indices": [
+          {
+            "type": "villain",
+            "name": "Shadow Fiend"
+          },
+          {
+            "type": "villain",
+            "name": "Slark"
+          }
+        ],
+        "key": "one"
+      },
+      {
+        "items": [6],
+        "indices": [
+          {
+            "type": "villain",
+            "name": "Bloodseeker"
+          }
+        ],
+        "key": "one"
+      }
+    ]
+  },
+  {
+    "input": {},
+    "error": {
+      "message": "batch step requires array input"
+    }
+  }
+]

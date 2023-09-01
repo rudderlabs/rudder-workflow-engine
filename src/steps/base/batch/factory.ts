@@ -12,7 +12,6 @@ import { DefaultBatchWorkflowExecutor } from './default_batch_workflow_executor'
 import { SimpleBatchExecutor } from './simple_batch_executor';
 import { BatchStepExecutor } from './step_executor';
 import { StepExecutorFactory } from '../../../steps/factory';
-import { LoopStepExecutor } from 'src/steps/composed';
 
 export class BatchStepExecutorFactory {
   static async create(
