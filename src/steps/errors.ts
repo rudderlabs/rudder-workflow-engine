@@ -1,4 +1,4 @@
-import { StatusError } from '../common/errors';
+import { StatusError } from '../common/errors/status';
 
 export class StepCreationError extends StatusError {
   stepName?: string;

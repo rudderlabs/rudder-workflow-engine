@@ -1,19 +1,24 @@
 import { BatchExecutor, BatchStep, BatchStepOutput } from '../../../steps/types';
 import { BaseStepExecutor } from '../executors/base';
 import { ExecutionBindings } from '../../../workflow';
-import { StepExecutionError } from '../../../steps/errors';
+import { ErrorUtils, BatchUtils } from '../../../common/utils';
+import { BatchError } from '../../../common/errors';
 
 export class BatchStepExecutor extends BaseStepExecutor {
   readonly executor: BatchExecutor;
   async execute(input: any, bindings: ExecutionBindings): Promise<BatchStepOutput> {
-    if (!Array.isArray(input)) {
-      throw new StepExecutionError('batch step requires array input', 400, this.getStepName());
+    try {
+      if (!Array.isArray(input)) {
+        throw new BatchError('batch step requires array input');
+      }
+      const batchResults = await this.executor.execute(input, bindings);
+      BatchUtils.validateBatchResults(input, batchResults);
+      return {
+        output: batchResults,
+      };
+    } catch (e: any) {
+      throw ErrorUtils.createStepExecutionError(e, this.getStepName());
     }
-    const batchResults = await this.executor.execute(input, bindings);
-    //TODO: validate batchResults
-    return {
-      output: batchResults,
-    };
   }
 
   constructor(step: BatchStep, executor: BatchExecutor) {

@@ -24,11 +24,10 @@ export class SimpleBatchExecutor implements BatchExecutor {
       filteredInput = filteredInput.filter((_, index) => filterResult.output[index].output);
       filteredIndices = filteredIndices.filter((_, index) => filterResult.output[index].output);
     }
-    const { items: itemArrays, indices } = BatchUtils.chunkArrayBySizeAndLength(
-      filteredInput,
-      this.config.size,
-      this.config.length,
-    );
+    const { items: itemArrays, indices } = BatchUtils.chunkArrayBySizeAndLength(filteredInput, {
+      maxSizeInBytes: this.config.size,
+      maxItems: this.config.length,
+    });
     return itemArrays.map((items, index) => {
       return {
         items,
