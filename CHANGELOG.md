@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.2...v0.5.3) (2023-09-04)
+
+
+### Miscellaneous
+
+* **INT-555:** unit test files ([#91](https://github.com/rudderlabs/rudder-workflow-engine/issues/91)) ([e8aa613](https://github.com/rudderlabs/rudder-workflow-engine/commit/e8aa61377491cfba50ff37c03f2b1787b7517a8d))
+
 ## [0.5.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.1...v0.5.2) (2023-08-31)
 
 
