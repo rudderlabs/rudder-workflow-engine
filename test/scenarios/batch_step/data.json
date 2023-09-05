@@ -80,6 +80,18 @@
       {
         "type": "villain",
         "name": "Bloodseeker"
+      },
+      {
+        "type": "god",
+        "name": "Zeus"
+      },
+      {
+        "type": "god",
+        "name": "Athena"
+      },
+      {
+        "type": "god",
+        "name": "Hades"
       }
     ],
     "output": [
@@ -96,13 +108,7 @@
           {
             "type": "hero",
             "name": "Invoker"
-          }
-        ],
-        "indices": [0, 1, 2],
-        "key": "heros"
-      },
-      {
-        "items": [
+          },
           {
             "type": "hero",
             "name": "Drow Ranger"
@@ -114,13 +120,7 @@
           {
             "type": "hero",
             "name": "Crystal Maiden"
-          }
-        ],
-        "indices": [3, 4, 5],
-        "key": "heros"
-      },
-      {
-        "items": [
+          },
           {
             "type": "hero",
             "name": "Sniper"
@@ -132,19 +132,13 @@
           {
             "type": "hero",
             "name": "Lina"
-          }
-        ],
-        "indices": [6, 7, 8],
-        "key": "heros"
-      },
-      {
-        "items": [
+          },
           {
             "type": "hero",
             "name": "Axe"
           }
         ],
-        "indices": [9],
+        "indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "key": "heros"
       },
       {
@@ -160,13 +154,7 @@
           {
             "type": "villain",
             "name": "Zeus"
-          }
-        ],
-        "indices": [10, 11, 12],
-        "key": "villains"
-      },
-      {
-        "items": [
+          },
           {
             "type": "villain",
             "name": "Lich"
@@ -174,13 +162,7 @@
           {
             "type": "villain",
             "name": "Necrophos"
-          }
-        ],
-        "indices": [13, 14],
-        "key": "villains"
-      },
-      {
-        "items": [
+          },
           {
             "type": "villain",
             "name": "Pudge"
@@ -188,13 +170,7 @@
           {
             "type": "villain",
             "name": "Lion"
-          }
-        ],
-        "indices": [15, 16],
-        "key": "villains"
-      },
-      {
-        "items": [
+          },
           {
             "type": "villain",
             "name": "Shadow Fiend"
@@ -202,20 +178,44 @@
           {
             "type": "villain",
             "name": "Slark"
-          }
-        ],
-        "indices": [17, 18],
-        "key": "villains"
-      },
-      {
-        "items": [
+          },
           {
             "type": "villain",
             "name": "Bloodseeker"
           }
         ],
-        "indices": [19],
+        "indices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
         "key": "villains"
+      },
+      {
+        "items": [
+          {
+            "type": "god",
+            "name": "Zeus"
+          }
+        ],
+        "indices": [20],
+        "key": "gods"
+      },
+      {
+        "items": [
+          {
+            "type": "god",
+            "name": "Athena"
+          }
+        ],
+        "indices": [21],
+        "key": "gods"
+      },
+      {
+        "items": [
+          {
+            "type": "god",
+            "name": "Hades"
+          }
+        ],
+        "indices": [22],
+        "key": "gods"
       }
     ]
   },

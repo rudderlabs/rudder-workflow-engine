@@ -9,4 +9,7 @@ steps:
       - key: villains
         size: 100
         filter: .type === "villain"
+      - key: gods
+        disabled: true
+        filter: .type === "god"
       

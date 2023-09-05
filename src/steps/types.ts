@@ -99,8 +99,11 @@ export type Template = {
 };
 
 export type BatchConfig = {
-  size?: number;
-  length?: number;
+  options?: {
+    size?: number;
+    length?: number;
+  };
+  disabled?: true;
   filter?: string;
   key: string;
 };

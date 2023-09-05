@@ -16,17 +16,17 @@ export class SimpleBatchExecutor implements BatchExecutor {
     this.filterExector = filterExector;
   }
   async execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]> {
-    let filteredIndices: number[] = input;
-    let filteredInput: any[] = Array.from(input.keys());
-    if (this.filterExector) {
-      // Filter executor internally invokes the loop step executor
-      const filterResult = (await this.filterExector.execute(input, bindings)) as LoopStepOutput;
-      filteredInput = filteredInput.filter((_, index) => filterResult.output[index].output);
-      filteredIndices = filteredIndices.filter((_, index) => filterResult.output[index].output);
+    const { filteredInput, filteredIndices } = await this.handleFiltering(input, bindings);
+    if (this.config.disabled) {
+      return this.handleBatchingDisabled(filteredInput, filteredIndices);
     }
+    return this.handleBatching(filteredInput, filteredIndices);
+  }
+
+  private handleBatching(filteredInput: any[], filteredIndices: number[]): BatchResult[] {
     const { items: itemArrays, indices } = BatchUtils.chunkArrayBySizeAndLength(filteredInput, {
-      maxSizeInBytes: this.config.size,
-      maxItems: this.config.length,
+      maxSizeInBytes: this.config.options?.size,
+      maxItems: this.config.options?.length,
     });
     return itemArrays.map((items, index) => {
       return {
@@ -35,5 +35,28 @@ export class SimpleBatchExecutor implements BatchExecutor {
         key: this.config.key,
       };
     });
+  }
+
+  private handleBatchingDisabled(filteredInput: any[], filteredIndices: number[]): BatchResult[] {
+    return filteredInput.map((item, index) => {
+      return {
+        items: [item],
+        indices: [filteredIndices[index]],
+        key: this.config.key,
+      };
+    });
+  }
+
+  private async handleFiltering(input: any[], bindings: ExecutionBindings) {
+    let filteredInput: any[] = input;
+    let filteredIndices: number[] = Array.from(input.keys());
+
+    if (this.filterExector) {
+      // Filter executor internally invokes the loop step executor
+      const filterResult = (await this.filterExector.execute(input, bindings)) as LoopStepOutput;
+      filteredInput = filteredInput.filter((_, index) => filterResult.output[index].output);
+      filteredIndices = filteredIndices.filter((_, index) => filterResult.output[index].output);
+    }
+    return { filteredInput, filteredIndices };
   }
 }
