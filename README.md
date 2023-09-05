@@ -438,7 +438,8 @@ WorkflowEngineFactory.createFromFilePath('workflow.yaml', {
     - In the above example: **processECommerace** step is the workflow step and importing additional bindings. Both workflow’s (**commonBinding**) and step’s (**stepBinding**) bindings are available to the workflow step.
 
 ### Batch Step
-This helps to batch the inputs by length or size. We can also define our own batching by implementing [**BatchExecutor**](./src/steps/types.ts#L114) interface.
+This helps to batch the inputs using filter and by length or size. We can also define our own batching by implementing [**BatchExecutor**](./src/steps/types.ts#L114) interface. 
+
 
 #### Syntax
 ```yaml
@@ -453,6 +454,7 @@ steps:
         filter: .type === "villain"
         size: 100
 ```
+Here we are using keys (heroes or villains) to indicate batches and these will be reflected in the output for further processing.
 #### Custom Batch Executor
 Refer this [example](./test/scenarios/batch_step/using_executor.yaml).
 
