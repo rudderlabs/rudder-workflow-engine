@@ -1,9 +1,13 @@
 import { CommonUtils } from '../common/utils/common';
 import { StepCreationError } from './errors';
-import { SimpleStep, Step, StepExitAction, StepType, WorkflowStep } from './types';
+import { BatchStep, SimpleStep, Step, StepExitAction, StepType, WorkflowStep } from './types';
 
 export class StepUtils {
   static getStepType(step: Step): StepType {
+    if (StepUtils.isBatchStep(step)) {
+      return StepType.Batch;
+    }
+
     if (StepUtils.isWorkflowStep(step)) {
       return StepType.Workflow;
     }
@@ -11,6 +15,10 @@ export class StepUtils {
       return StepType.Simple;
     }
     return StepType.Unknown;
+  }
+
+  static isBatchStep(step: BatchStep) {
+    return step.type === StepType.Batch;
   }
 
   static isWorkflowStep(step: WorkflowStep): boolean {
@@ -78,6 +86,15 @@ export class StepUtils {
 
     if (step.loopCondition && !step.loopOverInput) {
       throw new StepCreationError('loopCondition should be used with loopOverInput', step.name);
+    }
+    if (step.type === StepType.Batch) {
+      this.ValidateBatchStep(step as BatchStep);
+    }
+  }
+
+  static ValidateBatchStep(step: BatchStep) {
+    if (!step.batches && !step.executor) {
+      throw new StepCreationError('batches or executor is required for batch step', step.name);
     }
   }
 }

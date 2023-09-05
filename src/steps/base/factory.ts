@@ -4,13 +4,16 @@ import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './executors/workflow_step';
 import { BaseStepUtils } from './utils';
 import { WorkflowOptionsInternal } from 'src/workflow';
+import { BatchStepExecutorFactory } from './batch/factory';
 
 export class BaseStepExecutorFactory {
   static create(step: Step, options: WorkflowOptionsInternal): Promise<StepExecutor> {
     if (step.type === StepType.Simple) {
       return SimpleStepExecutorFactory.create(step, options);
-    } else {
+    } else if (step.type === StepType.Workflow) {
       return this.createWorkflowStepExecutor(step, options);
+    } else {
+      return BatchStepExecutorFactory.create(step, options);
     }
   }
 

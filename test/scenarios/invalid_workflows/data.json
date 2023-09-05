@@ -63,6 +63,18 @@
     }
   },
   {
+    "workflowPath": "invalid_batch_step_configuration.yaml",
+    "error": {
+      "message": "batches or executor is required for batch step"
+    }
+  },
+  {
+    "workflowPath": "invalid_batch_step_executor.yaml",
+    "error": {
+      "message": "Invalid batch executor"
+    }
+  },
+  {
     "workflowPath": "invalid_binding.yaml",
     "error": {
       "message": "Cannot find module"

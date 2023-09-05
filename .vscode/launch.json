@@ -19,7 +19,7 @@
       "request": "launch",
       "name": "Jest Current File",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": ["${fileBasenameNoExtension}", "--config", "jest.config.ts"],
+      "args": ["${relativeFile}", "--config", "jest.config.ts"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "windows": {

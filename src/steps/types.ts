@@ -30,9 +30,24 @@ export type StepOutput = {
   outputs?: Record<string, any>;
 };
 
+export type LoopStepOutput = {
+  output: StepOutput[];
+};
+
+export type BatchResult = {
+  key: string;
+  items: any[];
+  indices: number[];
+};
+
+export type BatchStepOutput = {
+  output: BatchResult[];
+};
+
 export enum StepType {
   Simple = 'simple',
   Workflow = 'workflow',
+  Batch = 'batch',
   Unknown = 'unknow',
 }
 
@@ -83,6 +98,26 @@ export type Template = {
   path?: string;
 };
 
+export type BatchConfig = {
+  options?: {
+    size?: number;
+    length?: number;
+  };
+  disabled?: true;
+  filter?: string;
+  key: string;
+};
+
+export type BatchStep = StepCommon & {
+  batches?: BatchConfig[];
+  // Executor must be passed using bindings
+  executor?: string;
+};
+
+export interface BatchExecutor {
+  execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]>;
+}
+
 export type TemplateStepExecutor = JsonTemplateStepExecutor | JsonataStepExecutor;
 
 export type WorkflowStep = StepCommon & {
@@ -92,4 +127,4 @@ export type WorkflowStep = StepCommon & {
   workflowStepPath?: string;
 };
 
-export type Step = SimpleStep | WorkflowStep;
+export type Step = SimpleStep | WorkflowStep | BatchStep;
