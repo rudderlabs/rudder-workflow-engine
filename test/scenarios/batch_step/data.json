@@ -108,7 +108,13 @@
           {
             "type": "hero",
             "name": "Invoker"
-          },
+          }
+        ],
+        "indices": [0, 1, 2],
+        "key": "heros"
+      },
+      {
+        "items": [
           {
             "type": "hero",
             "name": "Drow Ranger"
@@ -120,7 +126,13 @@
           {
             "type": "hero",
             "name": "Crystal Maiden"
-          },
+          }
+        ],
+        "indices": [3, 4, 5],
+        "key": "heros"
+      },
+      {
+        "items": [
           {
             "type": "hero",
             "name": "Sniper"
@@ -132,13 +144,19 @@
           {
             "type": "hero",
             "name": "Lina"
-          },
+          }
+        ],
+        "indices": [6, 7, 8],
+        "key": "heros"
+      },
+      {
+        "items": [
           {
             "type": "hero",
             "name": "Axe"
           }
         ],
-        "indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "indices": [9],
         "key": "heros"
       },
       {
@@ -154,7 +172,13 @@
           {
             "type": "villain",
             "name": "Zeus"
-          },
+          }
+        ],
+        "indices": [10, 11, 12],
+        "key": "villains"
+      },
+      {
+        "items": [
           {
             "type": "villain",
             "name": "Lich"
@@ -162,7 +186,13 @@
           {
             "type": "villain",
             "name": "Necrophos"
-          },
+          }
+        ],
+        "indices": [13, 14],
+        "key": "villains"
+      },
+      {
+        "items": [
           {
             "type": "villain",
             "name": "Pudge"
@@ -170,7 +200,13 @@
           {
             "type": "villain",
             "name": "Lion"
-          },
+          }
+        ],
+        "indices": [15, 16],
+        "key": "villains"
+      },
+      {
+        "items": [
           {
             "type": "villain",
             "name": "Shadow Fiend"
@@ -178,13 +214,19 @@
           {
             "type": "villain",
             "name": "Slark"
-          },
+          }
+        ],
+        "indices": [17, 18],
+        "key": "villains"
+      },
+      {
+        "items": [
           {
             "type": "villain",
             "name": "Bloodseeker"
           }
         ],
-        "indices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+        "indices": [19],
         "key": "villains"
       },
       {
