@@ -253,8 +253,7 @@
     ],
     "output": [
       {
-        "items": [0, 1],
-        "indices": [
+        "items": [
           {
             "type": "hero",
             "name": "Rikimaru"
@@ -264,11 +263,11 @@
             "name": "Juggernaut"
           }
         ],
+        "indices": [0, 1],
         "key": "one"
       },
       {
-        "items": [2, 3],
-        "indices": [
+        "items": [
           {
             "type": "hero",
             "name": "Invoker"
@@ -278,11 +277,11 @@
             "name": "Lion"
           }
         ],
+        "indices": [2, 3],
         "key": "one"
       },
       {
-        "items": [4, 5],
-        "indices": [
+        "items": [
           {
             "type": "villain",
             "name": "Shadow Fiend"
@@ -292,16 +291,17 @@
             "name": "Slark"
           }
         ],
+        "indices": [4, 5],
         "key": "one"
       },
       {
-        "items": [6],
-        "indices": [
+        "items": [
           {
             "type": "villain",
             "name": "Bloodseeker"
           }
         ],
+        "indices": [6],
         "key": "one"
       }
     ]

@@ -96,5 +96,8 @@ export class StepUtils {
     if (!step.batches && !step.executor) {
       throw new StepCreationError('batches or executor is required for batch step', step.name);
     }
+    if (step.loopOverInput) {
+      throw new StepCreationError('loopOverInput is not supported for batch step', step.name);
+    }
   }
 }
