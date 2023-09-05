@@ -5,14 +5,13 @@ import { StepCreationError } from '../steps/errors';
 import { WorkflowEngine } from './engine';
 import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
 import { Binding, Workflow, WorkflowOptions, WorkflowOptionsInternal } from './types';
-import { DefaultWorkflowExecutor } from './default_executor';
 
 export class WorkflowEngineFactory {
   private static prepareWorkflow(workflow: Workflow, options: WorkflowOptions) {
     WorkflowUtils.validateWorkflow(workflow);
     options.templateType = workflow.templateType || options.templateType;
     StepUtils.populateSteps(workflow.steps);
-    StepUtils.validateSteps(workflow.steps, [StepType.Simple, StepType.Workflow]);
+    StepUtils.validateSteps(workflow.steps, [StepType.Simple, StepType.Workflow, StepType.Batch]);
   }
 
   static async create(workflow: Workflow, options: WorkflowOptions): Promise<WorkflowEngine> {

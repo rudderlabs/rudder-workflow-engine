@@ -1,4 +1,3 @@
-import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { Command } from 'commander';
 import { Scenario } from './types';
@@ -17,10 +16,10 @@ const scenarioName = opts.scenario || 'basic_workflow';
 const index = +(opts.index || 0);
 
 async function createAndExecuteWorkFlow() {
+  const scenarioDir = join(__dirname, 'scenarios', scenarioName);
+  const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
+  const scenario: Scenario = scenarios[index] || scenarios[0];
   try {
-    const scenarioDir = join(__dirname, 'scenarios', scenarioName);
-    const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
-    const scenario: Scenario = scenarios[index] || scenarios[0];
     console.log(
       `Executing scenario: ${scenarioName}, test: ${index}, workflow: ${
         scenario.workflowPath || 'workflow.yaml'

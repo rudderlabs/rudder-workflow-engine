@@ -1,0 +1,15 @@
+templateType: jsontemplate
+steps:
+  - name: batchData
+    type: batch
+    batches:
+      - key: heros
+        length: 3
+        filter: .type === "hero"
+      - key: villains
+        size: 100
+        filter: .type === "villain"
+      - key: gods
+        disabled: true
+        filter: .type === "god"
+      

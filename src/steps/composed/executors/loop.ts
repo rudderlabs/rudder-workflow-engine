@@ -1,7 +1,7 @@
 import { StepExecutionError } from '../../errors';
 import { ExecutionBindings } from '../../../workflow/types';
 import { ComposableStepExecutor } from './composable';
-import { StepExecutor, StepOutput } from '../../types';
+import { LoopStepOutput, StepExecutor, StepOutput } from '../../types';
 import { ErrorUtils } from '../../../common';
 
 export class LoopStepExecutor extends ComposableStepExecutor {
@@ -28,7 +28,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
     }
   }
 
-  async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
+  async execute(input: any, executionBindings: ExecutionBindings): Promise<LoopStepOutput> {
     if (!Array.isArray(input)) {
       throw new StepExecutionError('loopOverInput requires array input', 400, this.getStepName());
     }

@@ -1,13 +1,13 @@
 import jsonata from 'jsonata';
 import { ExecutionBindings } from '../../../../../workflow/types';
 import { BaseStepExecutor } from '../../../executors/base';
-import { SimpleStep, StepOutput } from '../../../../types';
+import { Step, StepOutput } from '../../../../types';
 import { ErrorUtils, StatusError } from '../../../../../common';
 
 export class JsonataStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;
 
-  constructor(step: SimpleStep, template: string) {
+  constructor(step: Step, template: string) {
     super(step);
     this.templateExpression = jsonata(template);
   }

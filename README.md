@@ -291,6 +291,34 @@ Supports importing of external functions and data using bindings.
   ```
   - In the above example, if any error occurs in either step1 or step3, the workflow will exit immediately, but when step2 fails, the workflow ignores the error and continues to execute step3.
 
+### Custom Workflow Executor
+When you may want finer control on how workflow steps needs to executed by workflow engine then you can use this feature. You need to implement [WorkflowExecutor](./src/workflow/types.ts#L65) and use it in following ways to override the default workflow executor.
+#### Specify directly in YAML
+```yaml
+executor: myCustomWorkflowExecutor
+bindings:
+  - name: myCustomWorkflowExecutor
+    path: ./custom_executor
+steps:
+  - name: step1
+    template: |
+      doSomething
+```
+Refer this [example](./test/scenarios/custom_executor/workflow.yaml) for more details.
+#### Specify using workflow options
+```ts
+WorkflowEngineFactory.createFromFilePath('workflow.yaml', {
+  executor: myCustomWorkflowExecutor
+})
+```
+### Custom Bindings Provider
+When you want to implement custom logic to resolve the bindings then you can use this feature. You need to implement [WorkflowBindingProvider](./src/workflow/types.ts#L69).
+```ts
+WorkflowEngineFactory.createFromFilePath('workflow.yaml', {
+  bindingProvider: myCustomBindingsProvider
+})
+```
+
 ## Steps
 ### Simple Step
 - Simple step is the basic unit of execution in the workflow.
@@ -408,6 +436,27 @@ Supports importing of external functions and data using bindings.
     ```
     
     - In the above example: **processECommerace** step is the workflow step and importing additional bindings. Both workflow’s (**commonBinding**) and step’s (**stepBinding**) bindings are available to the workflow step.
+
+### Batch Step
+This helps to batch the inputs using filter and by length or size. We can also define our own batching by implementing [**BatchExecutor**](./src/steps/types.ts#L114) interface. 
+
+
+#### Syntax
+```yaml
+steps:
+  - name: batchStep
+    type: batch
+    batches:
+      - key: heroes
+        filter: .type === "hero"
+        length: 5
+      - key: villains
+        filter: .type === "villain"
+        size: 100
+```
+Here we are using keys (heroes or villains) to indicate batches and these will be reflected in the output for further processing.
+#### Custom Batch Executor
+Refer this [example](./test/scenarios/batch_step/using_executor.yaml).
 
 ## Testing
 
