@@ -22,7 +22,7 @@ export class CustomStepExecutorFactory {
       return this.getExecutorFromProvider(step, options);
     }
     const executor = options.currentBindings[step.executor as string] as CustomStepExecutor;
-    if (!executor?.execute) {
+    if (typeof executor?.execute !== 'function') {
       throw new StepCreationError(`Invalid custom step executor: ${step.executor}`, step.name);
     }
     return executor;
@@ -33,7 +33,7 @@ export class CustomStepExecutorFactory {
     options: WorkflowOptionsInternal,
   ): Promise<CustomStepExecutor> {
     const provider = options.currentBindings[step.provider as string] as CustomStepExecutorProvider;
-    if (!provider?.provide) {
+    if (typeof provider?.provide !== 'function') {
       throw new StepCreationError(`Invalid custom step provider: ${step.provider}`, step.name);
     }
     return provider.provide(step);
