@@ -438,7 +438,7 @@ WorkflowEngineFactory.createFromFilePath('workflow.yaml', {
     - In the above example: **processECommerace** step is the workflow step and importing additional bindings. Both workflow’s (**commonBinding**) and step’s (**stepBinding**) bindings are available to the workflow step.
 
 ### Batch Step
-This helps to batch the inputs using filter and by length or size. We can also define our own batching by implementing [**BatchExecutor**](./src/steps/types.ts#L114) interface. 
+This helps to batch the inputs using filter and by length or size. We can also define our own batching by implementing [**BatchExecutor**](./src/steps/types.ts#L118) interface. 
 
 
 #### Syntax
@@ -457,6 +457,18 @@ steps:
 Here we are using keys (heroes or villains) to indicate batches and these will be reflected in the output for further processing.
 #### Custom Batch Executor
 Refer this [example](./test/scenarios/batch_step/using_executor.yaml).
+
+### Custom Step
+When you want to bring your own steps to workflows then you use this feature.
+
+#### Using Executor
+When your custom step doesn't require initialization specific to workflow then you can directly a provide executor instance in bindings by implementing [CustomStepExecutor](./src/steps/types.ts#130).
+
+Refer this [example](./test/scenarios/custom_step/executor.yaml).
+#### Using Provider
+When your custom step requires initialization with custom params then you can pass a provider in bindings by implementing [CustomStepExecutorProvider](./src/steps/types.ts#133).
+
+Refer this [example](./test/scenarios/custom_step/provider.yaml).
 
 ## Testing
 

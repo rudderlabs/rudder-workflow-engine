@@ -115,6 +115,10 @@ export type BatchStep = StepCommon & {
   executor?: string;
 };
 
+export interface BatchExecutor {
+  execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]>;
+}
+
 export type CustomStep = StepCommon & {
   // provider must be passed using bindings
   provider?: string;
@@ -128,9 +132,6 @@ export interface CustomStepExecutor {
 }
 export interface CustomStepExecutorProvider {
   provide(step: CustomStep): Promise<CustomStepExecutor>;
-}
-export interface BatchExecutor {
-  execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]>;
 }
 
 export type TemplateStepExecutor = JsonTemplateStepExecutor | JsonataStepExecutor;
