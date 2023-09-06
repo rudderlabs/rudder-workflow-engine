@@ -75,6 +75,12 @@
     }
   },
   {
+    "workflowPath": "invalid_batch_step_with_loop.yaml",
+    "error": {
+      "message": "loopOverInput is not supported for batch step"
+    }
+  },
+  {
     "workflowPath": "invalid_binding.yaml",
     "error": {
       "message": "Cannot find module"

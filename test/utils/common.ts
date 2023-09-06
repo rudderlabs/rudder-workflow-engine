@@ -1,11 +1,10 @@
+import { StepExecutionError } from '../../src';
 import { ScenarioError } from '../types';
 
 export class CommonUtils {
-  static matchError(actual: any, expected?: ScenarioError) {
-    if (!expected) {
-      // Ideally shouldn't reach here.
-      // Sending default error so that test case fails.
-      return { message: 'should fail' };
+  static matchError(actual: StepExecutionError, expected?: ScenarioError) {
+    if (expected === undefined) {
+      throw actual;
     }
     if (expected.message) {
       expect(actual.message).toEqual(expect.stringContaining(expected.message));
