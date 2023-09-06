@@ -1,0 +1,6 @@
+steps:
+  - name: batch
+    loopOverInput: true
+    type: batch
+    batches:
+      - key: one
