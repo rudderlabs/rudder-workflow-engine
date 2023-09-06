@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import { Scenario } from './types';
 import { ScenarioUtils, CommonUtils } from './utils';
 
-// Run: npm run test -- test/scenario.test.ts  --scenario=batch_step --index=1
+// Run: npm run test:scenario -- --scenario=batch_step --index=1
 const command = new Command();
 command
   .allowUnknownOption()

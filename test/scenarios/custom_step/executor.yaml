@@ -1,0 +1,10 @@
+bindings:
+  - name: testCustomStepExecutor
+
+steps:
+  - name: customStep
+    type: custom
+    executor: testCustomStepExecutor
+    params: 
+      c: 3
+      d: 4

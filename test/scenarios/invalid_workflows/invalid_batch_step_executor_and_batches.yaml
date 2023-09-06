@@ -1,0 +1,6 @@
+steps:
+  - name: batch
+    type: batch
+    executor: someExecutor
+    batches:
+      - key: someBatch

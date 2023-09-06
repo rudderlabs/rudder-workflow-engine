@@ -63,15 +63,21 @@
     }
   },
   {
-    "workflowPath": "invalid_batch_step_configuration.yaml",
+    "workflowPath": "invalid_batch_step_executor_and_batches.yaml",
     "error": {
-      "message": "batches or executor is required for batch step"
+      "message": "only one of batches or executor should be specified"
     }
   },
   {
     "workflowPath": "invalid_batch_step_executor.yaml",
     "error": {
       "message": "Invalid batch executor"
+    }
+  },
+  {
+    "workflowPath": "invalid_batch_step_no_executor_or_batches.yaml",
+    "error": {
+      "message": "batches or executor is required for batch step"
     }
   },
   {
@@ -84,6 +90,30 @@
     "workflowPath": "invalid_binding.yaml",
     "error": {
       "message": "Cannot find module"
+    }
+  },
+  {
+    "workflowPath": "invalid_custom_step_executor_and_provider.yaml",
+    "error": {
+      "message": "only one of provider or executor should be specified"
+    }
+  },
+  {
+    "workflowPath": "invalid_custom_step_executor.yaml",
+    "error": {
+      "message": "Invalid custom step executor"
+    }
+  },
+  {
+    "workflowPath": "invalid_custom_step_provider.yaml",
+    "error": {
+      "message": "Invalid custom step provider"
+    }
+  },
+  {
+    "workflowPath": "invalid_custom_step_no_executor_or_provider.yaml",
+    "error": {
+      "message": "provider or executor is required for custom step"
     }
   },
   {
@@ -175,7 +205,6 @@
       "stepName": "InvalidOnComplete"
     }
   },
-
   {
     "workflowPath": "invalid_workflowstep.yaml",
     "error": {
