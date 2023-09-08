@@ -1,11 +1,23 @@
 import { CommonUtils } from '../common/utils/common';
 import { StepCreationError } from './errors';
-import { BatchStep, SimpleStep, Step, StepExitAction, StepType, WorkflowStep } from './types';
+import {
+  BatchStep,
+  CustomStep,
+  SimpleStep,
+  Step,
+  StepExitAction,
+  StepType,
+  WorkflowStep,
+} from './types';
 
 export class StepUtils {
   static getStepType(step: Step): StepType {
     if (StepUtils.isBatchStep(step)) {
       return StepType.Batch;
+    }
+
+    if (StepUtils.isCustomStep(step)) {
+      return StepType.Custom;
     }
 
     if (StepUtils.isWorkflowStep(step)) {
@@ -19,6 +31,10 @@ export class StepUtils {
 
   static isBatchStep(step: BatchStep) {
     return step.type === StepType.Batch;
+  }
+
+  static isCustomStep(step: BatchStep) {
+    return step.type === StepType.Custom;
   }
 
   static isWorkflowStep(step: WorkflowStep): boolean {
@@ -49,14 +65,16 @@ export class StepUtils {
     }
   }
 
-  static validateSteps(steps: Step[], allowedStepTypes: string[]) {
+  static validateSteps(steps: Step[], notAllowedTypes?: string[]) {
+    const notAllowed = notAllowedTypes || [];
+    notAllowed.push(StepType.Unknown);
     this.checkForStepNameDuplicates(steps);
     for (let i = 0; i < steps.length; i++) {
-      StepUtils.validateStep(steps[i], i, allowedStepTypes);
+      StepUtils.validateStep(steps[i], i, notAllowed);
     }
   }
 
-  static validateStep(step: Step, index: number, allowedStepTypes: string[]) {
+  static validateStep(step: Step, index: number, notAllowed: string[]) {
     if (!step.name) {
       throw new StepCreationError(`step#${index} should have a name`);
     }
@@ -65,7 +83,7 @@ export class StepUtils {
       throw new StepCreationError('step name is invalid', step.name);
     }
 
-    if (!allowedStepTypes.includes(step.type as StepType)) {
+    if (notAllowed.includes(step.type as StepType)) {
       throw new StepCreationError('unsupported step type', step.name);
     }
 
@@ -80,15 +98,20 @@ export class StepUtils {
       if (!step.condition) {
         throw new StepCreationError('else step should be used in a step with condition', step.name);
       } else {
-        this.validateStep(step.else, index, allowedStepTypes);
+        this.validateStep(step.else, index, notAllowed);
       }
     }
 
     if (step.loopCondition && !step.loopOverInput) {
       throw new StepCreationError('loopCondition should be used with loopOverInput', step.name);
     }
+
     if (step.type === StepType.Batch) {
       this.ValidateBatchStep(step as BatchStep);
+    }
+
+    if (step.type === StepType.Custom) {
+      this.ValidateCustomStep(step as CustomStep);
     }
   }
 
@@ -96,8 +119,25 @@ export class StepUtils {
     if (!step.batches && !step.executor) {
       throw new StepCreationError('batches or executor is required for batch step', step.name);
     }
+
+    if (step.batches && step.executor) {
+      throw new StepCreationError('only one of batches or executor should be specified', step.name);
+    }
+
     if (step.loopOverInput) {
       throw new StepCreationError('loopOverInput is not supported for batch step', step.name);
+    }
+  }
+
+  static ValidateCustomStep(step: CustomStep) {
+    if (!step.provider && !step.executor) {
+      throw new StepCreationError('provider or executor is required for custom step', step.name);
+    }
+    if (step.executor && step.provider) {
+      throw new StepCreationError(
+        'only one of provider or executor should be specified',
+        step.name,
+      );
     }
   }
 }

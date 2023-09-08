@@ -1,19 +1,25 @@
 import { StepCreationError } from '../errors';
-import { Step, StepExecutor, StepType, WorkflowStep } from '../types';
+import { CustomStep, Step, StepExecutor, StepType, WorkflowStep } from '../types';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './executors/workflow_step';
 import { BaseStepUtils } from './utils';
 import { WorkflowOptionsInternal } from 'src/workflow';
 import { BatchStepExecutorFactory } from './batch/factory';
+import { CustomStepExecutorFactory } from './custom/factory';
 
 export class BaseStepExecutorFactory {
   static create(step: Step, options: WorkflowOptionsInternal): Promise<StepExecutor> {
-    if (step.type === StepType.Simple) {
-      return SimpleStepExecutorFactory.create(step, options);
-    } else if (step.type === StepType.Workflow) {
-      return this.createWorkflowStepExecutor(step, options);
-    } else {
-      return BatchStepExecutorFactory.create(step, options);
+    switch (step.type) {
+      case StepType.Simple:
+        return SimpleStepExecutorFactory.create(step, options);
+      case StepType.Workflow:
+        return this.createWorkflowStepExecutor(step, options);
+      case StepType.Batch:
+        return BatchStepExecutorFactory.create(step, options);
+      case StepType.Custom:
+        return CustomStepExecutorFactory.create(step, options);
+      default:
+        throw new StepCreationError(`Unknown step type: ${step.type}`);
     }
   }
 

@@ -1,0 +1,10 @@
+bindings:
+  - name: testCustomStepExecutorProvider
+
+steps:
+  - name: customStep
+    type: custom
+    provider: testCustomStepExecutorProvider
+    params: 
+      c: 3
+      d: 4
