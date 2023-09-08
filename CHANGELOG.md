@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.3...v0.5.4) (2023-09-08)
+
+
+### Features
+
+* **INT-555:** add batch step executor ([#90](https://github.com/rudderlabs/rudder-workflow-engine/issues/90)) ([2652910](https://github.com/rudderlabs/rudder-workflow-engine/commit/2652910b9e654b96109b776f09b822545eee71d4))
+* **INT-570:** add custom step support ([#95](https://github.com/rudderlabs/rudder-workflow-engine/issues/95)) ([679a8eb](https://github.com/rudderlabs/rudder-workflow-engine/commit/679a8eb761a7cab6295bade99dcbb269b65d4038))
+
+
+### Miscellaneous
+
+* test utils and add missing tests ([#94](https://github.com/rudderlabs/rudder-workflow-engine/issues/94)) ([912d385](https://github.com/rudderlabs/rudder-workflow-engine/commit/912d3859da2552f170719da57284d875353412f5))
+
 ## [0.5.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.2...v0.5.3) (2023-09-04)
 
 
