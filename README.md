@@ -77,8 +77,9 @@ steps:
       )
 ```
 ## Getting started
-* `npm install rudder-workflow-engine`
+* `npm install @rudderstack/workflow-engine`
 ```js
+import {WorkflowEngineFactory} from '@rudderstack/workflow-engine';
 const workflowEngine = WorkflowEngineFactory.createFromFilePath("workflow.yaml", options);
 workflowEngine.execute(input);
 
