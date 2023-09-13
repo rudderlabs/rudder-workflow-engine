@@ -1,4 +1,4 @@
-import { JsonTemplateEngine, PathType } from 'rudder-json-template-engine';
+import { JsonTemplateEngine, PathType } from '@rudderstack/json-template-engine';
 import { ExecutionBindings } from '../../../../../workflow/types';
 import { BaseStepExecutor } from '../../../executors/base';
 import { Step, StepOutput } from '../../../../types';
