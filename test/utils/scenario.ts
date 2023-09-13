@@ -34,8 +34,13 @@ export class ScenarioUtils {
   }
 
   static extractScenariosJSON(scenarioDir: string): Scenario[] {
-    const scenariosJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
-    return JSON.parse(scenariosJSON) as Scenario[];
+    try {
+      const scenariosJSON = readFileSync(join(scenarioDir, 'data.json'), { encoding: 'utf-8' });
+      return JSON.parse(scenariosJSON) as Scenario[];
+    } catch (e) {
+      console.error(scenarioDir, e);
+      throw e;
+    }
   }
 
   static extractScenarios(scenarioDir: string): Scenario[] {

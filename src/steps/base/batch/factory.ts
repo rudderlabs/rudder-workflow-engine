@@ -20,7 +20,7 @@ export class BatchStepExecutorFactory {
   ): Promise<BatchStepExecutor> {
     if (step.executor) {
       const executor = options.currentBindings[step.executor] as BatchExecutor;
-      if (!executor?.execute) {
+      if (typeof executor?.execute !== 'function') {
         throw new StepCreationError(`Invalid batch executor: ${step.executor}`, step.name);
       }
       return new BatchStepExecutor(step, executor);

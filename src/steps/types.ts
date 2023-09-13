@@ -48,7 +48,8 @@ export enum StepType {
   Simple = 'simple',
   Workflow = 'workflow',
   Batch = 'batch',
-  Unknown = 'unknow',
+  Custom = 'custom',
+  Unknown = 'unknown',
 }
 
 export enum TemplateType {
@@ -118,6 +119,21 @@ export interface BatchExecutor {
   execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]>;
 }
 
+export type CustomStep = StepCommon & {
+  // provider must be passed using bindings
+  provider?: string;
+  // Executor must be passed using bindings
+  executor?: string;
+  params?: Record<string, any>;
+};
+
+export interface CustomStepExecutor {
+  execute(input: any, bindings: ExecutionBindings, params?: Record<string, any>): Promise<any>;
+}
+export interface CustomStepExecutorProvider {
+  provide(step: CustomStep): Promise<CustomStepExecutor>;
+}
+
 export type TemplateStepExecutor = JsonTemplateStepExecutor | JsonataStepExecutor;
 
 export type WorkflowStep = StepCommon & {
@@ -127,4 +143,4 @@ export type WorkflowStep = StepCommon & {
   workflowStepPath?: string;
 };
 
-export type Step = SimpleStep | WorkflowStep | BatchStep;
+export type Step = SimpleStep | WorkflowStep | BatchStep | CustomStep;

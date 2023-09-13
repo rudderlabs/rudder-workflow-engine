@@ -36,6 +36,6 @@ export class BaseStepUtils {
       throw new StepCreationError('Invalid workflow step configuration', workflowStep.name);
     }
     StepUtils.populateSteps(workflowStep.steps);
-    StepUtils.validateSteps(workflowStep.steps, [StepType.Simple]);
+    StepUtils.validateSteps(workflowStep.steps, [StepType.Workflow]);
   }
 }

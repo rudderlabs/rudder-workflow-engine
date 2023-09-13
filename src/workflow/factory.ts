@@ -11,7 +11,7 @@ export class WorkflowEngineFactory {
     WorkflowUtils.validateWorkflow(workflow);
     options.templateType = workflow.templateType || options.templateType;
     StepUtils.populateSteps(workflow.steps);
-    StepUtils.validateSteps(workflow.steps, [StepType.Simple, StepType.Workflow, StepType.Batch]);
+    StepUtils.validateSteps(workflow.steps);
   }
 
   static async create(workflow: Workflow, options: WorkflowOptions): Promise<WorkflowEngine> {
