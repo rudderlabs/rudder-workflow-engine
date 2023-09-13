@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.4...v0.5.5) (2023-09-13)
+
+
+### Miscellaneous
+
+* update package name ([#96](https://github.com/rudderlabs/rudder-workflow-engine/issues/96)) ([8969f36](https://github.com/rudderlabs/rudder-workflow-engine/commit/8969f36df1344f5aca772963bb1b5cfb8b07a44f))
+
 ## [0.5.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.3...v0.5.4) (2023-09-08)
 
 
