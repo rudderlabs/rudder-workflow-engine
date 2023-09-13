@@ -1,9 +1,12 @@
 {
-  "name": "rudder-workflow-engine",
+  "name": "@rudderstack/workflow-engine",
   "version": "0.5.4",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest --coverage --verbose",
     "build": "tsc",
