@@ -1,0 +1,7 @@
+bindings:
+  - path: badBinding
+
+steps:
+  - name: getMessage
+    template: |
+      $message & $anotherMessage
