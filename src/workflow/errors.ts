@@ -22,3 +22,9 @@ export class WorkflowExecutionError extends StepExecutionError {
     this.workflowName = workflowName;
   }
 }
+
+export class BindingNotFoundError extends Error {
+  constructor(bindingName: string) {
+    super(`Binding not found: ${bindingName}`);
+  }
+}

@@ -8,4 +8,13 @@ export const data = [
       bindingProvider: BindingProvider.INSTANCE,
     },
   },
+  {
+    workflowPath: 'bad_binding_from_provider.yaml',
+    options: {
+      bindingProvider: BindingProvider.INSTANCE,
+    },
+    error: {
+      message: 'Binding not found',
+    },
+  },
 ] as Scenario[];

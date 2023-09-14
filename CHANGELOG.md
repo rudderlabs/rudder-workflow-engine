@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.6...v0.5.7) (2023-09-14)
+
+
+### Bug Fixes
+
+* binding loading order ([#100](https://github.com/rudderlabs/rudder-workflow-engine/issues/100)) ([8d7d968](https://github.com/rudderlabs/rudder-workflow-engine/commit/8d7d968b64e16429873af0a917442da7bbfda57f))
+
 ## [0.5.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.5...v0.5.6) (2023-09-13)
 
 

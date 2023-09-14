@@ -79,7 +79,7 @@
       "op": "+"
     },
     "error": {
-      "message": "Cannot find module"
+      "message": "Binding not found"
     }
   }
 ]

@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
-import { WorkflowCreationError } from './errors';
+import { BindingNotFoundError, WorkflowCreationError } from './errors';
 import {
   Binding,
   ParentBinding,
@@ -43,16 +43,11 @@ export class WorkflowUtils {
     }
   }
 
-  private static async getModuleExports(
-    modulePath: string,
-    throwError: boolean = false,
-  ): Promise<any> {
+  private static async getModuleExports(modulePath: string): Promise<any> {
     try {
       return await import(modulePath);
     } catch (error: any) {
-      if (throwError) {
-        throw error;
-      }
+      // Ignore error
     }
   }
 
@@ -63,7 +58,7 @@ export class WorkflowUtils {
     try {
       return await provider.provide(modulePath);
     } catch (error: any) {
-      // Ignoring error
+      // Ignore error
     }
   }
 
@@ -71,12 +66,15 @@ export class WorkflowUtils {
     bindingPath: string,
     options: WorkflowOptionsInternal,
   ): Promise<any> {
-    return (
+    const binding =
+      (await this.getModuleExports(path.join(options.rootPath, bindingPath))) ??
       (options.bindingProvider
         ? await this.getModuleExportsFromProvider(bindingPath, options.bindingProvider)
-        : await this.getModuleExports(bindingPath)) ??
-      (await this.getModuleExports(path.join(options.rootPath, bindingPath), true))
-    );
+        : await this.getModuleExports(bindingPath));
+    if (!binding) {
+      throw new BindingNotFoundError(bindingPath);
+    }
+    return binding;
   }
 
   static async extractBindingsFromPaths(
