@@ -2,7 +2,6 @@ import { join } from 'path';
 import { Command } from 'commander';
 import { Scenario } from './types';
 import { ScenarioUtils, CommonUtils } from './utils';
-import { JestAssertionError } from 'expect';
 import { WorkflowOutput } from '../src';
 
 // Run: npm run test:scenario -- --scenario=batch_step --index=1
