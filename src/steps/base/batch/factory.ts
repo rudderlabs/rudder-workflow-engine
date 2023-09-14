@@ -29,17 +29,21 @@ export class BatchStepExecutorFactory {
     return new BatchStepExecutor(step, defaultExecutor);
   }
 
-  static async createFilterExecutor(
-    name: string,
-    filter: string,
+  static async createFilterMapExecutor(
+    stepName: string,
+    config: BatchConfig,
     options: WorkflowOptionsInternal,
   ): Promise<StepExecutor> {
     const filterStep: SimpleStep = {
-      name,
+      name: stepName,
       type: StepType.Simple,
-      template: filter,
       loopOverInput: true,
     };
+
+    if (config.filter) {
+      filterStep.loopCondition = config.filter;
+    }
+    filterStep.template = config.map || '.';
     return await StepExecutorFactory.create(filterStep, options);
   }
 
@@ -50,15 +54,15 @@ export class BatchStepExecutorFactory {
     const batches = step.batches as BatchConfig[];
     return Promise.all(
       batches.map(async (config: BatchConfig) => {
-        let filterExector: StepExecutor | undefined = undefined;
+        let filterMapExector: StepExecutor | undefined = undefined;
         if (config.filter) {
-          filterExector = await this.createFilterExecutor(
+          filterMapExector = await this.createFilterMapExecutor(
             `${step.name}-batch-${config.key}`,
-            config.filter,
+            config,
             options,
           );
         }
-        return new SimpleBatchExecutor(config, filterExector);
+        return new SimpleBatchExecutor(config, filterMapExector);
       }),
     );
   }
