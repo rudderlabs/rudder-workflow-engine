@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.7...v0.5.8) (2023-09-15)
+
+
+### Features
+
+* **INT-643:** add mapping support in batch step ([#102](https://github.com/rudderlabs/rudder-workflow-engine/issues/102)) ([934b962](https://github.com/rudderlabs/rudder-workflow-engine/commit/934b9623aa4db4af5d85519467f20dd8c6bde085))
+
 ## [0.5.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.6...v0.5.7) (2023-09-14)
 
 
