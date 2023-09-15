@@ -2,6 +2,7 @@ import { join } from 'path';
 import { Command } from 'commander';
 import { Scenario } from './types';
 import { ScenarioUtils, CommonUtils } from './utils';
+import { WorkflowOutput } from '../src';
 
 // Run: npm run test:scenario -- --scenario=batch_step --index=1
 const command = new Command();
@@ -23,6 +24,7 @@ describe(`${scenarioName}:`, () => {
     const scenarioDir = join(__dirname, 'scenarios', scenarioName);
     const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
     const scenario: Scenario = scenarios[index] || scenarios[0];
+    let result: WorkflowOutput = {};
     try {
       console.log(
         `Executing scenario: ${scenarioName}, test: ${index}, workflow: ${
@@ -30,12 +32,11 @@ describe(`${scenarioName}:`, () => {
         }`,
       );
       const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);
-      const result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
-      console.log('Actual result', JSON.stringify(result.output, null, 2));
-      console.log('Expected result', JSON.stringify(scenario.output, null, 2));
+      result = await ScenarioUtils.executeScenario(workflowEngine, scenario);
       expect(result.output).toEqual(scenario.output);
     } catch (error: any) {
-      console.error(error);
+      console.log('Actual result', JSON.stringify(result.output, null, 2));
+      console.log('Expected result', JSON.stringify(scenario.output, null, 2));
       CommonUtils.matchError(error, scenario.error);
     }
   });

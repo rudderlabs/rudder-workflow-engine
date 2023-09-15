@@ -10,13 +10,16 @@ import { BatchUtils } from '../../../common/utils/batch';
 
 export class SimpleBatchExecutor implements BatchExecutor {
   readonly config: BatchConfig;
-  readonly filterExector?: StepExecutor;
-  constructor(config: BatchConfig, filterExector?: StepExecutor) {
+  readonly filterMapExector?: StepExecutor;
+  constructor(config: BatchConfig, filterMapExector?: StepExecutor) {
     this.config = config;
-    this.filterExector = filterExector;
+    this.filterMapExector = filterMapExector;
   }
   async execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]> {
-    const { filteredInput, filteredIndices } = await this.handleFiltering(input, bindings);
+    const { filteredInput, filteredIndices } = await this.handleFilteringAndMapping(
+      input,
+      bindings,
+    );
     if (this.config.disabled) {
       return this.handleBatchingDisabled(filteredInput, filteredIndices);
     }
@@ -47,15 +50,15 @@ export class SimpleBatchExecutor implements BatchExecutor {
     });
   }
 
-  private async handleFiltering(input: any[], bindings: ExecutionBindings) {
+  private async handleFilteringAndMapping(input: any[], bindings: ExecutionBindings) {
     let filteredInput: any[] = input;
     let filteredIndices: number[] = Array.from(input.keys());
 
-    if (this.filterExector) {
-      // Filter executor internally invokes the loop step executor
-      const filterResult = (await this.filterExector.execute(input, bindings)) as LoopStepOutput;
-      filteredInput = filteredInput.filter((_, index) => filterResult.output[index].output);
-      filteredIndices = filteredIndices.filter((_, index) => filterResult.output[index].output);
+    if (this.filterMapExector) {
+      // Filter map executor internally invokes the loop step executor
+      const filterResult = (await this.filterMapExector.execute(input, bindings)) as LoopStepOutput;
+      filteredIndices = filteredIndices.filter((_, index) => !filterResult.output[index].skipped);
+      filteredInput = filteredIndices.map((index) => filterResult.output[index].output);
     }
     return { filteredInput, filteredIndices };
   }
