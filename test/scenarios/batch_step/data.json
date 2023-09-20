@@ -96,66 +96,22 @@
     ],
     "output": [
       {
-        "items": [
-          {
-            "type": "hero",
-            "name": "Rikimaru"
-          },
-          {
-            "type": "hero",
-            "name": "Juggernaut"
-          },
-          {
-            "type": "hero",
-            "name": "Invoker"
-          }
-        ],
+        "items": ["Rikimaru", "Juggernaut", "Invoker"],
         "indices": [0, 1, 2],
         "key": "heros"
       },
       {
-        "items": [
-          {
-            "type": "hero",
-            "name": "Drow Ranger"
-          },
-          {
-            "type": "hero",
-            "name": "Pudge"
-          },
-          {
-            "type": "hero",
-            "name": "Crystal Maiden"
-          }
-        ],
+        "items": ["Drow Ranger", "Pudge", "Crystal Maiden"],
         "indices": [3, 4, 5],
         "key": "heros"
       },
       {
-        "items": [
-          {
-            "type": "hero",
-            "name": "Sniper"
-          },
-          {
-            "type": "hero",
-            "name": "Anti-Mage"
-          },
-          {
-            "type": "hero",
-            "name": "Lina"
-          }
-        ],
+        "items": ["Sniper", "Anti-Mage", "Lina"],
         "indices": [6, 7, 8],
         "key": "heros"
       },
       {
-        "items": [
-          {
-            "type": "hero",
-            "name": "Axe"
-          }
-        ],
+        "items": ["Axe"],
         "indices": [9],
         "key": "heros"
       },
@@ -230,32 +186,17 @@
         "key": "villains"
       },
       {
-        "items": [
-          {
-            "type": "god",
-            "name": "Zeus"
-          }
-        ],
+        "items": ["Zeus"],
         "indices": [20],
         "key": "gods"
       },
       {
-        "items": [
-          {
-            "type": "god",
-            "name": "Athena"
-          }
-        ],
+        "items": ["Athena"],
         "indices": [21],
         "key": "gods"
       },
       {
-        "items": [
-          {
-            "type": "god",
-            "name": "Hades"
-          }
-        ],
+        "items": ["Hades"],
         "indices": [22],
         "key": "gods"
       }

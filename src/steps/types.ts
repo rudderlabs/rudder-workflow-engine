@@ -106,6 +106,7 @@ export type BatchConfig = {
   };
   disabled?: true;
   filter?: string;
+  map?: string;
   key: string;
 };
 
