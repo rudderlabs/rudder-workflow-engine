@@ -1,0 +1,5 @@
+templateType: jsontemplate
+steps:
+  - name: assertThrow
+    template: |
+      $.assertThrow(false, "some error")
