@@ -1,6 +1,9 @@
-executor: invalidExecutor
+bindings:
+  - path: ./custom_executors
+    name: badWorkflowExecutor
 
+executor: badWorkflowExecutor
 steps:
   - name: dummy
     template: |
-      "this will be not executed"
+      "error will be thrown by executor"

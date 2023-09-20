@@ -1,0 +1,6 @@
+executor: invalidExecutor
+
+steps:
+  - name: dummy
+    template: |
+      "this will be not executed"

@@ -3,6 +3,13 @@ import { Scenario } from '../../types';
 
 export const data = [
   {
+    workflowPath: './bad_executor.yaml',
+    error: {
+      message: 'I am bad executor',
+      workflowName: 'bad_executor',
+    },
+  },
+  {
     output: 'custom executor output',
   },
   {
@@ -16,7 +23,7 @@ export const data = [
     },
   },
   {
-    workflowPath: './bad_executor.yaml',
+    workflowPath: './non_existing_executor.yaml',
     error: {
       message: 'Workflow executor not found',
     },
