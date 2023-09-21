@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.8...v0.5.9) (2023-09-21)
+
+
+### Miscellaneous
+
+* use latest packages and add more tests ([#104](https://github.com/rudderlabs/rudder-workflow-engine/issues/104)) ([6350b28](https://github.com/rudderlabs/rudder-workflow-engine/commit/6350b28fc206df97b879be172484e9ef72293e96))
+
 ## [0.5.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.7...v0.5.8) (2023-09-15)
 
 
