@@ -1,5 +1,5 @@
 import { StepExecutor } from '../steps/types';
-import { Executor } from '../common';
+import { ErrorUtils, Executor } from '../common';
 import { WorkflowExecutor, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
@@ -33,6 +33,10 @@ export class WorkflowEngine implements Executor {
   }
 
   async execute(input: any): Promise<WorkflowOutput> {
-    return this.executor.execute(this, input);
+    try {
+      return await this.executor.execute(this, input);
+    } catch (error: any) {
+      throw ErrorUtils.createWorkflowExecutionError(error, this.name);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { WorkflowExecutionError } from '../../workflow';
 import { StepExecutionError } from '../../steps';
 
 export class ErrorUtils {
@@ -19,6 +20,28 @@ export class ErrorUtils {
       ErrorUtils.getErrorStatus(error),
       stepName,
       childStepName,
+      error,
+    );
+  }
+
+  static createWorkflowExecutionError(error: Error, workflowName: string): WorkflowExecutionError {
+    if (error instanceof StepExecutionError) {
+      return new WorkflowExecutionError(
+        error.message,
+        ErrorUtils.getErrorStatus(error),
+        workflowName,
+        error.stepName,
+        error.childStepName,
+        error.error,
+      );
+    }
+
+    return new WorkflowExecutionError(
+      error.message,
+      ErrorUtils.getErrorStatus(error),
+      workflowName,
+      undefined,
+      undefined,
       error,
     );
   }

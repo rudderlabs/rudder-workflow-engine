@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import yaml from 'yaml';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { BindingNotFoundError, WorkflowCreationError } from './errors';
@@ -34,7 +34,7 @@ export class WorkflowUtils {
   }
 
   static createFromYaml<T>(yamlString: string): T {
-    return yaml.load(yamlString) as T;
+    return yaml.parse(yamlString) as T;
   }
 
   static validateWorkflow(workflow: Workflow) {

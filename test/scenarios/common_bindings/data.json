@@ -1,9 +1,16 @@
 [
   {
-    "workflowPath": "assert_throw.yaml",
+    "workflowPath": "assert_throw_using_custom_error.yaml",
     "error": {
       "message": "some error",
       "class": "CustomError"
+    }
+  },
+  {
+    "workflowPath": "assert_throw_using_string.yaml",
+    "error": {
+      "message": "some error",
+      "class": "Error"
     }
   },
   {

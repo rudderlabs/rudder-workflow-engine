@@ -5,7 +5,9 @@ export type ScenarioError = {
   status?: string;
   stepName?: string;
   childStepName?: string;
+  workflowName?: string;
   class?: string;
+  error?: ScenarioError;
 };
 
 export type Scenario = {

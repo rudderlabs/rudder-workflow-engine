@@ -1,8 +1,8 @@
-import { StepExecutionError } from '../../src';
+import { WorkflowExecutionError } from '../../src';
 import { ScenarioError } from '../types';
 
 export class CommonUtils {
-  static matchError(actual: StepExecutionError, expected?: ScenarioError) {
+  static matchError(actual: WorkflowExecutionError, expected?: ScenarioError) {
     if (expected === undefined) {
       throw actual;
     }
@@ -17,6 +17,17 @@ export class CommonUtils {
     }
     if (expected.childStepName) {
       expect(actual.childStepName).toEqual(expected.childStepName);
+    }
+    if (expected.workflowName) {
+      expect(actual.workflowName).toEqual(expected.workflowName);
+    }
+
+    if (expected.class) {
+      expect(actual.originalError.constructor.name).toEqual(expected.class);
+    }
+
+    if (expected.error) {
+      this.matchError(actual.error as WorkflowExecutionError, expected.error);
     }
   }
 }

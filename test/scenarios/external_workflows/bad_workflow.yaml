@@ -1,0 +1,6 @@
+templateType: jsontemaplte
+steps:
+  - name: throwError
+    template: |
+      $.doThrow("some error")
+    

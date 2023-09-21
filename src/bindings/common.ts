@@ -2,6 +2,7 @@ import { at, identity } from 'lodash';
 import { ReturnResultError } from '../steps';
 import { StatusError } from '../common';
 import { Sha256 } from '@aws-crypto/sha256-js';
+import { string } from 'yaml/dist/schema/common/string';
 
 export { debug, info, warn, error } from '../common/logger';
 
@@ -38,8 +39,11 @@ export function doReturn(obj?: any) {
   throw new ReturnResultError(obj);
 }
 
-export function assertThrow(val: any, error: Error) {
+export function assertThrow(val: any, error: Error | string) {
   if (!val) {
+    if (typeof error === 'string') {
+      throw new Error(error);
+    }
     throw error;
   }
 }

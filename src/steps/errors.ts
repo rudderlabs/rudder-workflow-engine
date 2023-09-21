@@ -11,14 +11,14 @@ export class StepCreationError extends StatusError {
 }
 
 export class StepExecutionError extends StatusError {
-  stepName: string;
+  stepName?: string;
   childStepName?: string;
   error: Error;
   originalError: Error;
   constructor(
     message: string,
     status: number,
-    stepName: string,
+    stepName?: string,
     childStepName?: string,
     error?: Error,
   ) {
