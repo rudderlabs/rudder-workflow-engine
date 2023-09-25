@@ -8,6 +8,17 @@
     "output": "overridden by value"
   },
   {
+    "workflowPath": "external_workflow_with_errors.yaml",
+    "error": {
+      "message": "some error",
+      "error": {
+        "stepName": "throwError",
+        "workflowName": "bad_workflow",
+        "class": "StatusError"
+      }
+    }
+  },
+  {
     "workflowPath": "external_workflow.yaml",
     "output": "original"
   }

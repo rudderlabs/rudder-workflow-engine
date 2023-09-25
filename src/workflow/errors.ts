@@ -14,7 +14,7 @@ export class WorkflowExecutionError extends StepExecutionError {
     message: string,
     status: number,
     workflowName: string,
-    stepName: string,
+    stepName?: string,
     childStepName?: string,
     error?: Error,
   ) {
