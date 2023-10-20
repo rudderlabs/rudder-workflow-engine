@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.0...v0.6.1) (2023-10-20)
+
+
+### Bug Fixes
+
+* default executor logger ([#109](https://github.com/rudderlabs/rudder-workflow-engine/issues/109)) ([e9424a4](https://github.com/rudderlabs/rudder-workflow-engine/commit/e9424a4e20a6e69b9b63ba0fa95520dd4f82fa69))
+
+
+### Miscellaneous
+
+* upgrade json template engine ([#106](https://github.com/rudderlabs/rudder-workflow-engine/issues/106)) ([efc46e0](https://github.com/rudderlabs/rudder-workflow-engine/commit/efc46e069de71cae6d7d97e5a87f223f7567a36e))
+
 ## [0.6.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.5.8...v0.6.0) (2023-09-21)
 
 
