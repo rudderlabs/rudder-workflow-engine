@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.2...v0.6.3) (2023-10-30)
+
+
+### Miscellaneous
+
+* add support for browser in logger ([bc2c5c7](https://github.com/rudderlabs/rudder-workflow-engine/commit/bc2c5c73cf888b1dd3350b6d6fff341390c70a9c))
+
 ## [0.6.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.1...v0.6.2) (2023-10-30)
 
 
