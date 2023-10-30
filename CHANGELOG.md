@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.4...v0.6.5) (2023-10-30)
+
+
+### Miscellaneous
+
+* readFile as dynamic import ([d26328a](https://github.com/rudderlabs/rudder-workflow-engine/commit/d26328a8516aef109285acc0330a56c2e316ba63))
+* use must log instead of debug ([07ed7e9](https://github.com/rudderlabs/rudder-workflow-engine/commit/07ed7e9b5ca3e6983139a25497637eed678854f8))
+
 ## [0.6.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.3...v0.6.4) (2023-10-30)
 
 
