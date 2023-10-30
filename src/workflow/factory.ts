@@ -41,6 +41,14 @@ export class WorkflowEngineFactory {
     }
   }
 
+  static async createFromYaml(
+    yamlString: string,
+    options: WorkflowOptions,
+  ): Promise<WorkflowEngine> {
+    const workflow = WorkflowUtils.createFromYaml<Workflow>(yamlString);
+    return this.create(workflow, options);
+  }
+
   static async createFromFilePath(
     workflowPath: string,
     options: WorkflowOptions,

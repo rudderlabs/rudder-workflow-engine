@@ -11,12 +11,15 @@ import { Scenario } from '../types';
 
 export class ScenarioUtils {
   static createWorkflowEngine(scenarioDir: string, scenario: Scenario): Promise<WorkflowEngine> {
-    const workflowPath = join(scenarioDir, scenario.workflowPath || 'workflow.yaml');
     const defaultOptions: WorkflowOptions = {
       rootPath: scenarioDir,
       templateType: TemplateType.JSONATA,
     };
     scenario.options = Object.assign({}, defaultOptions, scenario.options);
+    if (scenario.workflowYAML) {
+      return WorkflowEngineFactory.createFromYaml(scenario.workflowYAML, scenario.options);
+    }
+    const workflowPath = join(scenarioDir, scenario.workflowPath || 'workflow.yaml');
     return WorkflowEngineFactory.createFromFilePath(workflowPath, scenario.options);
   }
 

@@ -14,6 +14,7 @@ export type Scenario = {
   description?: string;
   input?: any;
   workflowPath?: string;
+  workflowYAML?: string;
   options?: WorkflowOptions;
   stepName?: string;
   output?: any;
