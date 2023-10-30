@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.5...v0.6.6) (2023-10-30)
+
+
+### Miscellaneous
+
+* move readfile to commonUtils ([4564240](https://github.com/rudderlabs/rudder-workflow-engine/commit/45642403e7d45fdaf0b30df2f0933428b813ce9b))
+
 ## [0.6.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.4...v0.6.5) (2023-10-30)
 
 
