@@ -9,8 +9,8 @@ export function getInitialLogLevel() {
 
 let logLevel: LogLevel = getInitialLogLevel();
 
-const mustDebug = (...args) => {
-  console.debug(...args);
+const mustLog = (...args) => {
+  console.log(...args);
 };
 
 const getLogLevel = () => {
@@ -49,7 +49,7 @@ export const logger = {
   setLogLevel,
   getLogLevel,
   debug,
-  mustDebug,
+  mustLog,
   info,
   warn,
   error,

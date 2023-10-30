@@ -13,10 +13,10 @@ export class DebuggableStepExecutor extends ComposableStepExecutor {
   }
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
-    logger.mustDebug('input = ', JSON.stringify(input));
-    logger.mustDebug('bindings = ', JSON.stringify(executionBindings));
+    logger.mustLog('input = ', JSON.stringify(input));
+    logger.mustLog('bindings = ', JSON.stringify(executionBindings));
     const output = await super.execute(input, executionBindings);
-    logger.mustDebug('output = ', JSON.stringify(output));
+    logger.mustLog('output = ', JSON.stringify(output));
     return output;
   }
 }
