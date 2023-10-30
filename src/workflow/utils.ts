@@ -12,6 +12,7 @@ import {
   WorkflowOptionsInternal,
 } from './types';
 import { DefaultWorkflowExecutor } from './default_executor';
+import { CommonUtils } from '../common';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -28,9 +29,7 @@ export class WorkflowUtils {
   }
 
   static async createFromFilePath<T>(yamlPath: string): Promise<T> {
-    // this is make it work with vite for browser
-    const readFile = await import('fs/promises').then((m) => m.readFile);
-    const yamlString = await readFile(yamlPath, { encoding: 'utf-8' });
+    const yamlString = await CommonUtils.readFile(yamlPath);
     return this.createFromYaml<T>(yamlString);
   }
 

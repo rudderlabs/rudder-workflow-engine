@@ -1,11 +1,11 @@
 import { join } from 'path';
-import { readFile } from 'fs/promises';
 import { ExternalWorkflow, SimpleStep } from '../../types';
 import { FunctionStepExecutor } from './executors/function';
 import { WorkflowEngineFactory, WorkflowUtils, WorkflowOptionsInternal } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { ExternalWorkflowStepExecutor } from './executors';
 import { TemplateStepExecutorFactory } from './executors/template';
+import { CommonUtils } from '../../../common';
 
 export class SimpleStepExecutorFactory {
   static async create(
@@ -28,7 +28,7 @@ export class SimpleStepExecutorFactory {
   }
 
   private static extractTemplate(rootPath: string, templatePath: string): Promise<string> {
-    return readFile(join(rootPath, templatePath), { encoding: 'utf-8' });
+    return CommonUtils.readFile(join(rootPath, templatePath));
   }
 
   private static async createExternalWorkflowEngineExecutor(
