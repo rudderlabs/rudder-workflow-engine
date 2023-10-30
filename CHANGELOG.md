@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.3...v0.6.4) (2023-10-30)
+
+
+### Bug Fixes
+
+* logger for browser ([a15fc62](https://github.com/rudderlabs/rudder-workflow-engine/commit/a15fc628c4a5b28abb5887b2d8dbc693151f637f))
+
 ## [0.6.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.2...v0.6.3) (2023-10-30)
 
 

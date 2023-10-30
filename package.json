@@ -1,6 +1,6 @@
 {
   "name": "@rudderstack/workflow-engine",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
