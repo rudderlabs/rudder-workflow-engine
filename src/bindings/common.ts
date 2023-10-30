@@ -2,7 +2,6 @@ import { at, identity } from 'lodash';
 import { ReturnResultError } from '../steps';
 import { StatusError } from '../common';
 import { Sha256 } from '@aws-crypto/sha256-js';
-import { string } from 'yaml/dist/schema/common/string';
 
 export { debug, info, warn, error } from '../common/logger';
 
