@@ -1,6 +1,6 @@
 import { LogLevel } from './types';
 
-let logLevel: LogLevel = parseInt(process.env.LOG_LEVEL || LogLevel.WARN.toString(), 10);
+let logLevel: LogLevel = parseInt(process?.env?.LOG_LEVEL || LogLevel.WARN.toString(), 10);
 
 const mustDebug = (...args) => {
   console.debug(...args);
