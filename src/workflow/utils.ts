@@ -1,5 +1,4 @@
 import yaml from 'yaml';
-import { readFile } from 'fs/promises';
 import path from 'path';
 import { BindingNotFoundError, WorkflowCreationError } from './errors';
 import {
@@ -29,6 +28,8 @@ export class WorkflowUtils {
   }
 
   static async createFromFilePath<T>(yamlPath: string): Promise<T> {
+    // this is make it work with vite for browser
+    const readFile = await import('fs/promises').then((m) => m.readFile);
     const yamlString = await readFile(yamlPath, { encoding: 'utf-8' });
     return this.createFromYaml<T>(yamlString);
   }
