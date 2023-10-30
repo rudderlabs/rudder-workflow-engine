@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.1...v0.6.2) (2023-10-30)
+
+
+### Features
+
+* add createFromYaml ([a0b98fa](https://github.com/rudderlabs/rudder-workflow-engine/commit/a0b98faf5ce92a4d1f3ce56c90af82ad26b39d7b))
+
 ## [0.6.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.0...v0.6.1) (2023-10-20)
 
 
