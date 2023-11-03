@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.6...v0.6.7) (2023-11-03)
+
+
+### Features
+
+* use commonjs ([8ce220f](https://github.com/rudderlabs/rudder-workflow-engine/commit/8ce220fec5ce5444858e4e8a4463a659444487e7))
+
 ## [0.6.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.5...v0.6.6) (2023-10-30)
 
 
