@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.7...v0.6.8) (2023-11-06)
+
+
+### Features
+
+* add support for execution bindings ([#116](https://github.com/rudderlabs/rudder-workflow-engine/issues/116)) ([c410717](https://github.com/rudderlabs/rudder-workflow-engine/commit/c4107171122db348f102a94c6d32f6132b12ec09))
+
 ## [0.6.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.6...v0.6.7) (2023-11-03)
 
 
