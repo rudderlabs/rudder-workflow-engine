@@ -32,9 +32,9 @@ export class WorkflowEngine implements Executor {
     return stepExecutor;
   }
 
-  async execute(input: any): Promise<WorkflowOutput> {
+  async execute(input: any, executionBindings?: Record<string, any>): Promise<WorkflowOutput> {
     try {
-      return await this.executor.execute(this, input);
+      return await this.executor.execute(this, input, executionBindings);
     } catch (error: any) {
       throw ErrorUtils.createWorkflowExecutionError(error, this.name);
     }

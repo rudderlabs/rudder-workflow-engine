@@ -16,10 +16,15 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
   }
 
   static readonly INSTANCE = new DefaultWorkflowExecutor();
-  async execute(engine: WorkflowEngine, input: any): Promise<WorkflowOutput> {
+  async execute(
+    engine: WorkflowEngine,
+    input: any,
+    bindings?: Record<string, any>,
+  ): Promise<WorkflowOutput> {
     const context = {};
     const executionBindings: ExecutionBindings = {
       ...engine.bindings,
+      ...bindings,
       outputs: {},
       context,
       setContext: (key, value) => {
