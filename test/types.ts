@@ -1,4 +1,4 @@
-import { LogLevel, WorkflowOptions } from '../src';
+import { ExecutionBindings, LogLevel, WorkflowOptions } from '../src';
 
 export type ScenarioError = {
   message?: string;
@@ -20,4 +20,5 @@ export type Scenario = {
   output?: any;
   error?: ScenarioError;
   logLevel?: LogLevel;
+  executionBindings?: ExecutionBindings;
 };

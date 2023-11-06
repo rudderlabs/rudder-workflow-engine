@@ -24,7 +24,7 @@ export class ScenarioUtils {
   }
 
   private static async execute(executor: Executor, scenario: Scenario): Promise<any> {
-    let result = await executor.execute(scenario.input);
+    let result = await executor.execute(scenario.input, scenario.executionBindings);
     return { output: result.output };
   }
 

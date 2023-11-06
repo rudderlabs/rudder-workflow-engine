@@ -1,0 +1,5 @@
+templateType: jsontemplate
+steps:
+  - name: testExecutionBindings
+    template: |
+      $.a + $.b

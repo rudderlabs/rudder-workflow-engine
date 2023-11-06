@@ -63,7 +63,11 @@ export type WorkflowOptionsInternal = WorkflowOptions & {
 };
 
 export interface WorkflowExecutor {
-  execute(engine: WorkflowEngine, input: any): Promise<WorkflowOutput>;
+  execute(
+    engine: WorkflowEngine,
+    input: any,
+    bindings?: Record<string, any>,
+  ): Promise<WorkflowOutput>;
 }
 
 export interface WorkflowBindingProvider {
