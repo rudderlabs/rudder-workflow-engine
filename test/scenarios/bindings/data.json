@@ -1,5 +1,13 @@
 [
   {
+    "workflowPath": "execution_bindings.yaml",
+    "executionBindings": {
+      "a": 10,
+      "b": 2
+    },
+    "output": 12
+  },
+  {
     "input": {
       "a": 10,
       "b": 2,
