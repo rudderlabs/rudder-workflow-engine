@@ -62,6 +62,13 @@ export class WorkflowUtils {
     }
   }
 
+  private static async getModuleExportsFromBindingsPath(bindingPath: string): Promise<any> {
+    return (
+      (await this.getModuleExports(bindingPath)) ??
+      (await this.getModuleExports(path.join(process.cwd(), bindingPath)))
+    );
+  }
+
   private static async getModuleExportsFromAllPaths(
     bindingPath: string,
     options: WorkflowOptionsInternal,
@@ -70,7 +77,7 @@ export class WorkflowUtils {
       (await this.getModuleExports(path.join(options.rootPath, bindingPath))) ??
       (options.bindingProvider
         ? await this.getModuleExportsFromProvider(bindingPath, options.bindingProvider)
-        : await this.getModuleExports(bindingPath));
+        : await this.getModuleExportsFromBindingsPath(bindingPath));
     if (!binding) {
       throw new BindingNotFoundError(bindingPath);
     }
