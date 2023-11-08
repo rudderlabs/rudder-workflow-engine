@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.8...v0.6.9) (2023-11-08)
+
+
+### Features
+
+* add support for searching binding paths in cwd ([#118](https://github.com/rudderlabs/rudder-workflow-engine/issues/118)) ([2d081cc](https://github.com/rudderlabs/rudder-workflow-engine/commit/2d081cc965e84d0587b11e172414d903644305d8))
+
 ## [0.6.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.7...v0.6.8) (2023-11-06)
 
 
