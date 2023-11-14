@@ -1,0 +1,10 @@
+templateType: jsontemplate
+bindings:
+  - name:
+      - add
+      - multiply
+    path: ./test/scenarios/bindings_paths/functions.ts
+steps:
+  - name: simple
+    template: |
+      $.add(1, $.multiply(2,5))
