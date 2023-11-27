@@ -1,4 +1,5 @@
 import { StatusError } from '../common/errors/status';
+import { ErrorInfo } from './types';
 
 export class StepCreationError extends StatusError {
   stepName?: string;
@@ -15,18 +16,12 @@ export class StepExecutionError extends StatusError {
   childStepName?: string;
   error: Error;
   originalError: Error;
-  constructor(
-    message: string,
-    status: number,
-    stepName?: string,
-    childStepName?: string,
-    error?: Error,
-  ) {
+  constructor(message: string, status: number, info?: ErrorInfo) {
     super(message, status);
-    this.stepName = stepName;
-    this.childStepName = childStepName;
-    this.error = error || this;
-    this.originalError = (this.error as any).originalError || error;
+    this.stepName = info?.stepName;
+    this.childStepName = info?.childStepName;
+    this.error = info?.error || this;
+    this.originalError = (this.error as any).originalError || info?.error;
   }
 }
 

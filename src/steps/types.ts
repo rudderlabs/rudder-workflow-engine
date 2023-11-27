@@ -128,6 +128,12 @@ export type CustomStep = StepCommon & {
   params?: Record<string, any>;
 };
 
+export type ErrorInfo = {
+  stepName?: string;
+  childStepName?: string;
+  error?: Error;
+};
+
 export interface CustomStepExecutor {
   execute(input: any, bindings: ExecutionBindings, params?: Record<string, any>): Promise<any>;
 }
