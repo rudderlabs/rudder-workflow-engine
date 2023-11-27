@@ -1,0 +1,9 @@
+templateType: jsontemplate
+bindings:
+  - name: add
+    path: ./test/scenarios/bindings_paths/functions.ts
+steps:
+  - name: simple
+    template: |
+      $.add(1, 2)
+      
