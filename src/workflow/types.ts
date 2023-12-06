@@ -4,7 +4,7 @@ import { WorkflowEngine } from './engine';
 export type PathBinding = {
   // exported value's name in bindings
   // if not specified then all paths will be exported
-  name?: string;
+  name?: string | string[];
   value?: any;
   // the file from which the export has to be looked at
   // defaults to bindings.js / bindings.ts

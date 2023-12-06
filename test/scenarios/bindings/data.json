@@ -1,9 +1,10 @@
 [
   {
+    "workflowPath": "array_bindings.yaml",
+    "output": 11
+  },
+  {
     "workflowPath": "bindings_using_current_dir.yaml",
-    "options": {
-      "additionalRootPaths": ["./test"]
-    },
     "output": 3
   },
   {

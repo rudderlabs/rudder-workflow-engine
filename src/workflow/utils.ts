@@ -11,8 +11,9 @@ import {
   WorkflowExecutor,
   WorkflowOptionsInternal,
 } from './types';
-import { DefaultWorkflowExecutor } from './default_executor';
 import { CommonUtils } from '../common';
+import { DefaultWorkflowExecutor } from './default_executor';
+import { toArray } from '../bindings/common';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -127,9 +128,12 @@ export class WorkflowUtils {
         options,
       );
       if (pathBinding.name) {
-        bindingsObj[pathBinding.name] = pathBinding.exportAll
-          ? bindingSource
-          : bindingSource[pathBinding.name];
+        const names = toArray(pathBinding.name);
+        names?.forEach((name) => {
+          bindingsObj[name] = pathBinding.exportAll
+            ? bindingSource
+            : bindingSource[name];
+        });
       } else {
         bindingsObj = Object.assign(bindingsObj, bindingSource);
       }
