@@ -66,9 +66,11 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
       error.message,
       ErrorUtils.getErrorStatus(error),
       workflowName,
-      stepName,
-      error.childStepName,
-      error.error,
+      {
+        stepName,
+        childStepName: error.childStepName,
+        error: error.error,
+      },
     );
   }
 }
