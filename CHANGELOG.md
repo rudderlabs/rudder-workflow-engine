@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.9...v0.6.10) (2023-12-06)
+
+
+### Features
+
+* add support of multiple function imports from file ([#120](https://github.com/rudderlabs/rudder-workflow-engine/issues/120)) ([4fe9f93](https://github.com/rudderlabs/rudder-workflow-engine/commit/4fe9f933da48539818478ea80e66a05223fc3005))
+* added support of multiple function imports from file ([4fe9f93](https://github.com/rudderlabs/rudder-workflow-engine/commit/4fe9f933da48539818478ea80e66a05223fc3005))
+
+
+### Bug Fixes
+
+* address code scene issues ([#121](https://github.com/rudderlabs/rudder-workflow-engine/issues/121)) ([f6908d6](https://github.com/rudderlabs/rudder-workflow-engine/commit/f6908d6f45b7d412c21e83eb654511616d742924))
+
 ## [0.6.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.8...v0.6.9) (2023-11-08)
 
 
