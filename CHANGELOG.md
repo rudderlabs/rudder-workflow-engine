@@ -6,7 +6,6 @@
 ### Features
 
 * add support of multiple function imports from file ([#120](https://github.com/rudderlabs/rudder-workflow-engine/issues/120)) ([4fe9f93](https://github.com/rudderlabs/rudder-workflow-engine/commit/4fe9f933da48539818478ea80e66a05223fc3005))
-* added support of multiple function imports from file ([4fe9f93](https://github.com/rudderlabs/rudder-workflow-engine/commit/4fe9f933da48539818478ea80e66a05223fc3005))
 
 
 ### Bug Fixes
