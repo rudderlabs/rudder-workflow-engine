@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.11](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.10...v0.6.11) (2023-12-27)
+
+
+### Miscellaneous
+
+* update .gitignore ([bc179fb](https://github.com/rudderlabs/rudder-workflow-engine/commit/bc179fb899892711e83e5e326dd69b2fd6f8e10c))
+* update .gitignore ([5be88b1](https://github.com/rudderlabs/rudder-workflow-engine/commit/5be88b1a51d1e753d2b9864ad44b00ad9e72b5fe))
+
 ## [0.6.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.9...v0.6.10) (2023-12-06)
 
 
