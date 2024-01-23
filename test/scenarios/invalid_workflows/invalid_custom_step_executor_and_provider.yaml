@@ -1,5 +1,5 @@
 steps:
-  - name: customStep  
+  - name: customStep
     type: custom
     executor: someExecutor
     provider: someProvider

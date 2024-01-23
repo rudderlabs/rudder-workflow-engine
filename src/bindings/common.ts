@@ -1,7 +1,7 @@
 import { at, identity } from 'lodash';
+import { Sha256 } from '@aws-crypto/sha256-js';
 import { ReturnResultError } from '../steps';
 import { StatusError } from '../common';
-import { Sha256 } from '@aws-crypto/sha256-js';
 
 export { debug, info, warn, error } from '../common/logger';
 
@@ -47,7 +47,7 @@ export function assertThrow(val: any, error: Error | string) {
   }
 }
 
-export function doThrow(message: string, status: number = 500) {
+export function doThrow(message: string, status = 500) {
   throw new StatusError(message, Number(status));
 }
 
@@ -80,7 +80,5 @@ export function SHA256(text: string | number | undefined) {
 
 // Check if arr1 is subset of arr2
 export function containsAll(arr1: any[], arr2: any[]): boolean {
-  return arr1.every((element) => {
-    return arr2.includes(element);
-  });
+  return arr1.every((element) => arr2.includes(element));
 }

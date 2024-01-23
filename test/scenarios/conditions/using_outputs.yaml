@@ -4,6 +4,6 @@ steps:
     template: |
       {"simpleCondition": true}
   - name: notASimpleCondition
-    condition: $not($exists($outputs.simpleCondition)) 
+    condition: $not($exists($outputs.simpleCondition))
     template: |
       {"notASimpleCondition": true}

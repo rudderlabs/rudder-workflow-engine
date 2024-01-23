@@ -4,6 +4,6 @@ steps:
   - name: useExternalWorkflow
     externalWorkflow:
       path: ./workflow.yaml
-      bindings: 
+      bindings:
         - name: foo
           fromParent: true

@@ -1,4 +1,4 @@
-import { SimpleStep, TemplateStepExecutor, TemplateType } from '../../../../../steps/types';
+import { SimpleStep, TemplateStepExecutor, TemplateType } from '../../../../types';
 import { WorkflowOptionsInternal } from '../../../../../workflow/types';
 import { JsonataStepExecutor } from './jsonata';
 import { JsonTemplateStepExecutor } from './jsontemplate';

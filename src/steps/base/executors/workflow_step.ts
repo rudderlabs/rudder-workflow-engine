@@ -1,7 +1,8 @@
 import { ExecutionBindings } from '../../../workflow/types';
-import { ErrorUtils } from '../../../common/';
+import { ErrorUtils } from '../../../common';
 import { BaseStepExecutor } from './base';
 import { StepExecutor, StepExitAction, StepOutput, WorkflowStep } from '../../types';
+
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
 

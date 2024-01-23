@@ -61,13 +61,12 @@ export class WorkflowEngineFactory {
     workflowBindings: Binding[],
     options: WorkflowOptionsInternal,
   ): Promise<Record<string, any>> {
-    return Object.assign(
-      {},
-      libraryBindings,
-      await WorkflowUtils.extractBindingsFromPaths(options),
-      await WorkflowUtils.extractBindings(workflowBindings, options),
-      options.creationTimeBindings,
-    );
+    return {
+      ...libraryBindings,
+      ...(await WorkflowUtils.extractBindingsFromPaths(options)),
+      ...(await WorkflowUtils.extractBindings(workflowBindings, options)),
+      ...options.creationTimeBindings,
+    };
   }
 
   private static createStepExecutors(

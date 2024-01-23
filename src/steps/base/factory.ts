@@ -1,9 +1,9 @@
+import { WorkflowOptionsInternal } from 'src/workflow';
 import { StepCreationError } from '../errors';
 import { CustomStep, Step, StepExecutor, StepType, WorkflowStep } from '../types';
 import { SimpleStepExecutorFactory } from './simple';
 import { WorkflowStepExecutor } from './executors/workflow_step';
 import { BaseStepUtils } from './utils';
-import { WorkflowOptionsInternal } from 'src/workflow';
 import { BatchStepExecutorFactory } from './batch/factory';
 import { CustomStepExecutorFactory } from './custom/factory';
 
@@ -28,8 +28,8 @@ export class BaseStepExecutorFactory {
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowStepExecutor> {
     try {
-      let newStep = await BaseStepUtils.prepareWorkflowStep(step, options);
-      let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(newStep, options);
+      const newStep = await BaseStepUtils.prepareWorkflowStep(step, options);
+      const simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(newStep, options);
       return new WorkflowStepExecutor(newStep, simpleStepExecutors);
     } catch (error: any) {
       throw new StepCreationError(error.message, step.name, error.stepName);

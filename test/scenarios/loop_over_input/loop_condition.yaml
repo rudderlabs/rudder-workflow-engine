@@ -2,7 +2,7 @@ steps:
   - name: loopOverInput
     loopOverInput: true
     inputTemplate: elements
-    loopCondition: "execute"
+    loopCondition: 'execute'
     template: |
       (
         $exists(error) ? $doThrow(error.message, 500);

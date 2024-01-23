@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . || exit 1",
     "format": "prettier --write '**/*.ts' '**/*.json'",
+    "lint": "npm run format && npm run lint:fix",
     "prepare": "husky install",
     "jest:scenarios": "jest e2e.test.ts --verbose",
     "test:scenario": "jest test/scenario.test.ts --verbose",
@@ -46,14 +47,15 @@
     "@types/lodash": "^4.14.197",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.14.6",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "commander": "^10.0.0",
     "eslint": "^8.35.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.3",
@@ -73,6 +75,7 @@
     "yaml": "^2.3.2"
   },
   "lint-staged": {
+    "*.{ts}": "eslint --cache --fix",
     "*.(ts|json)": "prettier --write"
   },
   "files": [

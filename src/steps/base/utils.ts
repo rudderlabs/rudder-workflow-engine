@@ -1,10 +1,10 @@
 import { join } from 'path';
 import { WorkflowOptionsInternal } from 'src/workflow';
 import { WorkflowUtils } from '../../workflow/utils';
-import { StepCreationError } from '../errors';
-import { StepExecutorFactory } from '../factory';
 import { SimpleStep, StepExecutor, StepType, WorkflowStep } from '../types';
 import { StepUtils } from '../utils';
+import { StepCreationError } from '../errors';
+import { StepExecutorFactory } from '../factory';
 
 export class BaseStepUtils {
   static async prepareWorkflowStep(
@@ -17,7 +17,7 @@ export class BaseStepUtils {
       const workflowStepFromPath = await WorkflowUtils.createFromFilePath<WorkflowStep>(
         workflowStepPath,
       );
-      newStep = Object.assign({}, workflowStepFromPath, step);
+      newStep = { ...workflowStepFromPath, ...step };
     }
     BaseStepUtils.validateWorkflowStep(newStep);
     return newStep;

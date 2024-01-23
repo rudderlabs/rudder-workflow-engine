@@ -2,6 +2,6 @@ steps:
   - name: useExternalWorkflow
     externalWorkflow:
       path: ./workflow.yaml
-      bindings: 
+      bindings:
         - name: foo
-          value: "overridden by value"
+          value: 'overridden by value'

@@ -1,5 +1,5 @@
 import { WorkflowOptionsInternal } from 'src/workflow';
-import { StepCreationError } from '../../../steps/errors';
+import { StepCreationError } from '../../errors';
 import {
   BatchConfig,
   BatchExecutor,
@@ -7,11 +7,11 @@ import {
   SimpleStep,
   StepExecutor,
   StepType,
-} from '../../../steps/types';
+} from '../../types';
 import { DefaultBatchWorkflowExecutor } from './default_batch_workflow_executor';
 import { SimpleBatchExecutor } from './simple_batch_executor';
 import { BatchStepExecutor } from './step_executor';
-import { StepExecutorFactory } from '../../../steps/factory';
+import { StepExecutorFactory } from '../../factory';
 
 export class BatchStepExecutorFactory {
   static async create(
@@ -44,7 +44,7 @@ export class BatchStepExecutorFactory {
       filterStep.loopCondition = config.filter;
     }
     filterStep.template = config.map || '.';
-    return await StepExecutorFactory.create(filterStep, options);
+    return StepExecutorFactory.create(filterStep, options);
   }
 
   static async createSimpleBatchExecutors(
@@ -54,7 +54,7 @@ export class BatchStepExecutorFactory {
     const batches = step.batches as BatchConfig[];
     return Promise.all(
       batches.map(async (config: BatchConfig) => {
-        let filterMapExector: StepExecutor | undefined = undefined;
+        let filterMapExector: StepExecutor | undefined;
         if (config.filter) {
           filterMapExector = await this.createFilterMapExecutor(
             `${step.name}-batch-${config.key}`,

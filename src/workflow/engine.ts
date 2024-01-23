@@ -4,8 +4,11 @@ import { WorkflowExecutor, WorkflowOutput } from './types';
 
 export class WorkflowEngine implements Executor {
   readonly name: string;
+
   readonly bindings: Record<string, any>;
+
   readonly stepExecutors: StepExecutor[];
+
   private readonly executor: WorkflowExecutor;
 
   constructor(
@@ -21,7 +24,7 @@ export class WorkflowEngine implements Executor {
   }
 
   getStepExecutor(stepName: string): StepExecutor {
-    let stepExecutor = this.stepExecutors.find(
+    const stepExecutor = this.stepExecutors.find(
       (stepExecutor) => stepExecutor.getStepName() === stepName,
     );
 

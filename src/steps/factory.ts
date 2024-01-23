@@ -1,8 +1,8 @@
+import { WorkflowOptionsInternal } from 'src/workflow';
 import { ComposableExecutorFactory } from './composed';
 import { Step, StepExecutor } from './types';
 import { BaseStepExecutorFactory } from './base/factory';
 import { StepCreationError } from './errors';
-import { WorkflowOptionsInternal } from 'src/workflow';
 
 export class StepExecutorFactory {
   static async create(step: Step, options: WorkflowOptionsInternal): Promise<StepExecutor> {

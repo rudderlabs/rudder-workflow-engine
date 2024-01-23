@@ -42,13 +42,12 @@ export class SimpleStepExecutorFactory {
     externalWorkflow.bindings = (externalWorkflow.bindings || []).concat(
       externalWorkflowConfig.bindings || [],
     );
-    const externalWorkflowEngine = await WorkflowEngineFactory.create(
-      externalWorkflow,
-      Object.assign({}, options, {
-        parentBindings: options.currentBindings,
-        rootPath: externalWorkflowRootPath,
-      }),
-    );
+    const externalWorkflowEngine = await WorkflowEngineFactory.create(externalWorkflow, {
+      ...options,
+      // @ts-expect-error: 2nd arg doesn't contain parentBindings field
+      parentBindings: options.currentBindings,
+      rootPath: externalWorkflowRootPath,
+    });
     return new ExternalWorkflowStepExecutor(externalWorkflowEngine, step);
   }
 }

@@ -4,7 +4,9 @@ import { StepExecutor, StepOutput } from '../../types';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
   private readonly conditionExecutor: StepExecutor;
+
   private readonly thenExecutor: StepExecutor;
+
   private readonly elseExecutor?: StepExecutor;
 
   constructor(
@@ -30,7 +32,8 @@ export class ConditionalStepExecutor extends ComposableStepExecutor {
     const shouldExecuteStep = await this.shouldExecuteStep(input, executionBindings);
     if (shouldExecuteStep) {
       return this.thenExecutor.execute(input, executionBindings);
-    } else if (this.elseExecutor) {
+    }
+    if (this.elseExecutor) {
       return this.elseExecutor.execute(input, executionBindings);
     }
     return { skipped: true };

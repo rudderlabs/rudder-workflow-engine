@@ -1,6 +1,7 @@
 import sizeof from 'object-sizeof';
 import { BatchResult } from '../../steps';
 import { BatchError } from '../errors/batch';
+
 export class BatchUtils {
   static chunkArrayBySizeAndLength(
     array: any[],
@@ -45,18 +46,20 @@ export class BatchUtils {
     if (!Array.isArray(batchResults)) {
       throw new BatchError('batch step requires array output from batch executor');
     }
-    const batchIndices = batchResults.reduce((acc, batchResult) => {
-      return acc.concat(batchResult.indices);
-    }, [] as number[]);
+    const batchIndices = batchResults.reduce(
+      (acc, batchResult) => acc.concat(batchResult.indices),
+      [] as number[],
+    );
     batchIndices.sort().every((index, idx) => {
       if (index !== idx) {
         throw new BatchError('batch step requires return all indices');
       }
     });
 
-    const batchItems = batchResults.reduce((acc, batchResult) => {
-      return acc.concat(batchResult.items);
-    }, [] as any[]);
+    const batchItems = batchResults.reduce(
+      (acc, batchResult) => acc.concat(batchResult.items),
+      [] as any[],
+    );
     if (batchIndices.length !== input.length || batchItems.length !== input.length) {
       throw new BatchError(
         'batch step requires batch executor to return same number of items as input',

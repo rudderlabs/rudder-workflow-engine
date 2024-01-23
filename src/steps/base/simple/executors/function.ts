@@ -1,7 +1,7 @@
 import { ExecutionBindings } from '../../../../workflow/types';
 import { BaseStepExecutor } from '../../executors/base';
 import { StepFunction, StepOutput, SimpleStep } from '../../../types';
-import { StepCreationError } from '../../../../steps/errors';
+import { StepCreationError } from '../../../errors';
 
 export class FunctionStepExecutor extends BaseStepExecutor {
   private readonly fn: StepFunction;

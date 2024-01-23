@@ -1,6 +1,6 @@
-bindings: 
+bindings:
   - name: foo
-    value: "original"
+    value: 'original'
 steps:
   - name: returnFoo
     template: $foo

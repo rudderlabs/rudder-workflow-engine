@@ -1,4 +1,4 @@
-import { CustomStep, CustomStepExecutor, StepOutput } from '../../../steps/types';
+import { CustomStep, CustomStepExecutor, StepOutput } from '../../types';
 import { ExecutionBindings } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { Executor } from '../../../common';

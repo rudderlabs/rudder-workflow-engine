@@ -3,8 +3,8 @@ import {
   CustomStepExecutor,
   CustomStepExecutorProvider,
   StepExecutor,
-} from '../../../steps/types';
-import { StepCreationError } from '../../../steps/errors';
+} from '../../types';
+import { StepCreationError } from '../../errors';
 import { WorkflowOptionsInternal } from '../../../workflow';
 import { BaseCustomStepExecutor } from './step_executor';
 

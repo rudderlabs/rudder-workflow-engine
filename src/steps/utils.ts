@@ -51,6 +51,7 @@ export class StepUtils {
       this.populateElseStep(step.else);
     }
   }
+
   static populateSteps(steps: Step[]) {
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);

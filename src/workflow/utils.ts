@@ -93,9 +93,9 @@ export class WorkflowUtils {
     }
 
     const bindings = await Promise.all(
-      options.bindingsPaths.map(async (bindingPath) => {
-        return this.getModuleExportsFromAllPaths(bindingPath, options);
-      }),
+      options.bindingsPaths.map(async (bindingPath) =>
+        this.getModuleExportsFromAllPaths(bindingPath, options),
+      ),
     );
     return Object.assign({}, ...bindings);
   }
@@ -130,9 +130,7 @@ export class WorkflowUtils {
       if (pathBinding.name) {
         const names = toArray(pathBinding.name);
         names?.forEach((name) => {
-          bindingsObj[name] = pathBinding.exportAll
-            ? bindingSource
-            : bindingSource[name];
+          bindingsObj[name] = pathBinding.exportAll ? bindingSource : bindingSource[name];
         });
       } else {
         bindingsObj = Object.assign(bindingsObj, bindingSource);
@@ -146,7 +144,7 @@ export class WorkflowUtils {
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowExecutor> {
     if (workflow?.executor) {
-      let executor = options.currentBindings[workflow.executor] as WorkflowExecutor;
+      const executor = options.currentBindings[workflow.executor] as WorkflowExecutor;
       if (typeof executor?.execute !== 'function') {
         throw new WorkflowCreationError('Workflow executor not found', workflow.executor);
       }

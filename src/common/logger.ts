@@ -13,9 +13,7 @@ const mustLog = (...args) => {
   console.log(...args);
 };
 
-const getLogLevel = () => {
-  return logLevel;
-};
+const getLogLevel = () => logLevel;
 
 const setLogLevel = (newLevel: LogLevel) => {
   logLevel = newLevel;
