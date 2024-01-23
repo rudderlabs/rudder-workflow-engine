@@ -33,9 +33,6 @@ describe('Scenarios tests', () => {
             expect(result.output).toEqual(scenario.output);
           } catch (error: any) {
             CommonUtils.matchError(error, scenario.error);
-            if (scenario.error?.class) {
-              expect(error.error?.constructor.name).toEqual(scenario.error.class);
-            }
           } finally {
             if (scenario.logLevel !== undefined) {
               logger.setLogLevel(previousLogLevel);

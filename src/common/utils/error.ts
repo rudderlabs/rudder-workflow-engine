@@ -15,13 +15,11 @@ export class ErrorUtils {
     stepName: string,
     childStepName?: string,
   ): StepExecutionError {
-    return new StepExecutionError(
-      error.message,
-      ErrorUtils.getErrorStatus(error),
+    return new StepExecutionError(error.message, ErrorUtils.getErrorStatus(error), {
       stepName,
       childStepName,
       error,
-    );
+    });
   }
 
   static createWorkflowExecutionError(error: Error, workflowName: string): WorkflowExecutionError {
@@ -30,9 +28,11 @@ export class ErrorUtils {
         error.message,
         ErrorUtils.getErrorStatus(error),
         workflowName,
-        error.stepName,
-        error.childStepName,
-        error.error,
+        {
+          stepName: error.stepName,
+          childStepName: error.childStepName,
+          error: error.error,
+        },
       );
     }
 
@@ -40,9 +40,9 @@ export class ErrorUtils {
       error.message,
       ErrorUtils.getErrorStatus(error),
       workflowName,
-      undefined,
-      undefined,
-      error,
+      {
+        error,
+      },
     );
   }
 }

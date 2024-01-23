@@ -74,7 +74,7 @@ export class StepUtils {
     }
   }
 
-  static validateStep(step: Step, index: number, notAllowed: string[]) {
+  private static validateStepName(step: Step, index: number) {
     if (!step.name) {
       throw new StepCreationError(`step#${index} should have a name`);
     }
@@ -82,18 +82,15 @@ export class StepUtils {
     if (!step.name.match(/^[a-zA-Z][0-9a-zA-Z]*$/)) {
       throw new StepCreationError('step name is invalid', step.name);
     }
+  }
 
+  private static validateStepType(step: Step, index: number, notAllowed: string[]) {
     if (notAllowed.includes(step.type as StepType)) {
       throw new StepCreationError('unsupported step type', step.name);
     }
+  }
 
-    if (step.onComplete === StepExitAction.Return && !step.condition) {
-      throw new StepCreationError(
-        '"onComplete = return" should be used in a step with condition',
-        step.name,
-      );
-    }
-
+  private static validateElseStep(step: Step, index: number, notAllowed: string[]) {
     if (step.else) {
       if (!step.condition) {
         throw new StepCreationError('else step should be used in a step with condition', step.name);
@@ -101,10 +98,37 @@ export class StepUtils {
         this.validateStep(step.else, index, notAllowed);
       }
     }
+  }
 
+  private static validateLoopStep(step: Step) {
     if (step.loopCondition && !step.loopOverInput) {
       throw new StepCreationError('loopCondition should be used with loopOverInput', step.name);
     }
+
+    if (step.loopOverInput && step.type === StepType.Batch) {
+      throw new StepCreationError('loopOverInput is not supported for batch step', step.name);
+    }
+  }
+
+  private static validateOnComplete(step: Step) {
+    if (step.onComplete === StepExitAction.Return && !step.condition) {
+      throw new StepCreationError(
+        '"onComplete = return" should be used in a step with condition',
+        step.name,
+      );
+    }
+  }
+
+  static validateStep(step: Step, index: number, notAllowed: string[]) {
+    this.validateStepName(step, index);
+
+    this.validateStepType(step, index, notAllowed);
+
+    this.validateElseStep(step, index, notAllowed);
+
+    this.validateLoopStep(step);
+
+    this.validateOnComplete(step);
 
     if (step.type === StepType.Batch) {
       this.ValidateBatchStep(step as BatchStep);
@@ -122,10 +146,6 @@ export class StepUtils {
 
     if (step.batches && step.executor) {
       throw new StepCreationError('only one of batches or executor should be specified', step.name);
-    }
-
-    if (step.loopOverInput) {
-      throw new StepCreationError('loopOverInput is not supported for batch step', step.name);
     }
   }
 
