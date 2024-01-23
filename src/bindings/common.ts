@@ -74,8 +74,7 @@ export function SHA256(text: string | number | undefined) {
   const hash = new Sha256();
   hash.update(`${text}`);
   const digest = hash.digestSync();
-  const result = Buffer.from(digest).toString('hex');
-  return result;
+  return Buffer.from(digest).toString('hex');
 }
 
 // Check if arr1 is subset of arr2
