@@ -2,6 +2,7 @@ bindings:
   - name: badFunction
 steps:
   - name: assertError
+    debug: true
     condition: throwAssertionError
     template: |
       $assert(assertionPassed, "assertion failed")

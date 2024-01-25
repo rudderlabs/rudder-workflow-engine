@@ -1,24 +1,24 @@
-import yaml from 'yaml';
+import { pick } from 'lodash';
 import path from 'path';
-import { BindingNotFoundError, WorkflowCreationError } from './errors';
+import yaml from 'yaml';
+import { toArray } from '../bindings/common';
 import {
   Binding,
-  ParentBinding,
+  CommonUtils,
   PathBinding,
-  ValueBinding,
   Workflow,
   WorkflowBindingProvider,
   WorkflowExecutor,
   WorkflowOptionsInternal,
-} from './types';
-import { CommonUtils } from '../common';
+} from '../common';
+import { BindingNotFoundError, WorkflowCreationError } from '../errors';
 import { DefaultWorkflowExecutor } from './default_executor';
-import { toArray } from '../bindings/common';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
     if (!workflow.name) {
       const { name } = path.parse(workflowPath);
+      // eslint-disable-next-line no-param-reassign
       workflow.name = name;
     }
   }
@@ -45,22 +45,26 @@ export class WorkflowUtils {
   }
 
   private static async getModuleExports(modulePath: string): Promise<any> {
+    let moduleExports;
     try {
-      return await import(modulePath);
+      moduleExports = await import(modulePath);
     } catch (error: any) {
       // Ignore error
     }
+    return moduleExports;
   }
 
   private static async getModuleExportsFromProvider(
     modulePath: string,
     provider: WorkflowBindingProvider,
   ): Promise<any> {
+    let moduleExports;
     try {
-      return await provider.provide(modulePath);
+      moduleExports = await provider.provide(modulePath);
     } catch (error: any) {
       // Ignore error
     }
+    return moduleExports;
   }
 
   private static async getModuleExportsFromBindingsPath(bindingPath: string): Promise<any> {
@@ -85,7 +89,7 @@ export class WorkflowUtils {
     return binding;
   }
 
-  static async extractBindingsFromPaths(
+  static async extractWorkflowOptionsBindings(
     options: WorkflowOptionsInternal,
   ): Promise<Record<string, any>> {
     if (!options.bindingsPaths?.length) {
@@ -100,43 +104,43 @@ export class WorkflowUtils {
     return Object.assign({}, ...bindings);
   }
 
-  static async extractBindings(
-    bindings: Binding[] = [],
+  static async extractBinding(
+    binding: Binding,
     options: WorkflowOptionsInternal,
   ): Promise<Record<string, any>> {
-    let bindingsObj: Record<string, any> = {};
-    if (!bindings.length) {
-      return bindingsObj;
+    const parentBindings = options.parentBindings ?? {};
+    const { name, value, path: bidningPath, fromParent, exportAll } = binding as any;
+    if (fromParent) {
+      return { [name]: parentBindings[name] };
     }
-    const parentBindings = options.parentBindings || {};
-    for (const binding of bindings) {
-      const parentBinding = binding as ParentBinding;
-      if (parentBinding.fromParent) {
-        bindingsObj[parentBinding.name] = parentBindings[parentBinding.name];
-        continue;
-      }
-
-      const valueBinding = binding as ValueBinding;
-      if (valueBinding.value) {
-        bindingsObj[valueBinding.name] = valueBinding.value;
-        continue;
-      }
-
-      const pathBinding = binding as PathBinding;
-      const bindingSource = await this.getModuleExportsFromAllPaths(
-        pathBinding.path || 'bindings',
-        options,
-      );
-      if (pathBinding.name) {
-        const names = toArray(pathBinding.name);
-        names?.forEach((name) => {
-          bindingsObj[name] = pathBinding.exportAll ? bindingSource : bindingSource[name];
-        });
-      } else {
-        bindingsObj = Object.assign(bindingsObj, bindingSource);
-      }
+    if (value) {
+      return { [name]: value };
     }
-    return bindingsObj;
+    const bindingSource = await this.getModuleExportsFromAllPaths(
+      bidningPath || 'bindings',
+      options,
+    );
+    if (!name) {
+      return bindingSource;
+    }
+    const names = toArray(name) as string[];
+    if (names.length === 1) {
+      return { [name]: exportAll ? bindingSource : bindingSource[name] };
+    }
+    return pick(bindingSource, names);
+  }
+
+  static async extractBindings(
+    options: WorkflowOptionsInternal,
+    bindings: Binding[] = [],
+  ): Promise<Record<string, any>> {
+    if (bindings.length === 0) {
+      return {};
+    }
+    const bindingsData = await Promise.all(
+      bindings.map(async (binding) => this.extractBinding(binding, options)),
+    );
+    return Object.assign({}, ...bindingsData);
   }
 
   static async getExecutor(
@@ -150,6 +154,6 @@ export class WorkflowUtils {
       }
       return executor;
     }
-    return options.executor || DefaultWorkflowExecutor.INSTANCE;
+    return options.executor ?? DefaultWorkflowExecutor.INSTANCE;
   }
 }

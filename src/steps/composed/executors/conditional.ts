@@ -1,6 +1,5 @@
-import { ExecutionBindings } from '../../../workflow/types';
+import { ExecutionBindings, StepExecutor, StepOutput } from '../../../common/types';
 import { ComposableStepExecutor } from './composable';
-import { StepExecutor, StepOutput } from '../../types';
 
 export class ConditionalStepExecutor extends ComposableStepExecutor {
   private readonly conditionExecutor: StepExecutor;

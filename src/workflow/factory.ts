@@ -1,28 +1,39 @@
-import { WorkflowUtils } from './utils';
 import * as libraryBindings from '../bindings';
-import { WorkflowCreationError } from './errors';
-import { StepCreationError } from '../steps/errors';
-import { WorkflowEngine } from './engine';
-import { Step, StepExecutor, StepExecutorFactory, StepType, StepUtils } from '../steps';
-import { Binding, Workflow, WorkflowOptions, WorkflowOptionsInternal } from './types';
+import {
+  Binding,
+  Step,
+  StepExecutor,
+  Workflow,
+  WorkflowEngine,
+  WorkflowOptions,
+  WorkflowOptionsInternal,
+} from '../common/types';
+import { StepUtils } from '../common/utils';
+import { StepCreationError, WorkflowCreationError } from '../errors';
+import { DefaultWorkflowEngine } from './engine';
+import { WorkflowUtils } from './utils';
 
 export class WorkflowEngineFactory {
   private static prepareWorkflow(workflow: Workflow, options: WorkflowOptions) {
     WorkflowUtils.validateWorkflow(workflow);
-    options.templateType = workflow.templateType || options.templateType;
+    // eslint-disable-next-line no-param-reassign
+    options.templateType = workflow.templateType ?? options.templateType;
     StepUtils.populateSteps(workflow.steps);
     StepUtils.validateSteps(workflow.steps);
   }
 
-  static async create(workflow: Workflow, options: WorkflowOptions): Promise<WorkflowEngine> {
+  static async create(
+    workflow: Workflow,
+    options: WorkflowOptions | WorkflowOptionsInternal,
+  ): Promise<WorkflowEngine> {
     try {
       this.prepareWorkflow(workflow, options);
       const optionsInteranl = options as WorkflowOptionsInternal;
-      const bindings = await this.prepareBindings(workflow.bindings || [], optionsInteranl);
+      const bindings = await this.prepareBindings(workflow.bindings ?? [], optionsInteranl);
       optionsInteranl.currentBindings = bindings;
       const executor = await WorkflowUtils.getExecutor(workflow, optionsInteranl);
       const stepExecutors = await this.createStepExecutors(workflow.steps, optionsInteranl);
-      return new WorkflowEngine(workflow.name, executor, bindings, stepExecutors);
+      return new DefaultWorkflowEngine(workflow.name, executor, bindings, stepExecutors);
     } catch (error: any) {
       if (error instanceof WorkflowCreationError) {
         throw error;
@@ -63,16 +74,17 @@ export class WorkflowEngineFactory {
   ): Promise<Record<string, any>> {
     return {
       ...libraryBindings,
-      ...(await WorkflowUtils.extractBindingsFromPaths(options)),
-      ...(await WorkflowUtils.extractBindings(workflowBindings, options)),
+      ...(await WorkflowUtils.extractWorkflowOptionsBindings(options)),
+      ...(await WorkflowUtils.extractBindings(options, workflowBindings)),
       ...options.creationTimeBindings,
     };
   }
 
-  private static createStepExecutors(
+  private static async createStepExecutors(
     steps: Step[],
     options: WorkflowOptionsInternal,
   ): Promise<StepExecutor[]> {
+    const { StepExecutorFactory } = await import('../steps' as string);
     return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 }

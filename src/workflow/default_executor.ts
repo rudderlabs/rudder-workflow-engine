@@ -1,8 +1,12 @@
-import { StepExitAction } from '../steps/types';
-import { ErrorUtils, logger } from '../common';
-import { WorkflowExecutionError } from './errors';
-import { ExecutionBindings, WorkflowExecutor, WorkflowOutput } from './types';
-import { WorkflowEngine } from './engine';
+import {
+  ExecutionBindings,
+  StepExitAction,
+  WorkflowEngine,
+  WorkflowExecutor,
+  WorkflowOutput,
+  logger,
+} from '../common';
+import { ErrorUtils, WorkflowExecutionError } from '../errors';
 
 interface DefaultWorkflowExecutorOptions {
   // In chainOutputs use set then => input -> step -> step2 -> step3 -> output
@@ -18,6 +22,19 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
 
   static readonly INSTANCE = new DefaultWorkflowExecutor();
 
+  private static handleError(error: any, workflowName: string, stepName: string) {
+    throw new WorkflowExecutionError(
+      error.message,
+      ErrorUtils.getErrorStatus(error),
+      workflowName,
+      {
+        stepName,
+        childStepName: error.childStepName,
+        error: error.error,
+      },
+    );
+  }
+
   async execute(
     engine: WorkflowEngine,
     input: any,
@@ -25,7 +42,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
   ): Promise<WorkflowOutput> {
     const context = {};
     const executionBindings: ExecutionBindings = {
-      ...engine.bindings,
+      ...engine.getBindings(),
       ...bindings,
       outputs: {},
       context,
@@ -37,43 +54,32 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
 
     let prevStepOutput: any;
     let currStepInput: any = input;
-    for (const stepExecutor of engine.stepExecutors) {
+    const stepExecutors = engine.getStepExecutors();
+    for (let i = 0; i < stepExecutors.length; i += 1) {
+      const stepExecutor = stepExecutors[i];
       const step = stepExecutor.getStep();
       try {
+        // eslint-disable-next-line no-await-in-loop
         const { skipped, output } = await stepExecutor.execute(currStepInput, executionBindings);
-        if (skipped) {
-          continue;
-        }
-        prevStepOutput = executionBindings.outputs[step.name] = output;
-        if (this.options.chainOutputs) {
-          currStepInput = prevStepOutput;
-        }
-        if (step.onComplete === StepExitAction.Return) {
-          break;
+        if (!skipped) {
+          prevStepOutput = output;
+          executionBindings.outputs[step.name] = output;
+          if (this.options.chainOutputs) {
+            currStepInput = prevStepOutput;
+          }
+          if (step.onComplete === StepExitAction.Return) {
+            break;
+          }
         }
       } catch (error) {
         logger.error(`step: ${step.name} failed with error:`, error);
-        if (step.onError === StepExitAction.Continue) {
-          continue;
+        if (step.onError !== StepExitAction.Continue) {
+          DefaultWorkflowExecutor.handleError(error, engine.getName(), step.name);
         }
-        this.handleError(error, engine.name, step.name);
       }
     }
 
     return { output: prevStepOutput, outputs: executionBindings.outputs };
-  }
-
-  handleError(error: any, workflowName: string, stepName: string) {
-    throw new WorkflowExecutionError(
-      error.message,
-      ErrorUtils.getErrorStatus(error),
-      workflowName,
-      {
-        stepName,
-        childStepName: error.childStepName,
-        error: error.error,
-      },
-    );
   }
 }
 

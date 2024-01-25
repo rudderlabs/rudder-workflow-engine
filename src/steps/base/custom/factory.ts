@@ -1,11 +1,6 @@
-import {
-  CustomStep,
-  CustomStepExecutor,
-  CustomStepExecutorProvider,
-  StepExecutor,
-} from '../../types';
-import { StepCreationError } from '../../errors';
-import { WorkflowOptionsInternal } from '../../../workflow';
+import { CustomStep, StepExecutor, WorkflowOptionsInternal } from '../../../common/types';
+import { StepCreationError } from '../../../errors';
+import { CustomStepExecutor, CustomStepExecutorProvider } from '../../types';
 import { BaseCustomStepExecutor } from './step_executor';
 
 export class CustomStepExecutorFactory {

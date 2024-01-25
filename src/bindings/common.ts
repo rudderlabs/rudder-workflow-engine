@@ -1,22 +1,13 @@
-import { at, identity } from 'lodash';
 import { Sha256 } from '@aws-crypto/sha256-js';
-import { ReturnResultError } from '../steps';
-import { StatusError } from '../common';
+import { at, identity } from 'lodash';
+import { ReturnResultError, StatusError } from '../errors';
 
-export { debug, info, warn, error } from '../common/logger';
+export { debug, error, info, warn } from '../common/logger';
 
 export { chunk, sum } from 'lodash';
 
 export function values(obj: Record<string, any>): any[] {
   return Object.values(obj);
-}
-
-export function getOneByPaths(obj: any, paths: string | string[]): any {
-  const newPaths = toArray(paths);
-  if (!obj || !newPaths || !newPaths.length) {
-    return undefined;
-  }
-  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
 }
 
 export function getByPaths(obj: any, paths: string | string[]): any {
@@ -32,6 +23,14 @@ export function toArray(obj: any): any[] | undefined {
     return obj;
   }
   return Array.isArray(obj) ? obj : [obj];
+}
+
+export function getOneByPaths(obj: any, paths: string | string[]): any {
+  const newPaths = toArray(paths);
+  if (!obj || !newPaths || !newPaths.length) {
+    return undefined;
+  }
+  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
 }
 
 export function doReturn(obj?: any) {

@@ -1,6 +1,12 @@
-import { BatchConfig, BatchExecutor, BatchResult, LoopStepOutput, StepExecutor } from '../../types';
-import { ExecutionBindings } from '../../../workflow';
+import {
+  BatchConfig,
+  BatchResult,
+  ExecutionBindings,
+  LoopStepOutput,
+  StepExecutor,
+} from '../../../common/types';
 import { BatchUtils } from '../../../common/utils/batch';
+import { BatchExecutor } from '../../types';
 
 export class SimpleBatchExecutor implements BatchExecutor {
   readonly config: BatchConfig;

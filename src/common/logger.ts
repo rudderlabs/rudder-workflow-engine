@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { LogLevel } from './types';
 
 export function getInitialLogLevel() {

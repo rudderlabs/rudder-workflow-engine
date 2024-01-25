@@ -1,5 +1,4 @@
-import { ExecutionBindings } from '../../../workflow/types';
-import { Step, StepExecutor, StepOutput } from '../../types';
+import { ExecutionBindings, Step, StepExecutor, StepOutput } from '../../../common/types';
 
 /**
  * ComposableStepExecutor allows compose more logic

@@ -1,5 +1,4 @@
-import { ExecutionBindings } from '../../../workflow/types';
-import { Step, StepExecutor, StepOutput } from '../../types';
+import { ExecutionBindings, Step, StepExecutor, StepOutput } from '../../../common/types';
 
 export abstract class BaseStepExecutor implements StepExecutor {
   protected readonly step: Step;

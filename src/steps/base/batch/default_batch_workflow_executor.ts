@@ -1,5 +1,5 @@
-import { ExecutionBindings } from '../../../workflow';
-import { BatchExecutor, BatchResult } from '../../types';
+import { BatchResult, ExecutionBindings } from '../../../common/types';
+import { BatchExecutor } from '../../types';
 
 export class DefaultBatchWorkflowExecutor implements BatchExecutor {
   readonly executors: BatchExecutor[];

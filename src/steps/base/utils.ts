@@ -1,10 +1,8 @@
 import { join } from 'path';
-import { WorkflowOptionsInternal } from 'src/workflow';
+import { StepType, WorkflowOptionsInternal, WorkflowStep } from '../../common';
+import { StepUtils } from '../../common/utils';
+import { StepCreationError } from '../../errors';
 import { WorkflowUtils } from '../../workflow/utils';
-import { SimpleStep, StepExecutor, StepType, WorkflowStep } from '../types';
-import { StepUtils } from '../utils';
-import { StepCreationError } from '../errors';
-import { StepExecutorFactory } from '../factory';
 
 export class BaseStepUtils {
   static async prepareWorkflowStep(
@@ -21,14 +19,6 @@ export class BaseStepUtils {
     }
     BaseStepUtils.validateWorkflowStep(newStep);
     return newStep;
-  }
-
-  static createSimpleStepExecutors(
-    workflowStep: WorkflowStep,
-    options: WorkflowOptionsInternal,
-  ): Promise<StepExecutor[]> {
-    const steps = workflowStep.steps as SimpleStep[];
-    return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 
   static validateWorkflowStep(workflowStep: WorkflowStep) {

@@ -19,7 +19,9 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": ["jest.config.ts", "commitlint.config.js"],
   "rules": {
-    "import/prefer-default-export": "warn"
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

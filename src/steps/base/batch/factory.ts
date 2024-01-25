@@ -1,17 +1,16 @@
-import { WorkflowOptionsInternal } from 'src/workflow';
-import { StepCreationError } from '../../errors';
 import {
   BatchConfig,
-  BatchExecutor,
   BatchStep,
   SimpleStep,
   StepExecutor,
   StepType,
-} from '../../types';
+  WorkflowOptionsInternal,
+} from '../../../common';
+import { StepCreationError } from '../../../errors';
+import { BatchExecutor } from '../../types';
 import { DefaultBatchWorkflowExecutor } from './default_batch_workflow_executor';
 import { SimpleBatchExecutor } from './simple_batch_executor';
 import { BatchStepExecutor } from './step_executor';
-import { StepExecutorFactory } from '../../factory';
 
 export class BatchStepExecutorFactory {
   static async create(
@@ -43,7 +42,8 @@ export class BatchStepExecutorFactory {
     if (config.filter) {
       filterStep.loopCondition = config.filter;
     }
-    filterStep.template = config.map || '.';
+    filterStep.template = config.map ?? '.';
+    const { StepExecutorFactory } = await import('../../factory' as string);
     return StepExecutorFactory.create(filterStep, options);
   }
 
