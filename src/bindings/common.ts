@@ -27,7 +27,7 @@ export function toArray(obj: any): any[] | undefined {
 
 export function getOneByPaths(obj: any, paths: string | string[]): any {
   const newPaths = toArray(paths);
-  if (!obj || !newPaths || !newPaths.length) {
+  if (!obj || !newPaths?.length) {
     return undefined;
   }
   return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
