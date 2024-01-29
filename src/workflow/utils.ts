@@ -5,7 +5,6 @@ import { toArray } from '../bindings/common';
 import {
   Binding,
   CommonUtils,
-  PathBinding,
   Workflow,
   WorkflowBindingProvider,
   WorkflowExecutor,

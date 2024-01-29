@@ -21,6 +21,10 @@ jobs:
 
       - name: Run Tests
         run: npm run test:no-logging
+      
+      - name: Run Lint Checks
+        run: |
+          npm run check:lint
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

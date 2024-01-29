@@ -55,8 +55,9 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
     let prevStepOutput: any;
     let currStepInput: any = input;
     const stepExecutors = engine.getStepExecutors();
-    for (let i = 0; i < stepExecutors.length; i += 1) {
-      const stepExecutor = stepExecutors[i];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const stepExecutor of stepExecutors) {
       const step = stepExecutor.getStep();
       try {
         // eslint-disable-next-line no-await-in-loop

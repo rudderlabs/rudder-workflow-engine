@@ -10,6 +10,7 @@ import {
 } from '../types';
 import { CommonUtils } from './common';
 
+const stepNameRegex = /^[a-zA-Z][0-9a-zA-Z]*$/;
 export class StepUtils {
   static getStepType(step: Step): StepType {
     if (StepUtils.isBatchStep(step)) {
@@ -54,8 +55,8 @@ export class StepUtils {
   }
 
   static populateSteps(steps: Step[]) {
-    for (let i = 0; i < steps.length; i += 1) {
-      const step = steps[i];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const step of steps) {
       step.type = StepUtils.getStepType(step);
       this.populateElseStep(step);
     }
@@ -69,7 +70,7 @@ export class StepUtils {
   }
 
   static validateSteps(steps: Step[], notAllowedTypes?: string[]) {
-    const notAllowed = notAllowedTypes || [];
+    const notAllowed = notAllowedTypes ?? [];
     notAllowed.push(StepType.Unknown);
     this.checkForStepNameDuplicates(steps);
     for (let i = 0; i < steps.length; i += 1) {
@@ -82,7 +83,7 @@ export class StepUtils {
       throw new StepCreationError(`step#${index} should have a name`);
     }
 
-    if (!step.name.match(/^[a-zA-Z][0-9a-zA-Z]*$/)) {
+    if (!stepNameRegex.exec(step.name)) {
       throw new StepCreationError('step name is invalid', step.name);
     }
   }
