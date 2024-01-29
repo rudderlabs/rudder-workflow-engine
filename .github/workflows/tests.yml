@@ -27,6 +27,13 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       
+      - name: Update sonar-project.properties
+        run: |
+          # Retrieve the version from package.json
+          version=$(node -e "console.log(require('./package.json').version)")
+          # Update the sonar-project.properties file with the version
+          sed -i "s/sonar.projectVersion=.*$/sonar.projectVersion=$version/" sonar-project.properties
+      
       - name: SonarCloud Scan
         if: always()
         uses: SonarSource/sonarcloud-github-action@v2.1.1
