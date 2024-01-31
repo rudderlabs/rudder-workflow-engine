@@ -16,5 +16,3 @@ steps:
         disabled: true
         filter: .type === "god"
         map: .name
-
-      

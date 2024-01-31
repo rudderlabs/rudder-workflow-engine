@@ -1,11 +1,12 @@
-import { BatchExecutor, BatchStep, BatchStepOutput } from '../../../steps/types';
+import { BatchStep, BatchStepOutput, ExecutionBindings } from '../../../common/types';
+import { BatchUtils } from '../../../common/utils';
+import { BatchError, ErrorUtils } from '../../../errors';
+import { BatchExecutor } from '../../types';
 import { BaseStepExecutor } from '../executors/base';
-import { ExecutionBindings } from '../../../workflow';
-import { ErrorUtils, BatchUtils } from '../../../common/utils';
-import { BatchError } from '../../../common/errors';
 
 export class BatchStepExecutor extends BaseStepExecutor {
   readonly executor: BatchExecutor;
+
   async execute(input: any, bindings: ExecutionBindings): Promise<BatchStepOutput> {
     try {
       if (!Array.isArray(input)) {

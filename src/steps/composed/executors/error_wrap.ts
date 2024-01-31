@@ -1,14 +1,8 @@
-import { ExecutionBindings } from '../../../workflow/types';
+import { ExecutionBindings, StepOutput } from '../../../common/types';
+import { ErrorUtils, StepExecutionError } from '../../../errors';
 import { ComposableStepExecutor } from './composable';
-import { StepExecutor, StepOutput } from '../../types';
-import { StepExecutionError } from '../../errors';
-import { ErrorUtils } from '../../../common';
 
 export class ErrorWrapStepExecutor extends ComposableStepExecutor {
-  constructor(nextExecutor: StepExecutor) {
-    super(nextExecutor);
-  }
-
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     try {
       return await super.execute(input, executionBindings);

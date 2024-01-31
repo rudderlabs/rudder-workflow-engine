@@ -3,4 +3,3 @@ steps:
   - name: throwError
     template: |
       $.doThrow("some error")
-    

@@ -2,5 +2,4 @@ bindings:
   - name: data # by default picks from ./bindings.(ts|js)
 steps:
   - name: getOneByPaths
-    template:
-      $getOneByPaths($data, $) # $ refers to entire input
+    template: $getOneByPaths($data, $) # $ refers to entire input

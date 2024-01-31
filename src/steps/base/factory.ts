@@ -1,11 +1,17 @@
-import { StepCreationError } from '../errors';
-import { CustomStep, Step, StepExecutor, StepType, WorkflowStep } from '../types';
-import { SimpleStepExecutorFactory } from './simple';
-import { WorkflowStepExecutor } from './executors/workflow_step';
-import { BaseStepUtils } from './utils';
-import { WorkflowOptionsInternal } from 'src/workflow';
+import {
+  SimpleStep,
+  Step,
+  StepExecutor,
+  StepType,
+  WorkflowOptionsInternal,
+  WorkflowStep,
+} from '../../common';
+import { StepCreationError } from '../../errors';
 import { BatchStepExecutorFactory } from './batch/factory';
 import { CustomStepExecutorFactory } from './custom/factory';
+import { WorkflowStepExecutor } from './executors/workflow_step';
+import { SimpleStepExecutorFactory } from './simple';
+import { BaseStepUtils } from './utils';
 
 export class BaseStepExecutorFactory {
   static create(step: Step, options: WorkflowOptionsInternal): Promise<StepExecutor> {
@@ -28,11 +34,20 @@ export class BaseStepExecutorFactory {
     options: WorkflowOptionsInternal,
   ): Promise<WorkflowStepExecutor> {
     try {
-      let newStep = await BaseStepUtils.prepareWorkflowStep(step, options);
-      let simpleStepExecutors = await BaseStepUtils.createSimpleStepExecutors(newStep, options);
+      const newStep = await BaseStepUtils.prepareWorkflowStep(step, options);
+      const simpleStepExecutors = await this.createSimpleStepExecutors(newStep, options);
       return new WorkflowStepExecutor(newStep, simpleStepExecutors);
     } catch (error: any) {
       throw new StepCreationError(error.message, step.name, error.stepName);
     }
+  }
+
+  static async createSimpleStepExecutors(
+    workflowStep: WorkflowStep,
+    options: WorkflowOptionsInternal,
+  ): Promise<StepExecutor[]> {
+    const steps = workflowStep.steps as SimpleStep[];
+    const { StepExecutorFactory } = await import('../factory' as string);
+    return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 }

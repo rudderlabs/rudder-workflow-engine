@@ -1,5 +1,4 @@
-import { CommonUtils } from '../common/utils/common';
-import { StepCreationError } from './errors';
+import { StepCreationError } from '../../errors';
 import {
   BatchStep,
   CustomStep,
@@ -8,8 +7,10 @@ import {
   StepExitAction,
   StepType,
   WorkflowStep,
-} from './types';
+} from '../types';
+import { CommonUtils } from './common';
 
+const stepNameRegex = /^[a-zA-Z][0-9a-zA-Z]*$/;
 export class StepUtils {
   static getStepType(step: Step): StepType {
     if (StepUtils.isBatchStep(step)) {
@@ -47,11 +48,14 @@ export class StepUtils {
 
   static populateElseStep(step: Step) {
     if (step.else) {
+      // eslint-disable-next-line no-param-reassign
       step.else.type = StepUtils.getStepType(step.else);
       this.populateElseStep(step.else);
     }
   }
+
   static populateSteps(steps: Step[]) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
       this.populateElseStep(step);
@@ -66,10 +70,10 @@ export class StepUtils {
   }
 
   static validateSteps(steps: Step[], notAllowedTypes?: string[]) {
-    const notAllowed = notAllowedTypes || [];
+    const notAllowed = notAllowedTypes ?? [];
     notAllowed.push(StepType.Unknown);
     this.checkForStepNameDuplicates(steps);
-    for (let i = 0; i < steps.length; i++) {
+    for (let i = 0; i < steps.length; i += 1) {
       StepUtils.validateStep(steps[i], i, notAllowed);
     }
   }
@@ -79,7 +83,7 @@ export class StepUtils {
       throw new StepCreationError(`step#${index} should have a name`);
     }
 
-    if (!step.name.match(/^[a-zA-Z][0-9a-zA-Z]*$/)) {
+    if (!stepNameRegex.exec(step.name)) {
       throw new StepCreationError('step name is invalid', step.name);
     }
   }

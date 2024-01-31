@@ -35,5 +35,3 @@ steps:
         condition: op = "/"
         template: |
           ( ($outputs.a / $outputs.b) + $outputs.operation.c)
-    
-

@@ -1,4 +1,4 @@
-import { toMilliseconds, toSeconds, toArray, SHA256, containsAll } from './common';
+import { SHA256, containsAll, toArray, toMilliseconds, toSeconds } from './common';
 
 describe('Common Bindings', () => {
   describe('toMilliseconds', () => {

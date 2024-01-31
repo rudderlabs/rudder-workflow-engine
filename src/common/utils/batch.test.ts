@@ -136,7 +136,7 @@ describe('Batch utils', () => {
               key: 'key',
             },
             {
-              indices: [3],
+              indices: [2],
               items: [2, 3],
               key: 'key',
             },

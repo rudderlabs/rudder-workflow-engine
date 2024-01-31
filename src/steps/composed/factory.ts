@@ -1,7 +1,5 @@
-import { WorkflowOptionsInternal } from 'src/workflow';
-import { TemplateStepExecutorFactory } from '../base';
-import { StepExecutorFactory } from '../factory';
-import { StepExecutor } from '../types';
+import { StepExecutor, WorkflowOptionsInternal } from '../../common/types';
+import { TemplateStepExecutorFactory } from '../base/simple/executors/template';
 import { ConditionalStepExecutor } from './executors/conditional';
 import { CustomInputStepExecutor } from './executors/custom_input';
 import { DebuggableStepExecutor } from './executors/debuggable';
@@ -14,23 +12,27 @@ export class ComposableExecutorFactory {
     options: WorkflowOptionsInternal,
   ): Promise<StepExecutor> {
     const step = stepExecutor.getStep();
+    let composedStepExecutor = stepExecutor;
     if (step.loopOverInput) {
-      stepExecutor = this.createLoopStepExecutor(stepExecutor, options);
+      composedStepExecutor = this.createLoopStepExecutor(composedStepExecutor, options);
     }
 
     if (step.inputTemplate) {
-      stepExecutor = this.createCustomInputStepExecutor(stepExecutor, options);
+      composedStepExecutor = this.createCustomInputStepExecutor(composedStepExecutor, options);
     }
 
     if (step.condition) {
-      stepExecutor = await this.createConditionalStepExecutor(stepExecutor, options);
+      composedStepExecutor = await this.createConditionalStepExecutor(
+        composedStepExecutor,
+        options,
+      );
     }
 
     if (step.debug) {
-      stepExecutor = new DebuggableStepExecutor(stepExecutor);
+      composedStepExecutor = new DebuggableStepExecutor(composedStepExecutor);
     }
-    stepExecutor = new ErrorWrapStepExecutor(stepExecutor);
-    return stepExecutor;
+    composedStepExecutor = new ErrorWrapStepExecutor(composedStepExecutor);
+    return composedStepExecutor;
   }
 
   static createCustomInputStepExecutor(
@@ -58,6 +60,7 @@ export class ComposableExecutorFactory {
     );
     let elseExecutor: StepExecutor | undefined;
     if (step.else) {
+      const { StepExecutorFactory } = await import('../factory' as string);
       elseExecutor = await StepExecutorFactory.create(step.else, options);
     }
     return new ConditionalStepExecutor(condtionalExecutor, thenExecutor, elseExecutor);
@@ -72,7 +75,7 @@ export class ComposableExecutorFactory {
     if (step.loopCondition) {
       const condtionalExecutor = TemplateStepExecutorFactory.create(
         step,
-        step.loopCondition as string,
+        step.loopCondition,
         options,
       );
       wrappedStepExecutor = new ConditionalStepExecutor(condtionalExecutor, wrappedStepExecutor);

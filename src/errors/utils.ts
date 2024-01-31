@@ -1,5 +1,5 @@
-import { WorkflowExecutionError } from '../../workflow';
-import { StepExecutionError } from '../../steps';
+import { StepExecutionError } from './step_execution';
+import { WorkflowExecutionError } from './workflow_execution';
 
 export class ErrorUtils {
   static isAssertError(error: any) {

@@ -1,22 +1,13 @@
-import { at, identity } from 'lodash';
-import { ReturnResultError } from '../steps';
-import { StatusError } from '../common';
 import { Sha256 } from '@aws-crypto/sha256-js';
+import { at, identity } from 'lodash';
+import { ReturnResultError, StatusError } from '../errors';
 
-export { debug, info, warn, error } from '../common/logger';
+export { debug, error, info, warn } from '../common/logger';
 
 export { chunk, sum } from 'lodash';
 
 export function values(obj: Record<string, any>): any[] {
   return Object.values(obj);
-}
-
-export function getOneByPaths(obj: any, paths: string | string[]): any {
-  const newPaths = toArray(paths);
-  if (!obj || !newPaths || !newPaths.length) {
-    return undefined;
-  }
-  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
 }
 
 export function getByPaths(obj: any, paths: string | string[]): any {
@@ -34,6 +25,14 @@ export function toArray(obj: any): any[] | undefined {
   return Array.isArray(obj) ? obj : [obj];
 }
 
+export function getOneByPaths(obj: any, paths: string | string[]): any {
+  const newPaths = toArray(paths);
+  if (!obj || !newPaths?.length) {
+    return undefined;
+  }
+  return at(obj, newPaths.shift())[0] ?? getOneByPaths(obj, newPaths);
+}
+
 export function doReturn(obj?: any) {
   throw new ReturnResultError(obj);
 }
@@ -47,7 +46,7 @@ export function assertThrow(val: any, error: Error | string) {
   }
 }
 
-export function doThrow(message: string, status: number = 500) {
+export function doThrow(message: string, status = 500) {
   throw new StatusError(message, Number(status));
 }
 
@@ -74,13 +73,10 @@ export function SHA256(text: string | number | undefined) {
   const hash = new Sha256();
   hash.update(`${text}`);
   const digest = hash.digestSync();
-  const result = Buffer.from(digest).toString('hex');
-  return result;
+  return Buffer.from(digest).toString('hex');
 }
 
 // Check if arr1 is subset of arr2
 export function containsAll(arr1: any[], arr2: any[]): boolean {
-  return arr1.every((element) => {
-    return arr2.includes(element);
-  });
+  return arr1.every((element) => arr2.includes(element));
 }

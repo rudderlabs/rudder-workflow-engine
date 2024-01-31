@@ -4,4 +4,3 @@ steps:
     template: |
       .error ? $.doThrow(.error.message, 500);
       .output ? .output : { "foo": "bar" }
-      

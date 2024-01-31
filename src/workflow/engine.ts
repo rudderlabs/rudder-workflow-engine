@@ -1,11 +1,13 @@
-import { StepExecutor } from '../steps/types';
-import { ErrorUtils, Executor } from '../common';
-import { WorkflowExecutor, WorkflowOutput } from './types';
+import { StepExecutor, WorkflowEngine, WorkflowExecutor, WorkflowOutput } from '../common';
+import { ErrorUtils } from '../errors';
 
-export class WorkflowEngine implements Executor {
-  readonly name: string;
-  readonly bindings: Record<string, any>;
-  readonly stepExecutors: StepExecutor[];
+export class DefaultWorkflowEngine implements WorkflowEngine {
+  private readonly name: string;
+
+  private readonly bindings: Record<string, any>;
+
+  private readonly stepExecutors: StepExecutor[];
+
   private readonly executor: WorkflowExecutor;
 
   constructor(
@@ -20,10 +22,20 @@ export class WorkflowEngine implements Executor {
     this.executor = executor;
   }
 
+  getName(): string {
+    return this.name;
+  }
+
+  getBindings(): Record<string, any> {
+    return this.bindings;
+  }
+
+  getStepExecutors(): StepExecutor[] {
+    return this.stepExecutors;
+  }
+
   getStepExecutor(stepName: string): StepExecutor {
-    let stepExecutor = this.stepExecutors.find(
-      (stepExecutor) => stepExecutor.getStepName() === stepName,
-    );
+    const stepExecutor = this.stepExecutors.find((executor) => executor.getStepName() === stepName);
 
     if (!stepExecutor) {
       throw new Error(`${stepName} was not found`);

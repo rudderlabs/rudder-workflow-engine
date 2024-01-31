@@ -6,4 +6,3 @@ steps:
   - name: simple
     template: |
       $.add(1, 2)
-      

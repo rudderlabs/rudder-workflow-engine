@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { LogLevel } from './types';
 
 export function getInitialLogLevel() {
@@ -13,9 +14,7 @@ const mustLog = (...args) => {
   console.log(...args);
 };
 
-const getLogLevel = () => {
-  return logLevel;
-};
+const getLogLevel = () => logLevel;
 
 const setLogLevel = (newLevel: LogLevel) => {
   logLevel = newLevel;

@@ -1,6 +1,6 @@
+import { ExecutionBindings, StepExecutor, StepOutput } from '../../../common/types';
+import { TemplateStepExecutor } from '../../types';
 import { ComposableStepExecutor } from './composable';
-import { StepExecutor, StepOutput, TemplateStepExecutor } from '../../types';
-import { ExecutionBindings } from '../../../workflow';
 
 /**
  * CustomInputStepExecutor customizes the input and
