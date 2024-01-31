@@ -1,4 +1,4 @@
-bindings: 
+bindings:
   - name: flatten
     path: lodash
 

@@ -1,14 +1,13 @@
 steps:
   - name: returnNothing
-    
+
     template: |
       (
         /* this is same as returning nothing */
         $doReturn()
       )
   - name: returnEarly
-    template:
-      (
-        returnCustomOutput ? $doReturn(customOutput);
-        defaultOutput
+    template: (
+      returnCustomOutput ? $doReturn(customOutput);
+      defaultOutput
       )

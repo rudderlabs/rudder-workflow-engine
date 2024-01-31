@@ -1,14 +1,8 @@
-import { StepExecutionError } from '../../errors';
-import { ExecutionBindings } from '../../../workflow/types';
+import { ExecutionBindings, LoopStepOutput, StepOutput } from '../../../common/types';
+import { ErrorUtils, StepExecutionError } from '../../../errors';
 import { ComposableStepExecutor } from './composable';
-import { LoopStepOutput, StepExecutor, StepOutput } from '../../types';
-import { ErrorUtils } from '../../../common';
 
 export class LoopStepExecutor extends ComposableStepExecutor {
-  constructor(nextExecutor: StepExecutor) {
-    super(nextExecutor);
-  }
-
   private async executeForInputElement(
     element: any,
     executionBindings: ExecutionBindings,
@@ -35,7 +29,7 @@ export class LoopStepExecutor extends ComposableStepExecutor {
       });
     }
     const promises: Promise<StepOutput>[] = new Array(input.length);
-    for (let i = 0; i < input.length; i++) {
+    for (let i = 0; i < input.length; i += 1) {
       promises[i] = this.executeForInputElement(input[i], executionBindings);
     }
     return { output: await Promise.all(promises) };

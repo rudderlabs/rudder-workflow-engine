@@ -1,8 +1,7 @@
 import jsonata from 'jsonata';
-import { ExecutionBindings } from '../../../../../workflow/types';
+import { ExecutionBindings, Step, StepOutput } from '../../../../../common';
+import { ErrorUtils, StatusError } from '../../../../../errors';
 import { BaseStepExecutor } from '../../../executors/base';
-import { Step, StepOutput } from '../../../../types';
-import { ErrorUtils, StatusError } from '../../../../../common';
 
 export class JsonataStepExecutor extends BaseStepExecutor {
   private readonly templateExpression: jsonata.Expression;
@@ -27,14 +26,15 @@ export class JsonataStepExecutor extends BaseStepExecutor {
    * Reference: https://github.com/jsonata-js/jsonata/issues/296
    */
   private static cleanUpArrays(obj: any) {
+    let newObj = obj;
     if (Array.isArray(obj)) {
-      obj = obj.map((val) => this.cleanUpArrays(val));
-    } else if (obj instanceof Object) {
-      Object.keys(obj).forEach((key) => {
-        obj[key] = this.cleanUpArrays(obj[key]);
+      newObj = obj.map((val) => this.cleanUpArrays(val));
+    } else if (newObj instanceof Object) {
+      Object.keys(newObj).forEach((key) => {
+        newObj[key] = this.cleanUpArrays(obj[key]);
       });
     }
-    return obj;
+    return newObj;
   }
 
   static async evaluateJsonataExpr(

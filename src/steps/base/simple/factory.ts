@@ -1,11 +1,11 @@
 import { join } from 'path';
-import { ExternalWorkflow, SimpleStep } from '../../types';
-import { FunctionStepExecutor } from './executors/function';
-import { WorkflowEngineFactory, WorkflowUtils, WorkflowOptionsInternal } from '../../../workflow';
+import { ExternalWorkflow, SimpleStep, WorkflowOptionsInternal } from '../../../common/types';
+import { CommonUtils } from '../../../common/utils';
+import { WorkflowEngineFactory, WorkflowUtils } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { ExternalWorkflowStepExecutor } from './executors';
+import { FunctionStepExecutor } from './executors/function';
 import { TemplateStepExecutorFactory } from './executors/template';
-import { CommonUtils } from '../../../common';
 
 export class SimpleStepExecutorFactory {
   static async create(
@@ -21,9 +21,9 @@ export class SimpleStepExecutorFactory {
     }
 
     if (step.templatePath) {
-      step.template = await this.extractTemplate(options.rootPath, step.templatePath);
+      const template = await this.extractTemplate(options.rootPath, step.templatePath);
+      return TemplateStepExecutorFactory.create(step, template, options);
     }
-
     return TemplateStepExecutorFactory.create(step, step.template as string, options);
   }
 
@@ -42,13 +42,11 @@ export class SimpleStepExecutorFactory {
     externalWorkflow.bindings = (externalWorkflow.bindings || []).concat(
       externalWorkflowConfig.bindings || [],
     );
-    const externalWorkflowEngine = await WorkflowEngineFactory.create(
-      externalWorkflow,
-      Object.assign({}, options, {
-        parentBindings: options.currentBindings,
-        rootPath: externalWorkflowRootPath,
-      }),
-    );
+    const externalWorkflowEngine = await WorkflowEngineFactory.create(externalWorkflow, {
+      ...options,
+      parentBindings: options.currentBindings,
+      rootPath: externalWorkflowRootPath,
+    });
     return new ExternalWorkflowStepExecutor(externalWorkflowEngine, step);
   }
 }

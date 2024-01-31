@@ -1,7 +1,6 @@
-import { CustomStep, CustomStepExecutor, StepOutput } from '../../../steps/types';
-import { ExecutionBindings } from '../../../workflow';
+import { CustomStep, ExecutionBindings, StepOutput } from '../../../common/types';
+import { CustomStepExecutor } from '../../types';
 import { BaseStepExecutor } from '../executors';
-import { Executor } from '../../../common';
 
 export class BaseCustomStepExecutor extends BaseStepExecutor {
   readonly executor: CustomStepExecutor;

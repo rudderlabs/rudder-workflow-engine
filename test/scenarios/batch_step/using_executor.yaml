@@ -4,5 +4,3 @@ steps:
   - name: batchData
     type: batch
     executor: batchExecutor
-
-      

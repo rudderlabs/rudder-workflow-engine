@@ -1,4 +1,4 @@
 export * from './executors';
-export * from './simple';
 export * from './factory';
+export * from './simple';
 export * from './utils';

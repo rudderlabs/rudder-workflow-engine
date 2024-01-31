@@ -1,20 +1,23 @@
 import {
   BatchConfig,
-  BatchExecutor,
   BatchResult,
+  ExecutionBindings,
   LoopStepOutput,
   StepExecutor,
-} from '../../../steps/types';
-import { ExecutionBindings } from '../../../workflow';
+} from '../../../common/types';
 import { BatchUtils } from '../../../common/utils/batch';
+import { BatchExecutor } from '../../types';
 
 export class SimpleBatchExecutor implements BatchExecutor {
   readonly config: BatchConfig;
+
   readonly filterMapExector?: StepExecutor;
+
   constructor(config: BatchConfig, filterMapExector?: StepExecutor) {
     this.config = config;
     this.filterMapExector = filterMapExector;
   }
+
   async execute(input: any[], bindings: ExecutionBindings): Promise<BatchResult[]> {
     const { filteredInput, filteredIndices } = await this.handleFilteringAndMapping(
       input,
@@ -31,23 +34,19 @@ export class SimpleBatchExecutor implements BatchExecutor {
       maxSizeInBytes: this.config.options?.size,
       maxItems: this.config.options?.length,
     });
-    return itemArrays.map((items, index) => {
-      return {
-        items,
-        indices: indices[index].map((i) => filteredIndices[i]),
-        key: this.config.key,
-      };
-    });
+    return itemArrays.map((items, index) => ({
+      items,
+      indices: indices[index].map((i) => filteredIndices[i]),
+      key: this.config.key,
+    }));
   }
 
   private handleBatchingDisabled(filteredInput: any[], filteredIndices: number[]): BatchResult[] {
-    return filteredInput.map((item, index) => {
-      return {
-        items: [item],
-        indices: [filteredIndices[index]],
-        key: this.config.key,
-      };
-    });
+    return filteredInput.map((item, index) => ({
+      items: [item],
+      indices: [filteredIndices[index]],
+      key: this.config.key,
+    }));
   }
 
   private async handleFilteringAndMapping(input: any[], bindings: ExecutionBindings) {

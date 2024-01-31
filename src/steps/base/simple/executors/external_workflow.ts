@@ -1,7 +1,6 @@
-import { WorkflowEngine } from '../../../../workflow/engine';
-import { ErrorUtils } from '../../../../common';
+import { SimpleStep, StepOutput, WorkflowEngine } from '../../../../common';
+import { ErrorUtils } from '../../../../errors';
 import { BaseStepExecutor } from '../../executors/base';
-import { SimpleStep, StepOutput } from '../../../types';
 
 export class ExternalWorkflowStepExecutor extends BaseStepExecutor {
   private readonly workflowEngine: WorkflowEngine;

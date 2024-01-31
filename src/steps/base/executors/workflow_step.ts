@@ -1,7 +1,13 @@
-import { ExecutionBindings } from '../../../workflow/types';
-import { ErrorUtils } from '../../../common/';
+import {
+  ExecutionBindings,
+  StepExecutor,
+  StepExitAction,
+  StepOutput,
+  WorkflowStep,
+} from '../../../common/types';
+import { ErrorUtils } from '../../../errors';
 import { BaseStepExecutor } from './base';
-import { StepExecutor, StepExitAction, StepOutput, WorkflowStep } from '../../types';
+
 export class WorkflowStepExecutor extends BaseStepExecutor {
   private readonly stepExecutors: StepExecutor[];
 
@@ -14,12 +20,12 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
     childExector: StepExecutor,
     input: any,
     executionBindings: ExecutionBindings,
-  ) {
+  ): Promise<StepOutput> {
     try {
       return await childExector.execute(input, executionBindings);
     } catch (error: any) {
       throw ErrorUtils.createStepExecutionError(
-        error.error,
+        error,
         this.getStepName(),
         childExector.getStepName(),
       );
@@ -28,22 +34,25 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
 
   async execute(input: any, executionBindings: ExecutionBindings): Promise<StepOutput> {
     const workflowStepName = this.getStepName();
-    executionBindings.outputs[workflowStepName] = {};
+    const newExecutionBindings = executionBindings;
+    newExecutionBindings.outputs[workflowStepName] = {};
     let finalOutput: any;
+
+    // eslint-disable-next-line no-restricted-syntax
     for (const childExecutor of this.stepExecutors) {
       const childStep = childExecutor.getStep();
+      // eslint-disable-next-line no-await-in-loop
       const { skipped, output } = await this.executeChildStep(
         childExecutor,
         input,
         executionBindings,
       );
-      if (skipped) {
-        continue;
-      }
-      executionBindings.outputs[workflowStepName][childExecutor.getStepName()] = output;
-      finalOutput = output;
-      if (childStep.onComplete === StepExitAction.Return) {
-        break;
+      if (!skipped) {
+        newExecutionBindings.outputs[workflowStepName][childExecutor.getStepName()] = output;
+        finalOutput = output;
+        if (childStep.onComplete === StepExitAction.Return) {
+          break;
+        }
       }
     }
     return { outputs: executionBindings.outputs[workflowStepName], output: finalOutput };

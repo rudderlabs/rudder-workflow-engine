@@ -1,4 +1,4 @@
-import { StepType } from '../types';
+import { StepType } from '../../common/types';
 import { BaseStepExecutorFactory } from './factory';
 
 describe('BaseStepExecutorFactory: ', () => {

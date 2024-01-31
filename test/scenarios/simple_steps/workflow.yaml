@@ -14,5 +14,5 @@ steps:
     templatePath: ./multiply.jsonata
   - name: externalWorkflowToDivide
     condition: op = "/"
-    externalWorkflow: 
+    externalWorkflow:
       path: ./divide_workflow.yaml

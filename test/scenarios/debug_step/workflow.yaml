@@ -3,4 +3,3 @@ steps:
     debug: true
     template: |
       "I will be logged"
-      
