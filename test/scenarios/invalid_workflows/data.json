@@ -111,6 +111,21 @@
     }
   },
   {
+    "workflowPath": "invalid_else_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_else_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_custom_step_no_executor_or_provider.yaml",
     "error": {
       "message": "provider or executor is required for custom step"
@@ -128,6 +143,13 @@
     "error": {
       "message": "loopCondition should be used with loopOverInput",
       "stepName": "invalidLoopConditionStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
     }
   },
   {
@@ -203,6 +225,30 @@
     "error": {
       "message": "\"onComplete = return\" should be used in a step with condition",
       "stepName": "InvalidOnComplete"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_inner_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_inner_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_outer_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow2",
+      "childStepName": "invalidOutput"
     }
   },
   {

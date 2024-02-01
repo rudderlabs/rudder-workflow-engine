@@ -33,6 +33,7 @@ export class WorkflowEngineFactory {
       optionsInteranl.currentBindings = bindings;
       const executor = await WorkflowUtils.getExecutor(workflow, optionsInteranl);
       const stepExecutors = await this.createStepExecutors(workflow.steps, optionsInteranl);
+      WorkflowUtils.validateOutputs(workflow);
       return new DefaultWorkflowEngine(workflow.name, executor, bindings, stepExecutors);
     } catch (error: any) {
       if (error instanceof WorkflowCreationError) {

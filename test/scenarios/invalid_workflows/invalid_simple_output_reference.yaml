@@ -1,0 +1,7 @@
+steps:
+  - name: foo
+    template: 'foo'
+  - name: invalidOutput
+    template: $outputs.bar
+  - name: bar
+    template: 'bar'

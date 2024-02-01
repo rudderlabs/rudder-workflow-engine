@@ -21,8 +21,8 @@ export class SimpleStepExecutorFactory {
     }
 
     if (step.templatePath) {
-      const template = await this.extractTemplate(options.rootPath, step.templatePath);
-      return TemplateStepExecutorFactory.create(step, template, options);
+      // eslint-disable-next-line no-param-reassign
+      step.template = await this.extractTemplate(options.rootPath, step.templatePath);
     }
     return TemplateStepExecutorFactory.create(step, step.template as string, options);
   }
