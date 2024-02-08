@@ -1,10 +1,10 @@
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import {
-  WorkflowEngineFactory,
-  WorkflowEngine,
   Executor,
   TemplateType,
+  WorkflowEngine,
+  WorkflowEngineFactory,
   WorkflowOptions,
 } from '../../src';
 import { Scenario } from '../types';
@@ -15,11 +15,11 @@ export class ScenarioUtils {
       rootPath: scenarioDir,
       templateType: TemplateType.JSONATA,
     };
-    scenario.options = Object.assign({}, defaultOptions, scenario.options);
+    scenario.options = { ...defaultOptions, ...scenario.options };
     if (scenario.workflowYAML) {
       return WorkflowEngineFactory.createFromYaml(scenario.workflowYAML, scenario.options);
     }
-    const workflowPath = join(scenarioDir, scenario.workflowPath || 'workflow.yaml');
+    const workflowPath = join(scenarioDir, scenario.workflowPath ?? 'workflow.yaml');
     return WorkflowEngineFactory.createFromFilePath(workflowPath, scenario.options);
   }
 

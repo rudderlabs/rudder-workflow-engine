@@ -102,6 +102,7 @@ export type StepCommon = {
   onComplete?: StepExitAction;
   onError?: StepExitAction;
   debug?: boolean;
+  identity?: boolean;
 };
 
 export type SimpleStep = StepCommon & {

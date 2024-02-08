@@ -17,7 +17,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
   readonly options: DefaultWorkflowExecutorOptions;
 
   constructor(options?: DefaultWorkflowExecutorOptions) {
-    this.options = options || {};
+    this.options = options ?? {};
   }
 
   static readonly INSTANCE = new DefaultWorkflowExecutor();
@@ -56,7 +56,6 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
     let currStepInput: any = input;
     const stepExecutors = engine.getStepExecutors();
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const stepExecutor of stepExecutors) {
       const step = stepExecutor.getStep();
       try {

@@ -43,7 +43,13 @@ export class StepUtils {
   }
 
   static isSimpleStep(step: SimpleStep): boolean {
-    return !!step.template || !!step.templatePath || !!step.functionName || !!step.externalWorkflow;
+    return (
+      !!step.identity ||
+      !!step.template ||
+      !!step.templatePath ||
+      !!step.functionName ||
+      !!step.externalWorkflow
+    );
   }
 
   static populateElseStep(step: Step) {
@@ -55,7 +61,6 @@ export class StepUtils {
   }
 
   static populateSteps(steps: Step[]) {
-    // eslint-disable-next-line no-restricted-syntax
     for (const step of steps) {
       step.type = StepUtils.getStepType(step);
       this.populateElseStep(step);

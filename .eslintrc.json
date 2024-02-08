@@ -22,6 +22,7 @@
   "ignorePatterns": ["jest.config.ts", "commitlint.config.js"],
   "rules": {
     "import/prefer-default-export": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-restricted-syntax": "off"
   }
 }
