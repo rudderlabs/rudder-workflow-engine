@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.0...v0.7.1) (2024-02-08)
+
+
+### Features
+
+* add output references validations ([#127](https://github.com/rudderlabs/rudder-workflow-engine/issues/127)) ([ce0de7a](https://github.com/rudderlabs/rudder-workflow-engine/commit/ce0de7a8fa6def62b195f92c8ab9d1ab274e6201))
+
+
+### Miscellaneous
+
+* update PR template and github dependabot flow ([#126](https://github.com/rudderlabs/rudder-workflow-engine/issues/126)) ([95d3f1f](https://github.com/rudderlabs/rudder-workflow-engine/commit/95d3f1f2c3a87c5d8b50024f87d44e269e9d54df))
+
 ## [0.6.11](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.6.10...v0.6.11) (2024-01-31)
 
 
