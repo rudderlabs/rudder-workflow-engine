@@ -20,7 +20,6 @@ export class WorkflowOutputsValidator {
     // Multiple outputs may exist within the template so we need a loop.
     // In this case, we are looking for workflow step output references.
     // Format: $.outputs.workflowStepName.ChildStepName
-    // eslint-disable-next-line no-cond-assign
     for (const match of workflowOutputMatches) {
       const workflowName = match[1];
       // Access to the child step outputs is restricted to within the same parent workflow step;
@@ -51,7 +50,6 @@ export class WorkflowOutputsValidator {
     // In this case, we are looking for simple step output references.
     // Format: $.outputs.stepName
     // Example template: $.outputs.stepName1 + " " + $.outputs.stepName2
-    // eslint-disable-next-line no-cond-assign
     for (const match of simpleOutputMatches) {
       const outputStepName = match[1];
       // The referenced step output is already executed.
