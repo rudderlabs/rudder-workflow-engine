@@ -1,0 +1,6 @@
+steps:
+  - name: invalidOutput
+    type: batch
+    batches:
+      - key: foo
+        filter: $.outputs.foo

@@ -43,7 +43,13 @@ export class StepUtils {
   }
 
   static isSimpleStep(step: SimpleStep): boolean {
-    return !!step.template || !!step.templatePath || !!step.functionName || !!step.externalWorkflow;
+    return (
+      !!step.identity ||
+      !!step.template ||
+      !!step.templatePath ||
+      !!step.functionName ||
+      !!step.externalWorkflow
+    );
   }
 
   static populateElseStep(step: Step) {

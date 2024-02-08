@@ -5,20 +5,14 @@ import { toArray } from '../bindings/common';
 import {
   Binding,
   CommonUtils,
-  SimpleStep,
-  Step,
-  StepType,
   Workflow,
   WorkflowBindingProvider,
   WorkflowExecutor,
   WorkflowOptionsInternal,
-  WorkflowStep,
 } from '../common';
 import { BindingNotFoundError, WorkflowCreationError } from '../errors';
 import { DefaultWorkflowExecutor } from './default_executor';
-
-const regexSimpleOutput = /\$\.?outputs\.(\w+)/g;
-const regexWorkflowOutput = /\$\.?outputs\.(\w+)\.(\w+)/g;
+import { WorkflowOutputsValidator } from './output_validator';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -30,7 +24,7 @@ export class WorkflowUtils {
   }
 
   static async createWorkflowFromFilePath(yamlPath: string): Promise<Workflow> {
-    const workflow = (await this.createFromFilePath<Workflow>(yamlPath)) || {};
+    const workflow = (await this.createFromFilePath<Workflow>(yamlPath)) ?? {};
     this.populateWorkflowName(workflow, yamlPath);
     return workflow;
   }
@@ -50,93 +44,9 @@ export class WorkflowUtils {
     }
   }
 
-  static validateOutputs(workflow: Workflow) {
-    const { steps: workflowSteps } = workflow;
-    const seenSteps = new Set(); // Set to track executed steps
-
-    function validateOutputReferences(stepName: string, template?: string, parentName?: string) {
-      if (!template) {
-        return;
-      }
-      let match: RegExpExecArray | null;
-
-      // eslint-disable-next-line no-cond-assign
-      while ((match = regexWorkflowOutput.exec(template)) !== null) {
-        const workflowName = match[1];
-        if (parentName !== workflowName) {
-          throw new WorkflowCreationError(
-            `Invalid output reference: ${match[0]}, step is not a child of ${parentName}`,
-            workflow.name,
-            parentName,
-            stepName,
-          );
-        }
-        const outputName = `${workflowName}.${match[2]}`;
-        if (!seenSteps.has(outputName)) {
-          throw new WorkflowCreationError(
-            `Invalid output reference: ${match[0]}`,
-            workflow.name,
-            parentName,
-            stepName,
-          );
-        }
-      }
-
-      // eslint-disable-next-line no-cond-assign
-      while ((match = regexSimpleOutput.exec(template)) !== null) {
-        const outputStepName = match[1];
-        if (!seenSteps.has(outputStepName)) {
-          throw new WorkflowCreationError(
-            `Invalid output reference: ${match[0]}`,
-            workflow.name,
-            parentName ?? stepName,
-            parentName ? stepName : undefined,
-          );
-        }
-      }
-    }
-
-    function validateSteps(steps: Step[], parentName?: string) {
-      for (const step of steps) {
-        const stepName = step.name;
-        let outputName = stepName;
-        if (parentName) {
-          seenSteps.add(parentName);
-          outputName = `${parentName}.${stepName}`;
-        }
-        seenSteps.add(outputName);
-
-        if (step.type === StepType.Workflow) {
-          const workflowStep = step as WorkflowStep;
-          if (workflowStep.steps) {
-            validateSteps(workflowStep.steps, stepName);
-          }
-        }
-        if (step.else) {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          validateElseStep(step.else, parentName);
-        }
-        if (step.type === StepType.Simple) {
-          const simpleStep = step as SimpleStep;
-          validateOutputReferences(stepName, simpleStep.template, parentName);
-        }
-        validateOutputReferences(stepName, step.condition, parentName);
-      }
-    }
-
-    function validateElseStep(step: Step, parentName?: string) {
-      if (step.type === StepType.Simple) {
-        const simpleStep = step as SimpleStep;
-        validateOutputReferences(step.name, simpleStep.template, parentName);
-      } else if (step.type === StepType.Workflow) {
-        const workflowStep = step as WorkflowStep;
-        if (workflowStep.steps?.length) {
-          validateSteps(workflowStep.steps, step.name);
-        }
-      }
-    }
-
-    validateSteps(workflowSteps);
+  static validate(workflow: Workflow) {
+    const validator = new WorkflowOutputsValidator(workflow);
+    validator.validateOutputs();
   }
 
   private static async getModuleExports(modulePath: string): Promise<any> {
@@ -212,7 +122,7 @@ export class WorkflowUtils {
       return { [name]: value };
     }
     const bindingSource = await this.getModuleExportsFromAllPaths(
-      bidningPath || 'bindings',
+      bidningPath ?? 'bindings',
       options,
     );
     if (!name) {

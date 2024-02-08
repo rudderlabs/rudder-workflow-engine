@@ -75,6 +75,20 @@
     }
   },
   {
+    "workflowPath": "invalid_batch_step_filter_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_batch_step_map_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_batch_step_no_executor_or_batches.yaml",
     "error": {
       "message": "batches or executor is required for batch step"
@@ -136,6 +150,20 @@
     "error": {
       "message": "Invalid functionName",
       "stepName": "invalidFunctionStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_input_template_output_references.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_loop_condition_output_references.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
     }
   },
   {

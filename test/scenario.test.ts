@@ -1,8 +1,8 @@
-import { join } from 'path';
 import { Command } from 'commander';
-import { Scenario } from './types';
-import { ScenarioUtils, CommonUtils } from './utils';
+import { join } from 'path';
 import { WorkflowOutput } from '../src';
+import { Scenario } from './types';
+import { CommonUtils, ScenarioUtils } from './utils';
 
 // Run: npm run test:scenario -- --scenario=batch_step --index=1
 const command = new Command();
@@ -13,8 +13,8 @@ command
   .parse();
 
 const opts = command.opts();
-const scenarioName = opts.scenario || 'none';
-const index = +(opts.index || 0);
+const scenarioName = opts.scenario ?? 'none';
+const index = +(opts.index ?? 0);
 
 describe(`${scenarioName}:`, () => {
   it(`Scenario ${index}`, async () => {
@@ -23,12 +23,12 @@ describe(`${scenarioName}:`, () => {
     }
     const scenarioDir = join(__dirname, 'scenarios', scenarioName);
     const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
-    const scenario: Scenario = scenarios[index] || scenarios[0];
+    const scenario: Scenario = scenarios[index] ?? scenarios[0];
     let result: WorkflowOutput = {};
     try {
       console.log(
         `Executing scenario: ${scenarioName}, test: ${index}, workflow: ${
-          scenario.workflowPath || 'workflow.yaml'
+          scenario.workflowPath ?? 'workflow.yaml'
         }`,
       );
       const workflowEngine = await ScenarioUtils.createWorkflowEngine(scenarioDir, scenario);

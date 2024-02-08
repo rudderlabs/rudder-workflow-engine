@@ -1,9 +1,9 @@
+import { Command } from 'commander';
 import { readdirSync } from 'fs';
 import { join } from 'path';
-import { Command } from 'commander';
+import { logger } from '../src';
 import { ScenarioUtils } from './utils';
 import { CommonUtils } from './utils/common';
-import { logger } from '../src';
 
 const rootDirName = 'scenarios';
 const command = new Command();
@@ -22,7 +22,7 @@ describe('Scenarios tests', () => {
       const scenarioDir = join(__dirname, rootDirName, scenario);
       const scenarios = ScenarioUtils.extractScenarios(scenarioDir);
       scenarios.forEach((scenario, index) => {
-        it(`Scenario ${index}: ${scenario.workflowPath || 'workflow.yaml'}`, async () => {
+        it(`Scenario ${index}: ${scenario.workflowPath ?? 'workflow.yaml'}`, async () => {
           const previousLogLevel = logger.getLogLevel();
           if (scenario.logLevel !== undefined) {
             logger.setLogLevel(scenario.logLevel);

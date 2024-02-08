@@ -17,7 +17,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
   readonly options: DefaultWorkflowExecutorOptions;
 
   constructor(options?: DefaultWorkflowExecutorOptions) {
-    this.options = options || {};
+    this.options = options ?? {};
   }
 
   static readonly INSTANCE = new DefaultWorkflowExecutor();

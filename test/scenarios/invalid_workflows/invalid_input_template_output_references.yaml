@@ -1,0 +1,5 @@
+steps:
+  - name: invalidOutput
+    inputTemplate: $.outputs.foo
+    template: |
+      "hello"
