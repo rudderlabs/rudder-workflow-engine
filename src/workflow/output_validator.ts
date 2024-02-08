@@ -14,10 +14,7 @@ export class WorkflowOutputsValidator {
     this.seenSteps = new Set();
   }
 
-  validateOutputReferences(stepName: string, template?: string, parentName?: string) {
-    if (!template) {
-      return;
-    }
+  validateWorkflowOutputReferences(template: string, stepName: string, parentName?: string) {
     const workflowOutputMatches = [...template.matchAll(regexWorkflowOutput)];
 
     // Multiple outputs may exist within the template so we need a loop.
@@ -46,6 +43,9 @@ export class WorkflowOutputsValidator {
         );
       }
     }
+  }
+
+  validateSimpleOutputReferences(stepName: string, template: string, parentName?: string) {
     const simpleOutputMatches = [...template.matchAll(regexSimpleOutput)];
     // Multiple outputs may exist within the template so we need a loop.
     // In this case, we are looking for simple step output references.
@@ -64,6 +64,14 @@ export class WorkflowOutputsValidator {
         );
       }
     }
+  }
+
+  validateOutputReferences(stepName: string, template?: string, parentName?: string) {
+    if (!template) {
+      return;
+    }
+    this.validateWorkflowOutputReferences(template, stepName, parentName);
+    this.validateSimpleOutputReferences(stepName, template, parentName);
   }
 
   validateCommonStepParams(step: Step, parentName?: string) {
