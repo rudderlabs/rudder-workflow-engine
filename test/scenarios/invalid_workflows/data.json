@@ -287,6 +287,14 @@
     }
   },
   {
+    "workflowPath": "invalid_workflow_self_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_workflowstep.yaml",
     "error": {
       "message": "unsupported step type",

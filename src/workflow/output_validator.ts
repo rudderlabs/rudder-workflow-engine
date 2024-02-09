@@ -31,31 +31,22 @@ export class WorkflowOutputsValidator {
         stepName,
       );
     }
-    const outputName = match[1];
-    // The referenced child step output is already executed.
-    if (!this.seenSteps.has(outputName)) {
-      throw new WorkflowCreationError(
-        `Invalid output reference: ${match[0]}`,
-        this.workflow.name,
-        parentName,
-        stepName,
-      );
-    }
   }
 
-  validateNonWorkflowOutputReference(
+  validateExistanceOfOutputReference(
     match: RegExpMatchArray,
     stepName: string,
     parentName?: string,
   ) {
-    const outputStepName = match[2]; // The name of the step
-    // The referenced step output is already executed.
-    if (!this.seenSteps.has(outputStepName)) {
+    const fullOutputName = match[1]; // For workflow step
+    const outputStepName = match[2]; // For simple step
+    // Check the referenced step output is already executed.
+    if (!this.seenSteps.has(fullOutputName) && !this.seenSteps.has(outputStepName)) {
       throw new WorkflowCreationError(
-        `Invalid output reference: ${match[0]}`,
+        `Invalid output reference: ${match[0]}, step is not executed yet.`,
         this.workflow.name,
         parentName ?? stepName,
-        parentName && stepName,
+        parentName ? stepName : undefined,
       );
     }
   }
@@ -74,9 +65,8 @@ export class WorkflowOutputsValidator {
       const ChildStepName = match[4]; // The name of the child step
       if (this.stepTypeMap.get(primaryStepName) === StepType.Workflow && ChildStepName) {
         this.validateWorkflowOutputReference(match, stepName, parentName);
-      } else {
-        this.validateNonWorkflowOutputReference(match, stepName, parentName);
       }
+      this.validateExistanceOfOutputReference(match, stepName, parentName);
     }
   }
 
