@@ -4,7 +4,7 @@ import { WorkflowCreationError } from '../errors';
 // Matches: $.outputs.stepName,
 // Result: [$.outputs.stepName, stepName, stepName];
 // Matches: $.outputs.workflow.step,
-// Result: [$.outputs.workflow.step, workflow.step, workflow, .step];
+// Result: [$.outputs.workflow.step, workflow.step, workflow, .step, step];
 const regexOutputReference = /\$\.?outputs\.((\w+)(\.(\w+))?)/g;
 
 export class WorkflowOutputsValidator {
