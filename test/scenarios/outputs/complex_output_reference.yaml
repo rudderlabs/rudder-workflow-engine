@@ -1,0 +1,18 @@
+templateType: jsontemplate
+steps:
+  - name: complexOutput
+    template: |
+      {
+        "foo": "foo",
+        "bar": "bar"
+      }
+  - name: workflow
+    steps:
+      - name: foo
+        template: $.outputs.complexOutput.foo
+      - name: bar
+        template: $.outputs.complexOutput.bar
+      - name: foobar
+        template: $.outputs.workflow.foo + " " + $.outputs.workflow.bar
+  - name: copyWorkflowOutput
+    template: $.outputs.workflow

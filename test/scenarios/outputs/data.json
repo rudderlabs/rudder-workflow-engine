@@ -1,5 +1,9 @@
 [
   {
+    "workflowPath": "complex_output_reference.yaml",
+    "output": "foo bar"
+  },
+  {
     "input": {
       "description": "a + b + c",
       "a": "10",

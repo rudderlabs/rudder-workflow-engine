@@ -1,66 +1,62 @@
 import { BatchStep, SimpleStep, Step, StepType, Workflow, WorkflowStep } from '../common';
 import { WorkflowCreationError } from '../errors';
 
-const regexSimpleOutput = /\$\.?outputs\.(\w+)/g;
-const regexWorkflowOutput = /\$\.?outputs\.(\w+)\.(\w+)/g;
+// Matches: $.outputs.stepName,
+// Result: [$.outputs.stepName, stepName, stepName];
+// Matches: $.outputs.workflow.step,
+// Result: [$.outputs.workflow.step, workflow.step, workflow, .step];
+const regexOutputReference = /\$\.?outputs\.((\w+)(\.(\w+))?)/g;
 
 export class WorkflowOutputsValidator {
   private readonly workflow: Workflow;
 
   private readonly seenSteps: Set<string>;
 
+  private readonly stepTypeMap: Map<string, StepType>;
+
   constructor(workflow: Workflow) {
     this.workflow = workflow;
     this.seenSteps = new Set();
+    this.stepTypeMap = new Map();
   }
 
-  validateWorkflowOutputReferences(template: string, stepName: string, parentName?: string) {
-    const workflowOutputMatches = [...template.matchAll(regexWorkflowOutput)];
-
-    // Multiple outputs may exist within the template so we need a loop.
-    // In this case, we are looking for workflow step output references.
-    // Format: $.outputs.workflowStepName.ChildStepName
-    for (const match of workflowOutputMatches) {
-      const workflowName = match[1];
-      // Access to the child step outputs is restricted to within the same parent workflow step;
-      if (parentName !== workflowName) {
-        throw new WorkflowCreationError(
-          `Invalid output reference: ${match[0]}, step is not a child of ${parentName}`,
-          this.workflow.name,
-          parentName,
-          stepName,
-        );
-      }
-      const outputName = `${workflowName}.${match[2]}`;
-      // The referenced child step output is already executed.
-      if (!this.seenSteps.has(outputName)) {
-        throw new WorkflowCreationError(
-          `Invalid output reference: ${match[0]}`,
-          this.workflow.name,
-          parentName,
-          stepName,
-        );
-      }
+  validateWorkflowOutputReference(match: RegExpMatchArray, stepName: string, parentName?: string) {
+    const workflowName = match[2]; // The name of the workflow step
+    // Access to the child step outputs is restricted to within the same parent workflow step;
+    if (parentName !== workflowName) {
+      throw new WorkflowCreationError(
+        `Invalid output reference: ${match[0]}, step is not a child of ${parentName}`,
+        this.workflow.name,
+        parentName,
+        stepName,
+      );
+    }
+    const outputName = match[1];
+    // The referenced child step output is already executed.
+    if (!this.seenSteps.has(outputName)) {
+      throw new WorkflowCreationError(
+        `Invalid output reference: ${match[0]}`,
+        this.workflow.name,
+        parentName,
+        stepName,
+      );
     }
   }
 
-  validateSimpleOutputReferences(stepName: string, template: string, parentName?: string) {
-    const simpleOutputMatches = [...template.matchAll(regexSimpleOutput)];
-    // Multiple outputs may exist within the template so we need a loop.
-    // In this case, we are looking for simple step output references.
-    // Format: $.outputs.stepName
-    // Example template: $.outputs.stepName1 + " " + $.outputs.stepName2
-    for (const match of simpleOutputMatches) {
-      const outputStepName = match[1];
-      // The referenced step output is already executed.
-      if (!this.seenSteps.has(outputStepName)) {
-        throw new WorkflowCreationError(
-          `Invalid output reference: ${match[0]}`,
-          this.workflow.name,
-          parentName ?? stepName,
-          parentName ? stepName : undefined,
-        );
-      }
+  validateNonWorkflowOutputReference(
+    match: RegExpMatchArray,
+    stepName: string,
+    parentName?: string,
+  ) {
+    const outputStepName = match[2]; // The name of the step
+    // The referenced step output is already executed.
+    if (!this.seenSteps.has(outputStepName)) {
+      throw new WorkflowCreationError(
+        `Invalid output reference: ${match[0]}`,
+        this.workflow.name,
+        parentName ?? stepName,
+        parentName && stepName,
+      );
     }
   }
 
@@ -68,8 +64,20 @@ export class WorkflowOutputsValidator {
     if (!template) {
       return;
     }
-    this.validateWorkflowOutputReferences(template, stepName, parentName);
-    this.validateSimpleOutputReferences(stepName, template, parentName);
+    const outputMatches = [...template.matchAll(regexOutputReference)];
+
+    // Multiple outputs may exist within the template so we need a loop.
+    // In this case, we are looking for workflow step output references.
+    // Format: $.outputs.workflowStepName.ChildStepName
+    for (const match of outputMatches) {
+      const primaryStepName = match[2]; // The name of the step
+      const ChildStepName = match[4]; // The name of the child step
+      if (this.stepTypeMap.get(primaryStepName) === StepType.Workflow && ChildStepName) {
+        this.validateWorkflowOutputReference(match, stepName, parentName);
+      } else {
+        this.validateNonWorkflowOutputReference(match, stepName, parentName);
+      }
+    }
   }
 
   validateCommonStepParams(step: Step, parentName?: string) {
@@ -93,15 +101,10 @@ export class WorkflowOutputsValidator {
   validateSteps(steps: Step[], parentName?: string) {
     for (const step of steps) {
       const stepName = step.name;
+      const stepType = step.type as StepType;
+      this.stepTypeMap.set(stepName, stepType);
       let outputName = stepName;
-      if (parentName) {
-        this.seenSteps.add(parentName);
-        outputName = `${parentName}.${stepName}`;
-      }
-
       this.validateCommonStepParams(step, parentName);
-      this.seenSteps.add(outputName);
-
       if (step.type === StepType.Workflow) {
         const workflowStep = step as WorkflowStep;
         if (workflowStep.steps) {
@@ -112,6 +115,10 @@ export class WorkflowOutputsValidator {
       } else if (step.type === StepType.Batch) {
         this.validateBatchStep(step as BatchStep, parentName);
       }
+      if (parentName) {
+        outputName = `${parentName}.${stepName}`;
+      }
+      this.seenSteps.add(outputName);
     }
   }
 
