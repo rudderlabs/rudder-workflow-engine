@@ -5,6 +5,7 @@ import { WorkflowEngineFactory, WorkflowUtils } from '../../../workflow';
 import { BaseStepExecutor } from '../executors';
 import { ExternalWorkflowStepExecutor } from './executors';
 import { FunctionStepExecutor } from './executors/function';
+import { IdentityStepExecutor } from './executors/identity';
 import { TemplateStepExecutorFactory } from './executors/template';
 
 export class SimpleStepExecutorFactory {
@@ -12,6 +13,10 @@ export class SimpleStepExecutorFactory {
     step: SimpleStep,
     options: WorkflowOptionsInternal,
   ): Promise<BaseStepExecutor> {
+    if (step.identity) {
+      return new IdentityStepExecutor(step);
+    }
+
     if (step.externalWorkflow) {
       return this.createExternalWorkflowEngineExecutor(step, options);
     }
@@ -21,8 +26,8 @@ export class SimpleStepExecutorFactory {
     }
 
     if (step.templatePath) {
-      const template = await this.extractTemplate(options.rootPath, step.templatePath);
-      return TemplateStepExecutorFactory.create(step, template, options);
+      // eslint-disable-next-line no-param-reassign
+      step.template = await this.extractTemplate(options.rootPath, step.templatePath);
     }
     return TemplateStepExecutorFactory.create(step, step.template as string, options);
   }
@@ -37,10 +42,10 @@ export class SimpleStepExecutorFactory {
   ): Promise<ExternalWorkflowStepExecutor> {
     const externalWorkflowConfig = step.externalWorkflow as ExternalWorkflow;
     const externalWorkflowPath = join(options.rootPath, externalWorkflowConfig.path);
-    const externalWorkflowRootPath = join(options.rootPath, externalWorkflowConfig.rootPath || '');
+    const externalWorkflowRootPath = join(options.rootPath, externalWorkflowConfig.rootPath ?? '');
     const externalWorkflow = await WorkflowUtils.createWorkflowFromFilePath(externalWorkflowPath);
-    externalWorkflow.bindings = (externalWorkflow.bindings || []).concat(
-      externalWorkflowConfig.bindings || [],
+    externalWorkflow.bindings = (externalWorkflow.bindings ?? []).concat(
+      externalWorkflowConfig.bindings ?? [],
     );
     const externalWorkflowEngine = await WorkflowEngineFactory.create(externalWorkflow, {
       ...options,

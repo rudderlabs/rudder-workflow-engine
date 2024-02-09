@@ -1,0 +1,7 @@
+steps:
+  - name: foo
+    condition: hello
+    template: 'foo'
+    else:
+      name: invalidOutput
+      template: $outputs.bar

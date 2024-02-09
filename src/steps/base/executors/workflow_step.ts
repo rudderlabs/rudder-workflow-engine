@@ -38,7 +38,6 @@ export class WorkflowStepExecutor extends BaseStepExecutor {
     newExecutionBindings.outputs[workflowStepName] = {};
     let finalOutput: any;
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const childExecutor of this.stepExecutors) {
       const childStep = childExecutor.getStep();
       // eslint-disable-next-line no-await-in-loop

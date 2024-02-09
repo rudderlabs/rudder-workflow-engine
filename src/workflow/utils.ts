@@ -12,6 +12,7 @@ import {
 } from '../common';
 import { BindingNotFoundError, WorkflowCreationError } from '../errors';
 import { DefaultWorkflowExecutor } from './default_executor';
+import { WorkflowOutputsValidator } from './output_validator';
 
 export class WorkflowUtils {
   private static populateWorkflowName(workflow: Workflow, workflowPath: string) {
@@ -23,7 +24,7 @@ export class WorkflowUtils {
   }
 
   static async createWorkflowFromFilePath(yamlPath: string): Promise<Workflow> {
-    const workflow = (await this.createFromFilePath<Workflow>(yamlPath)) || {};
+    const workflow = (await this.createFromFilePath<Workflow>(yamlPath)) ?? {};
     this.populateWorkflowName(workflow, yamlPath);
     return workflow;
   }
@@ -41,6 +42,11 @@ export class WorkflowUtils {
     if (!workflow?.steps?.length) {
       throw new WorkflowCreationError('Workflow should contain at least one step', workflow.name);
     }
+  }
+
+  static validate(workflow: Workflow) {
+    const validator = new WorkflowOutputsValidator(workflow);
+    validator.validateOutputs();
   }
 
   private static async getModuleExports(modulePath: string): Promise<any> {
@@ -116,7 +122,7 @@ export class WorkflowUtils {
       return { [name]: value };
     }
     const bindingSource = await this.getModuleExportsFromAllPaths(
-      bidningPath || 'bindings',
+      bidningPath ?? 'bindings',
       options,
     );
     if (!name) {

@@ -42,7 +42,11 @@ export class BatchStepExecutorFactory {
     if (config.filter) {
       filterStep.loopCondition = config.filter;
     }
-    filterStep.template = config.map ?? '.';
+    if (config.map) {
+      filterStep.template = config.map;
+    } else {
+      filterStep.identity = true;
+    }
     const { StepExecutorFactory } = await import('../../factory' as string);
     return StepExecutorFactory.create(filterStep, options);
   }

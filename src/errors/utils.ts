@@ -7,7 +7,7 @@ export class ErrorUtils {
   }
 
   static getErrorStatus(error: any) {
-    return error?.response?.status || error?.status || 500;
+    return error?.response?.status ?? error?.status ?? 500;
   }
 
   static createStepExecutionError(

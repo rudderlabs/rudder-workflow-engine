@@ -75,6 +75,20 @@
     }
   },
   {
+    "workflowPath": "invalid_batch_step_filter_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_batch_step_map_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_batch_step_no_executor_or_batches.yaml",
     "error": {
       "message": "batches or executor is required for batch step"
@@ -111,6 +125,21 @@
     }
   },
   {
+    "workflowPath": "invalid_else_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_else_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_custom_step_no_executor_or_provider.yaml",
     "error": {
       "message": "provider or executor is required for custom step"
@@ -124,10 +153,38 @@
     }
   },
   {
+    "workflowPath": "invalid_input_template_output_references.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_loop_condition_output_references.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
     "workflowPath": "invalid_loop_condition_step.yaml",
     "error": {
       "message": "loopCondition should be used with loopOverInput",
       "stepName": "invalidLoopConditionStep"
+    }
+  },
+  {
+    "workflowPath": "invalid_simple_mutliple_output_references.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "invalidOutput"
     }
   },
   {
@@ -203,6 +260,30 @@
     "error": {
       "message": "\"onComplete = return\" should be used in a step with condition",
       "stepName": "InvalidOnComplete"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_inner_simple_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_inner_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow",
+      "childStepName": "invalidOutput"
+    }
+  },
+  {
+    "workflowPath": "invalid_workflow_outer_workflow_output_reference.yaml",
+    "error": {
+      "message": "Invalid output reference",
+      "stepName": "workflow2",
+      "childStepName": "invalidOutput"
     }
   },
   {

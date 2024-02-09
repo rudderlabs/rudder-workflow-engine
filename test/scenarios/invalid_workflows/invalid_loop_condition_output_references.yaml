@@ -1,0 +1,6 @@
+steps:
+  - name: invalidOutput
+    loopOverInput: true
+    loopCondition: $.outputs.foo
+    template: |
+      "hello"

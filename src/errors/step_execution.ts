@@ -15,6 +15,6 @@ export class StepExecutionError extends StatusError {
     this.stepName = info?.stepName;
     this.childStepName = info?.childStepName;
     this.error = info?.error ?? this;
-    this.originalError = (this.error as any).originalError || info?.error;
+    this.originalError = (this.error as any).originalError ?? info?.error;
   }
 }
