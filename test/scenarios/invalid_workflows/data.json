@@ -167,6 +167,14 @@
     }
   },
   {
+    "workflowPath": "invalid_nested_workflow_step.yaml",
+    "error": {
+      "message": "unsupported step type",
+      "stepName": "workflow",
+      "childStepName": "invalidChildWorkflow"
+    }
+  },
+  {
     "workflowPath": "invalid_loop_condition_step.yaml",
     "error": {
       "message": "loopCondition should be used with loopOverInput",
