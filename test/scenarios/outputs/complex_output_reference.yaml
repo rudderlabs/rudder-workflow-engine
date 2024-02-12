@@ -9,10 +9,14 @@ steps:
   - name: workflow
     steps:
       - name: foo
-        template: $.outputs.complexOutput.foo
+        template:  |
+          { output: $.outputs.complexOutput.foo }
       - name: bar
-        template: $.outputs.complexOutput.bar
+        template: |
+          { output: $.outputs.complexOutput.bar }
       - name: foobar
-        template: $.outputs.workflow.foo + " " + $.outputs.workflow.bar
+        template: |
+          $.outputs.workflow.foo.output + " " + $.outputs.workflow.bar.output
+      
   - name: copyWorkflowOutput
     template: $.outputs.workflow

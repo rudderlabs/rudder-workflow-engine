@@ -62,8 +62,8 @@ export class WorkflowOutputsValidator {
     // Format: $.outputs.workflowStepName.ChildStepName
     for (const match of outputMatches) {
       const primaryStepName = match[2]; // The name of the step
-      const ChildStepName = match[4]; // The name of the child step
-      if (this.stepTypeMap.get(primaryStepName) === StepType.Workflow && ChildStepName) {
+      const childStepName = match[4]; // The name of the child step
+      if (this.stepTypeMap.get(primaryStepName) === StepType.Workflow && childStepName) {
         this.validateWorkflowOutputReference(match, stepName, parentName);
       }
       this.validateExistanceOfOutputReference(match, stepName, parentName);
