@@ -1,0 +1,9 @@
+steps:
+  - name: workflow
+    steps:
+      - name: foo
+        template: 'foo'
+      - name: invalidChildWorkflow
+        steps:
+          - name: bar
+            template: 'bar'

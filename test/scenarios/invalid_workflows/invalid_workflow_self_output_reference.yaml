@@ -1,0 +1,7 @@
+steps:
+  - name: workflow
+    steps:
+      - name: foo
+        template: 'foo'
+      - name: invalidOutput
+        template: $outputs.workflow
