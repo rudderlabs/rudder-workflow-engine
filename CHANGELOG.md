@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.2...v0.7.3) (2024-02-20)
+
+
+### Miscellaneous
+
+* **deps:** bump actions/checkout from 1 to 4 ([#136](https://github.com/rudderlabs/rudder-workflow-engine/issues/136)) ([ec07bf1](https://github.com/rudderlabs/rudder-workflow-engine/commit/ec07bf132537db58c4c231981558b1310672483d))
+* **deps:** bump actions/setup-node from 3 to 4 ([#137](https://github.com/rudderlabs/rudder-workflow-engine/issues/137)) ([c068d03](https://github.com/rudderlabs/rudder-workflow-engine/commit/c068d030e97f0df52f698b4a5c971186d28dfadd))
+
 ## [0.7.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.1...v0.7.2) (2024-02-12)
 
 
