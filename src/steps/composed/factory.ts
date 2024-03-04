@@ -5,7 +5,6 @@ import { CustomInputStepExecutor } from './executors/custom_input';
 import { DebuggableStepExecutor } from './executors/debuggable';
 import { ErrorWrapStepExecutor } from './executors/error_wrap';
 import { LoopStepExecutor } from './executors/loop';
-// eslint-disable-next-line import/no-cycle
 import { StepExecutorFactory } from '../factory';
 
 export class ComposableExecutorFactory {
