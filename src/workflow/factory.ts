@@ -1,3 +1,4 @@
+import { StepExecutorFactory } from '../steps/factory';
 import * as libraryBindings from '../bindings';
 import {
   Binding,
@@ -85,7 +86,6 @@ export class WorkflowEngineFactory {
     steps: Step[],
     options: WorkflowOptionsInternal,
   ): Promise<StepExecutor[]> {
-    const { StepExecutorFactory } = await import('../steps' as string);
     return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 }

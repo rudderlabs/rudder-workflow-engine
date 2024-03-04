@@ -11,6 +11,8 @@ import { BatchExecutor } from '../../types';
 import { DefaultBatchWorkflowExecutor } from './default_batch_workflow_executor';
 import { SimpleBatchExecutor } from './simple_batch_executor';
 import { BatchStepExecutor } from './step_executor';
+// eslint-disable-next-line import/no-cycle
+import { StepExecutorFactory } from '../../factory';
 
 export class BatchStepExecutorFactory {
   static async create(
@@ -47,7 +49,6 @@ export class BatchStepExecutorFactory {
     } else {
       filterStep.identity = true;
     }
-    const { StepExecutorFactory } = await import('../../factory' as string);
     return StepExecutorFactory.create(filterStep, options);
   }
 
