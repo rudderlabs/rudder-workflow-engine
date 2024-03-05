@@ -5,6 +5,7 @@ import { CustomInputStepExecutor } from './executors/custom_input';
 import { DebuggableStepExecutor } from './executors/debuggable';
 import { ErrorWrapStepExecutor } from './executors/error_wrap';
 import { LoopStepExecutor } from './executors/loop';
+import { StepExecutorFactory } from '../factory';
 
 export class ComposableExecutorFactory {
   static async create(
@@ -60,7 +61,6 @@ export class ComposableExecutorFactory {
     );
     let elseExecutor: StepExecutor | undefined;
     if (step.else) {
-      const { StepExecutorFactory } = await import('../factory' as string);
       elseExecutor = await StepExecutorFactory.create(step.else, options);
     }
     return new ConditionalStepExecutor(condtionalExecutor, thenExecutor, elseExecutor);
