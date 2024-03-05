@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.3...v0.7.4) (2024-03-05)
+
+
+### Bug Fixes
+
+* disable import cycle ([#140](https://github.com/rudderlabs/rudder-workflow-engine/issues/140)) ([33be170](https://github.com/rudderlabs/rudder-workflow-engine/commit/33be1708168204345582444ba23c918495945aba))
+
 ## [0.7.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.2...v0.7.3) (2024-02-20)
 
 
