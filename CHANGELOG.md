@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.4...v0.7.5) (2024-03-15)
+
+
+### Miscellaneous
+
+* **deps:** bump jsonata from 2.0.3 to 2.0.4 ([#141](https://github.com/rudderlabs/rudder-workflow-engine/issues/141)) ([36e34f4](https://github.com/rudderlabs/rudder-workflow-engine/commit/36e34f418ec6609f8cb7eedb00c58057808d62ee))
+* upgrade jsonata ([#144](https://github.com/rudderlabs/rudder-workflow-engine/issues/144)) ([a3e3643](https://github.com/rudderlabs/rudder-workflow-engine/commit/a3e3643f52c20b53de6738ecc899030edc1595ec))
+
 ## [0.7.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.3...v0.7.4) (2024-03-05)
 
 
