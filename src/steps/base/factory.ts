@@ -12,6 +12,7 @@ import { CustomStepExecutorFactory } from './custom/factory';
 import { WorkflowStepExecutor } from './executors/workflow_step';
 import { SimpleStepExecutorFactory } from './simple';
 import { BaseStepUtils } from './utils';
+import { StepExecutorFactory } from '../factory';
 
 export class BaseStepExecutorFactory {
   static create(step: Step, options: WorkflowOptionsInternal): Promise<StepExecutor> {
@@ -47,7 +48,6 @@ export class BaseStepExecutorFactory {
     options: WorkflowOptionsInternal,
   ): Promise<StepExecutor[]> {
     const steps = workflowStep.steps as SimpleStep[];
-    const { StepExecutorFactory } = await import('../factory' as string);
     return Promise.all(steps.map((step) => StepExecutorFactory.create(step, options)));
   }
 }

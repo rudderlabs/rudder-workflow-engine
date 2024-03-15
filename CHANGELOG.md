@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.3...v0.7.4) (2024-03-05)
+
+
+### Bug Fixes
+
+* disable import cycle ([#140](https://github.com/rudderlabs/rudder-workflow-engine/issues/140)) ([33be170](https://github.com/rudderlabs/rudder-workflow-engine/commit/33be1708168204345582444ba23c918495945aba))
+
+## [0.7.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.2...v0.7.3) (2024-02-20)
+
+
+### Miscellaneous
+
+* **deps:** bump actions/checkout from 1 to 4 ([#136](https://github.com/rudderlabs/rudder-workflow-engine/issues/136)) ([ec07bf1](https://github.com/rudderlabs/rudder-workflow-engine/commit/ec07bf132537db58c4c231981558b1310672483d))
+* **deps:** bump actions/setup-node from 3 to 4 ([#137](https://github.com/rudderlabs/rudder-workflow-engine/issues/137)) ([c068d03](https://github.com/rudderlabs/rudder-workflow-engine/commit/c068d030e97f0df52f698b4a5c971186d28dfadd))
+
 ## [0.7.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.1...v0.7.2) (2024-02-12)
 
 
