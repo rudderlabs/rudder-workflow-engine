@@ -133,3 +133,6 @@ dist
 
 # build files
 build/
+
+# mac files
+.DS_Store

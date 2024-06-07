@@ -1,6 +1,6 @@
 {
   "name": "@rudderstack/workflow-engine",
-  "version": "0.7.7",
+  "version": "0.7.9",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.2.0",
-    "@rudderstack/json-template-engine": "^0.10.4",
+    "@rudderstack/json-template-engine": "^0.10.5",
     "jsonata": "^2.0.5",
     "lodash": "^4.17.21",
     "object-sizeof": "^2.6.4",
