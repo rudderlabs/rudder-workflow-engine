@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.5...v0.7.6) (2024-06-06)
+
+
+### Miscellaneous
+
+* **deps:** bump sonar source/sonarcloud-github-action from 2.1.1 to 2.2.0 ([#146](https://github.com/rudderlabs/rudder-workflow-engine/issues/146)) ([2b9ef60](https://github.com/rudderlabs/rudder-workflow-engine/commit/2b9ef60349ce4d048b697f5e633edc2000f8a53b))
+* upgrade packages ([#147](https://github.com/rudderlabs/rudder-workflow-engine/issues/147)) ([b7b9fa7](https://github.com/rudderlabs/rudder-workflow-engine/commit/b7b9fa7bb830afc60d7601fc71e5f91b68a4b132))
+
 ## [0.7.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.4...v0.7.5) (2024-03-15)
 
 
