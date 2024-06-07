@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.8...v0.7.9) (2024-06-07)
+
+
+### Miscellaneous
+
+* upgrade json-template-engine to 0.10.5 ([#153](https://github.com/rudderlabs/rudder-workflow-engine/issues/153)) ([2efc53b](https://github.com/rudderlabs/rudder-workflow-engine/commit/2efc53b17747c246ef2b18aa2754f254a0165607))
+
 ## [0.7.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.7...v0.7.8) (2024-06-07)
 
 
