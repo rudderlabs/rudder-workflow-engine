@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.7.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.9...v0.7.10) (2024-06-10)
+## [0.8.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.9...v0.8.0) (2024-06-10)
 
 
 ### Features
