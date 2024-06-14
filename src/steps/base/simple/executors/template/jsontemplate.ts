@@ -1,13 +1,34 @@
-import { JsonTemplateEngine, PathType } from '@rudderstack/json-template-engine';
-import { ExecutionBindings, Step, StepOutput } from '../../../../../common';
+import {
+  Expression,
+  FlatMappingPaths,
+  JsonTemplateEngine,
+  PathType,
+} from '@rudderstack/json-template-engine';
+import { ExecutionBindings, SimpleStep, StepOutput } from '../../../../../common';
 import { BaseStepExecutor } from '../../../executors/base';
 
 export class JsonTemplateStepExecutor extends BaseStepExecutor {
   private readonly templateEngine: JsonTemplateEngine;
 
-  constructor(step: Step, template: string, bindings?: Record<string, any>) {
+  static parse(template: string, mappings?: boolean, bindings?: Record<string, any>): Expression {
+    if (mappings) {
+      try {
+        const mappingPaths = JSON.parse(template) as FlatMappingPaths[];
+        return JsonTemplateEngine.parse(mappingPaths, { defaultPathType: PathType.JSON });
+      } catch (e) {
+        // parse as template
+      }
+    }
+    return JsonTemplateEngine.parse(template, {
+      defaultPathType: PathType.SIMPLE,
+      compileTimeBindings: bindings,
+    });
+  }
+
+  constructor(step: SimpleStep, template: string, bindings?: Record<string, any>) {
     super(step);
-    this.templateEngine = JsonTemplateEngine.create(template, {
+    const expression = JsonTemplateStepExecutor.parse(template, step.mappings, bindings);
+    this.templateEngine = JsonTemplateEngine.create(expression, {
       compileTimeBindings: bindings,
       defaultPathType: PathType.SIMPLE,
     });

@@ -1,3 +1,4 @@
+import { FlatMappingPaths } from '@rudderstack/json-template-engine';
 import { type StepExecutionError } from '../errors';
 
 export interface Executor {
@@ -109,15 +110,11 @@ export type SimpleStep = StepCommon & {
   // One of the template, templatePath, externalWorkflowPath, Function are required for simple steps
   template?: string;
   templatePath?: string;
+  mappings?: boolean;
   // external workflow is executed independently and we can access only final output
   externalWorkflow?: ExternalWorkflow;
   // Function must be passed using bindings
   functionName?: string;
-};
-
-export type Template = {
-  content?: string;
-  path?: string;
 };
 
 export type BatchConfig = {
