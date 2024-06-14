@@ -24,6 +24,7 @@
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "no-restricted-syntax": "off",
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "no-unused-vars": "error"
   }
 }
