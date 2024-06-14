@@ -25,6 +25,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "no-restricted-syntax": "off",
     "import/no-cycle": "off",
-    "no-unused-vars": "error"
+    "no-unused-vars": "error",
+    "no-unused-imports": "error"
   }
 }
