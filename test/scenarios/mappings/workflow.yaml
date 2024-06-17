@@ -1,0 +1,18 @@
+templateType: jsontemplate
+steps:
+  - name: mappings
+    mappings: true
+    description: |
+      InputTemplate will be parsed as normal json template/
+      template will be parsed as mappings.
+    inputTemplate: |
+      {
+        foo: ^.a
+      }
+    template: |
+      [
+        {
+          "input": "$.foo",
+          "output": "$.bar"
+        }
+      ]
