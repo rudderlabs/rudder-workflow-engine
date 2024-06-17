@@ -15,6 +15,7 @@
     "build:clean": "npm run clean && npm run build",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . || exit 1",
+    "list-staged": "lint-staged",
     "format": "prettier --write '**/*.ts' '**/*.json'",
     "lint": "npm run format && npm run lint:fix",
     "prepare": "husky install",
