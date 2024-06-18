@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.4...v0.8.5) (2024-06-18)
+
+
+### Miscellaneous
+
+* upgrade packages ([b700afd](https://github.com/rudderlabs/rudder-workflow-engine/commit/b700afd0f1c0020247b550332d306ee04f78ca34))
+
 ## [0.8.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.3...v0.8.4) (2024-06-18)
 
 
