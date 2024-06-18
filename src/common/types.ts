@@ -1,4 +1,3 @@
-import { FlatMappingPaths } from '@rudderstack/json-template-engine';
 import { type StepExecutionError } from '../errors';
 
 export interface Executor {

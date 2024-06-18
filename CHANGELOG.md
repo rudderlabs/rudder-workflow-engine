@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.2...v0.8.3) (2024-06-17)
+
+
+### Features
+
+* add support for mappings ([#159](https://github.com/rudderlabs/rudder-workflow-engine/issues/159)) ([9f2af3b](https://github.com/rudderlabs/rudder-workflow-engine/commit/9f2af3bc93363d51f433957a1593d8c114139737))
+
+
+### Miscellaneous
+
+* **deps:** bump SonarSource/sonarcloud-github-action from 2.2.0 to 2.3.0 ([#160](https://github.com/rudderlabs/rudder-workflow-engine/issues/160)) ([191f2dd](https://github.com/rudderlabs/rudder-workflow-engine/commit/191f2dd63559aa839c8f0a1c0f431de8c5440779))
+
 ## [0.8.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.1...v0.8.2) (2024-06-14)
 
 

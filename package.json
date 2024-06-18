@@ -1,6 +1,6 @@
 {
   "name": "@rudderstack/workflow-engine",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "A generic workflow execution engine",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -15,6 +15,7 @@
     "build:clean": "npm run clean && npm run build",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . || exit 1",
+    "lint-staged": "lint-staged",
     "format": "prettier --write '**/*.ts' '**/*.json'",
     "lint": "npm run format && npm run lint:fix",
     "prepare": "husky install",
