@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.2.0",
-    "@rudderstack/json-template-engine": "^0.15.0",
+    "@rudderstack/json-template-engine": "^0.16.0",
     "jsonata": "^2.0.5",
     "lodash": "^4.17.21",
     "object-sizeof": "^2.6.4",
