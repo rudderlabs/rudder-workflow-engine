@@ -1,5 +1,94 @@
 # Changelog
 
+## [0.8.11](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.10...v0.8.11) (2024-07-02)
+
+
+### Miscellaneous
+
+* upgrade packages ([124b345](https://github.com/rudderlabs/rudder-workflow-engine/commit/124b3456b542c9cae644f8b8b7240dd20511faf6))
+
+## [0.8.10](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.9...v0.8.10) (2024-06-25)
+
+
+### Features
+
+* upgrade packages ([4dc7d83](https://github.com/rudderlabs/rudder-workflow-engine/commit/4dc7d839f0406e325c7b9bf0c48ce7fffdf0f7e9))
+
+## [0.8.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.8...v0.8.9) (2024-06-24)
+
+
+### Miscellaneous
+
+* upgrade packages ([b3d7ec7](https://github.com/rudderlabs/rudder-workflow-engine/commit/b3d7ec70ad43a2dd61b377a833283fab3b3193c3))
+
+## [0.8.8](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.7...v0.8.8) (2024-06-19)
+
+
+### Miscellaneous
+
+* upgrade packages ([561529c](https://github.com/rudderlabs/rudder-workflow-engine/commit/561529cbbc6ea23bd55ed4f1392ef30cd1065a89))
+
+## [0.8.7](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.6...v0.8.7) (2024-06-19)
+
+
+### Miscellaneous
+
+* upgrade json template engine ([107609a](https://github.com/rudderlabs/rudder-workflow-engine/commit/107609a62e9d30496752b8ec575637647f164d67))
+
+## [0.8.6](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.5...v0.8.6) (2024-06-18)
+
+
+### Miscellaneous
+
+* upgrade packages ([fe83b59](https://github.com/rudderlabs/rudder-workflow-engine/commit/fe83b59a82d622449fd521bf1df84cf27dd79b7d))
+
+## [0.8.5](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.4...v0.8.5) (2024-06-18)
+
+
+### Miscellaneous
+
+* upgrade packages ([b700afd](https://github.com/rudderlabs/rudder-workflow-engine/commit/b700afd0f1c0020247b550332d306ee04f78ca34))
+
+## [0.8.4](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.3...v0.8.4) (2024-06-18)
+
+
+### Miscellaneous
+
+* upgrade packages ([993839d](https://github.com/rudderlabs/rudder-workflow-engine/commit/993839d8e273610de47534404f734dbbf8dccc8a))
+
+## [0.8.3](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.2...v0.8.3) (2024-06-17)
+
+
+### Features
+
+* add support for mappings ([#159](https://github.com/rudderlabs/rudder-workflow-engine/issues/159)) ([9f2af3b](https://github.com/rudderlabs/rudder-workflow-engine/commit/9f2af3bc93363d51f433957a1593d8c114139737))
+
+
+### Miscellaneous
+
+* **deps:** bump SonarSource/sonarcloud-github-action from 2.2.0 to 2.3.0 ([#160](https://github.com/rudderlabs/rudder-workflow-engine/issues/160)) ([191f2dd](https://github.com/rudderlabs/rudder-workflow-engine/commit/191f2dd63559aa839c8f0a1c0f431de8c5440779))
+
+## [0.8.2](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.1...v0.8.2) (2024-06-14)
+
+
+### Miscellaneous
+
+* upgrade packages ([224b17b](https://github.com/rudderlabs/rudder-workflow-engine/commit/224b17be02b963fa2609d1e54c32dd73ab93a00c))
+
+## [0.8.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.0...v0.8.1) (2024-06-13)
+
+
+### Miscellaneous
+
+* upgrade npm packages ([ec80d6c](https://github.com/rudderlabs/rudder-workflow-engine/commit/ec80d6ccaf7562d9f76a63f5c841c3f06196028a))
+
+## [0.8.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.9...v0.8.0) (2024-06-10)
+
+
+### Features
+
+* upgrade json template engine ([#155](https://github.com/rudderlabs/rudder-workflow-engine/issues/155)) ([1317d90](https://github.com/rudderlabs/rudder-workflow-engine/commit/1317d90a392e20d5d8c2be2fc7ee861e3a1ce40b))
+
 ## [0.7.9](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.7.8...v0.7.9) (2024-06-07)
 
 
