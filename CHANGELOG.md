@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.13](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.12...v0.8.13) (2024-07-17)
+
+
+### Bug Fixes
+
+* error handling for bindings ([#171](https://github.com/rudderlabs/rudder-workflow-engine/issues/171)) ([369ac89](https://github.com/rudderlabs/rudder-workflow-engine/commit/369ac89dfed921819285f93a057148cb3b1e6d24))
+
 ## [0.8.12](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.11...v0.8.12) (2024-07-12)
 
 
