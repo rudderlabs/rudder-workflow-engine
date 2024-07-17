@@ -54,7 +54,9 @@ export class WorkflowUtils {
     try {
       moduleExports = await import(modulePath);
     } catch (error: any) {
-      // Ignore error
+      if (error.code !== 'MODULE_NOT_FOUND') {
+        throw error;
+      }
     }
     return moduleExports;
   }
@@ -67,7 +69,9 @@ export class WorkflowUtils {
     try {
       moduleExports = await provider.provide(modulePath);
     } catch (error: any) {
-      // Ignore error
+      if (error.code !== 'ERR_MODULE_NOT_FOUND') {
+        throw error;
+      }
     }
     return moduleExports;
   }
