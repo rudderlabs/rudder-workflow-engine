@@ -69,9 +69,7 @@ export class WorkflowUtils {
     try {
       moduleExports = await provider.provide(modulePath);
     } catch (error: any) {
-      if (error.code !== 'ERR_MODULE_NOT_FOUND') {
-        throw error;
-      }
+      // Ignore error
     }
     return moduleExports;
   }
