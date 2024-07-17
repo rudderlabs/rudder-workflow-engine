@@ -80,7 +80,7 @@
     "yaml": "^2.4.3"
   },
   "lint-staged": {
-    "*.(ts|json)": "prettier --write"
+    "*.(ts|json|yaml)": "prettier --write"
   },
   "files": [
     "build/**/*.[jt]s",
