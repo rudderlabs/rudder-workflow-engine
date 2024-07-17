@@ -2,7 +2,7 @@ bindings:
   - path: ./invalid_binding
     name: foo
 
-steps: 
+steps:
   - name: dummy
     template: |
       $
