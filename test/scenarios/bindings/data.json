@@ -71,5 +71,17 @@
     "workflowPath": "./external_library.yaml",
     "input": [[1], [2, 3]],
     "output": [1, 2, 3]
+  },
+  {
+    "workflowPath": "invalid_binding.yaml",
+    "error": {
+      "message": "Invalid binding"
+    }
+  },
+  {
+    "workflowPath": "non_existant_binding.yaml",
+    "error": {
+      "message": "Binding not found"
+    }
   }
 ]

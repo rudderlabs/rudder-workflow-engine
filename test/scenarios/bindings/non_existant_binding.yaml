@@ -1,0 +1,8 @@
+bindings:
+  - path: ./non-existant
+    name: foo
+
+steps:
+  - name: dummy
+    template: |
+      $
