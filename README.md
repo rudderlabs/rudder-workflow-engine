@@ -110,7 +110,7 @@ Supports importing of external functions and data using bindings.
     name: EventType
     path: ./config
     ```
-    - **EvenType** is defined in **./config** file then it will be imported as **$EventType**
+    - **EventType** is defined in **./config** file then it will be imported as **$EventType**
   - Type 2: Import everything from a file as something.
     ```yaml
     name: MappingData
