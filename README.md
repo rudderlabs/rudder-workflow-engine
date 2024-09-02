@@ -24,7 +24,7 @@
 
 ## Overview
 
-In transformer service, we are doing data transformation from customer events to destination events, and we want organize the transformation process into logically separated steps for better understanding and maintainability so we have created a workflow engine to address the following requirements.
+In the [rudder-transformer](https://github.com/rudderlabs/rudder-transformer/) service, we're transforming customer event data into the format required for different destinations. To make this process clearer and easier to maintain, we needed to divide it into logical steps. So, we developed this workflow engine to meet our needs.
 
 - Validation
   - Event validation
@@ -110,7 +110,7 @@ Supports importing of external functions and data using bindings.
     name: EventType
     path: ./config
     ```
-    - **EvenType** is defined in **./config** file then it will be imported as **$EventType**
+    - **EventType** is defined in **./config** file then it will be imported as **$EventType**
   - Type 2: Import everything from a file as something.
     ```yaml
     name: MappingData
