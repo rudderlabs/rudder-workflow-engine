@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.15](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.14...v0.8.15) (2024-09-05)
+
+
+### Miscellaneous
+
+* **deps:** bump sonarcloud-github-action from 2.3.0 to 3.0.0 ([#174](https://github.com/rudderlabs/rudder-workflow-engine/issues/174)) ([778e3b4](https://github.com/rudderlabs/rudder-workflow-engine/commit/778e3b4a2672ef8dc23c5781ac5a08a7e0016625))
+* fix sentence structure and typos in readme ([#176](https://github.com/rudderlabs/rudder-workflow-engine/issues/176)) ([36d8cd8](https://github.com/rudderlabs/rudder-workflow-engine/commit/36d8cd8110237319c39db01be9512d8cacb6e7fd))
+
+## [0.8.14](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.13...v0.8.14) (2024-08-22)
+
+
+### Miscellaneous
+
+* upgrade packages ([38c2286](https://github.com/rudderlabs/rudder-workflow-engine/commit/38c2286a5414d018942653ed28d54b241157c15a))
+
 ## [0.8.13](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.12...v0.8.13) (2024-07-17)
 
 
