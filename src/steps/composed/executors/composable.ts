@@ -5,7 +5,7 @@ import { ExecutionBindings, Step, StepExecutor, StepOutput } from '../../../comm
  * on top the given step executor.
  */
 export class ComposableStepExecutor implements StepExecutor {
-  private stepExecutor: StepExecutor;
+  private readonly stepExecutor: StepExecutor;
 
   constructor(stepExecutor: StepExecutor) {
     this.stepExecutor = stepExecutor;
