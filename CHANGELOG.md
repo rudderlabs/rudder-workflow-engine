@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.16](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.15...v0.8.16) (2024-10-01)
+
+
+### Bug Fixes
+
+* sonar issue ([f56f28e](https://github.com/rudderlabs/rudder-workflow-engine/commit/f56f28e51d1526782cdc3cda8ffcd5f3f345a5d3))
+* vulnerabilities ([469f05b](https://github.com/rudderlabs/rudder-workflow-engine/commit/469f05b3a0f0b5b80fd6ef6f39bbdd2939b1229c))
+* vulnerabilities ([27c2cc2](https://github.com/rudderlabs/rudder-workflow-engine/commit/27c2cc29dbb804e898ffe39cc638dc99bb0fbc8a))
+
 ## [0.8.15](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.14...v0.8.15) (2024-09-05)
 
 
