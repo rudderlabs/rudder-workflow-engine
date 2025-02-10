@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.18](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.17...v0.8.18) (2024-10-30)
+
+
+### Miscellaneous
+
+* upgrade npm packages ([7ec5194](https://github.com/rudderlabs/rudder-workflow-engine/commit/7ec51944683ddb8bdbb53de2dc5b3065428c693c))
+
 ## [0.8.17](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.16...v0.8.17) (2024-10-28)
 
 
