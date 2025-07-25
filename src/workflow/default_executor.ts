@@ -72,7 +72,7 @@ export class DefaultWorkflowExecutor implements WorkflowExecutor {
           }
         }
       } catch (error) {
-        logger.error(`step: ${step.name} failed with error:`, error);
+        logger.debug(`step: ${step.name} failed with error:`, error);
         if (step.onError !== StepExitAction.Continue) {
           DefaultWorkflowExecutor.handleError(error, engine.getName(), step.name);
         }
