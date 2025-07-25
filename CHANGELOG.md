@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.20](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.19...v0.8.20) (2025-07-25)
+
+
+### Bug Fixes
+
+* change logger.error to logger.debug in workflow executor ([#190](https://github.com/rudderlabs/rudder-workflow-engine/issues/190)) ([9caac1c](https://github.com/rudderlabs/rudder-workflow-engine/commit/9caac1c5b63a7f1d9d7d76dd5592d338a94de22e))
+
 ## [0.8.19](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.18...v0.8.19) (2025-02-12)
 
 
