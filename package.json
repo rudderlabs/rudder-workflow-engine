@@ -18,7 +18,6 @@
     "lint-staged": "lint-staged",
     "format": "prettier --write '**/*.ts' '**/*.json'",
     "lint": "npm run format && npm run lint:fix",
-    "prepare": "husky install",
     "jest:scenarios": "jest e2e.test.ts --verbose",
     "test:scenario": "jest test/scenario.test.ts --verbose",
     "test:stryker": "stryker run",
