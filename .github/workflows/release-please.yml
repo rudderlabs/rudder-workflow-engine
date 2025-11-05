@@ -9,6 +9,9 @@ name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC
+      contents: read
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@v2
@@ -40,6 +43,9 @@ jobs:
           cache: 'npm'
         if: ${{ steps.release.outputs.release_created }}
 
+      - name: Update npm # for oidc authentication compatibility
+        run: npm install -g npm@latest
+
       - name: Install Dependencies
         run: npm ci
         if: ${{ steps.release.outputs.release_created }}
@@ -48,12 +54,6 @@ jobs:
         run: npm run build
         if: ${{ steps.release.outputs.release_created }}
 
-      - name: Configure NPM
-        run: npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.release.outputs.release_created }}
-
       - name: Publish Package to NPM
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         if: ${{ steps.release.outputs.release_created }}
