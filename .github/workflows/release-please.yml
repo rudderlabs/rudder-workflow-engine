@@ -9,9 +9,8 @@ name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # Required for OIDC
-      contents: read
+    outputs: 
+      release_created: ${{ steps.release.outputs.release_created }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@v2
@@ -29,28 +28,7 @@ jobs:
           token: ${{ github.token }}
           release-type: node
 
-      # The logic below handles the npm publication:
-      - name: Checkout
-        uses: actions/checkout@v4
-        # these if statements ensure that a publication only occurs when
-        # a new release is created:
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Install Dependencies
-        run: npm ci
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Build Package
-        run: npm run build
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Publish Package to NPM
-        run: npm publish
-        if: ${{ steps.release.outputs.release_created }}
+  npm-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    uses: ./.github/workflows/npm-publish.yml
