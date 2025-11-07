@@ -5,14 +5,14 @@ on:
       - 'release/*'
 
 name: release-please
-permissions:
-  issues: write
-  contents: write
-  pull-requests: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+      pull-requests: write
     outputs: 
       release_created: ${{ steps.release.outputs.release_created }}
     steps:
