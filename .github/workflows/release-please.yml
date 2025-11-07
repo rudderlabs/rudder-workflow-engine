@@ -34,5 +34,7 @@ jobs:
 
   npm-publish:
     needs: release-please
+    permissions:
+      contents: read
     if: ${{ needs.release-please.outputs.release_created }}
     uses: ./.github/workflows/npm-publish.yml
