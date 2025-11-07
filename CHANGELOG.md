@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.20...v0.9.0) (2025-11-07)
+
+
+### Features
+
+* add oidc permission for workflow ([#202](https://github.com/rudderlabs/rudder-workflow-engine/issues/202)) ([47f8cac](https://github.com/rudderlabs/rudder-workflow-engine/commit/47f8cace809a89d3f127d7b180cf8b1b80324ccb))
+
 ## [0.8.20](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.19...v0.8.20) (2025-07-25)
 
 
