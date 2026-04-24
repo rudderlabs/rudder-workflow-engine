@@ -9,6 +9,8 @@ on:
 jobs:
   enforce:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
