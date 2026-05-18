@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.9.0...v0.9.1) (2026-05-18)
+
+
+### Bug Fixes
+
+* **vuln:** pin and bump action refs (SEC-171) ([b59b643](https://github.com/rudderlabs/rudder-workflow-engine/commit/b59b64347caf542be08626ec8bc65d78cef39124))
+
 ## [0.9.0](https://github.com/rudderlabs/rudder-workflow-engine/compare/v0.8.20...v0.9.0) (2025-11-07)
 
 
