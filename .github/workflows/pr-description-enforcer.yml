@@ -6,6 +6,9 @@ on:
       - edited
       - reopened
 
+permissions:
+  contents: read
+
 jobs:
   enforce:
     runs-on: ubuntu-latest
