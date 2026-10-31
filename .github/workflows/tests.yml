@@ -2,12 +2,14 @@ name: Tests
 
 on: pull_request
 
+permissions: {}
+
 jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read  # actions/checkout
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
@@ -16,6 +18,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0

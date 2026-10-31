@@ -2,14 +2,13 @@ name: Commitlint
 
 on: [push]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   commitlint:
     permissions:
-      contents: read  # for actions/checkout to fetch code
-      pull-requests: read  # for wagoid/commitlint-github-action to get commits in PR
+      contents: read  # actions/checkout
+      pull-requests: read  # commitlint-github-action reads the PR commits
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -20,6 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Setup Node
