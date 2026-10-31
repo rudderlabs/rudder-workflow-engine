@@ -1,4 +1,14 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# Runs without `husky install`. Without node_modules, commitlint is skipped
+# with a warning. CI lints the head commit of each push (commitlint.yml) and
+# the PR title.
+set -e
 
-npx commitlint --edit $1
+# husky.sh skipped every hook when HUSKY=0. Keep that switch.
+[ "${HUSKY:-}" = "0" ] && exit 0
+
+if [ -e node_modules/.bin/commitlint ]; then
+  npx commitlint --edit "$1"
+else
+  echo "commit-msg: commitlint is not installed (run npm ci); skipping. CI lints only the head commit of each push and the PR title." >&2
+fi
