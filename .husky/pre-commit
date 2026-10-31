@@ -4,20 +4,23 @@
 # CI still runs the tests (tests.yml) and eslint plus prettier (verify.yml).
 set -e
 
-if [ -x node_modules/.bin/jest ]; then
+# husky.sh skipped every hook when HUSKY=0. Keep that switch.
+[ "${HUSKY:-}" = "0" ] && exit 0
+
+if [ -e node_modules/.bin/jest ]; then
   npm test
 else
   echo "pre-commit: jest is not installed (run npm ci); skipping npm test. CI still runs the tests." >&2
 fi
 
-if [ -x node_modules/.bin/eslint ]; then
+if [ -e node_modules/.bin/eslint ]; then
   npm run lint:fix
   npm run lint:check
 else
   echo "pre-commit: eslint is not installed (run npm ci); skipping lint:fix and lint:check. CI still runs eslint." >&2
 fi
 
-if [ -x node_modules/.bin/lint-staged ]; then
+if [ -e node_modules/.bin/lint-staged ]; then
   npm run lint-staged
 else
   echo "pre-commit: lint-staged is not installed (run npm ci); skipping prettier on staged files. CI checks .ts and .json formatting, not .yaml." >&2
