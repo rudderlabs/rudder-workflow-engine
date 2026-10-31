@@ -4,7 +4,10 @@
 # the PR title.
 set -e
 
-if [ -x node_modules/.bin/commitlint ]; then
+# husky.sh skipped every hook when HUSKY=0. Keep that switch.
+[ "${HUSKY:-}" = "0" ] && exit 0
+
+if [ -e node_modules/.bin/commitlint ]; then
   npx commitlint --edit "$1"
 else
   echo "commit-msg: commitlint is not installed (run npm ci); skipping. CI lints only the head commit of each push and the PR title." >&2
