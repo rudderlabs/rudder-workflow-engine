@@ -1,11 +1,15 @@
 #!/usr/bin/env sh
-# Runs without `husky install`. Not every contributor or agent can run npm ci,
-# so a step whose tool is missing from node_modules is skipped with a warning.
+# Git runs this hook when core.hooksPath is .husky (`husky install` sets it once
+# per clone). The hook does not need the .husky/_ files, so it also runs in a new
+# worktree. Not every contributor or agent can run npm ci, so a step whose tool
+# is missing from node_modules is skipped with a warning.
 # CI still runs the tests (tests.yml) and eslint plus prettier (verify.yml).
 set -e
 
 # husky.sh skipped every hook when HUSKY=0. Keep that switch.
 [ "${HUSKY:-}" = "0" ] && exit 0
+# husky.sh sourced ~/.huskyrc, for example to put a Node version manager on PATH.
+if [ -f ~/.huskyrc ]; then . ~/.huskyrc; fi
 
 if [ -e node_modules/.bin/jest ]; then
   npm test
