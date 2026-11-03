@@ -4,10 +4,15 @@ on: pull_request
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read  # actions/checkout
     steps:

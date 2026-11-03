@@ -6,10 +6,15 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   prs:
     name: Clean up stale PRs
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     permissions:
       pull-requests: write  # actions/stale labels and closes stale PRs
@@ -32,6 +37,7 @@ jobs:
   branches:
     name: Cleanup old branches
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write  # delete-old-branches-action deletes branches through the API
     steps:
