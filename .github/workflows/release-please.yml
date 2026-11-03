@@ -8,9 +8,15 @@ name: release-please
 
 permissions: {}
 
+# A cancelled run can leave a release without its npm package.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read  # release-please-action uses the App token for writes
     outputs: 
@@ -23,7 +29,7 @@ jobs:
 
       - name: Extract Branch Name
         shell: bash
-        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> "$GITHUB_OUTPUT"
         id: extract_branch
 
       - name: Generate GitHub App Token
@@ -43,6 +49,7 @@ jobs:
 
   npm-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: release-please
     permissions:
       contents: read  # actions/checkout

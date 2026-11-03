@@ -5,10 +5,15 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   formatting-lint:
     name: Check for formatting & lint errors
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     permissions:
       contents: read  # actions/checkout
@@ -22,8 +27,6 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
           persist-credentials: false
-          # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -43,4 +46,4 @@ jobs:
       - name: Error message
         if: ${{ failure() }}
         run: |
-          echo 'Eslint check is failing Ensure you have run `npm run lint` and committed the files locally.'
+          echo "Eslint check is failing. Ensure you have run \`npm run lint\` and committed the files locally."

@@ -8,9 +8,14 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   enforce:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       pull-requests: read  # pr-description-enforcer reads the PR body
 
