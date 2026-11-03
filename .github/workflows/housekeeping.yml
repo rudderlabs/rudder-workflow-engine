@@ -4,13 +4,15 @@ on:
   schedule:
     - cron: '42 1 * * *'
 
+permissions: {}
+
 jobs:
   prs:
     name: Clean up stale PRs
     runs-on: ubuntu-latest
 
     permissions:
-      pull-requests: write
+      pull-requests: write  # actions/stale labels and closes stale PRs
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -31,7 +33,7 @@ jobs:
     name: Cleanup old branches
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write  # delete-old-branches-action deletes branches through the API
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
@@ -40,6 +42,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
       - name: Run delete-old-branches-action
         uses: beatlabs/delete-old-branches-action@4eeeb8740ff8b3cb310296ddd6b43c3387734588 # v0.0.11

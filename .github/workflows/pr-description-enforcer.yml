@@ -6,11 +6,13 @@ on:
       - edited
       - reopened
 
+permissions: {}
+
 jobs:
   enforce:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: read
+      pull-requests: read  # pr-description-enforcer reads the PR body
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
