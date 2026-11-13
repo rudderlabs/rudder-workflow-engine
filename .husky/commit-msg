@@ -1,2 +1,7 @@
 #!/usr/bin/env sh
-npx commitlint --edit "$1"
+# Run the repo's own commitlint, never a global or downloaded copy.
+if [ ! -x node_modules/.bin/commitlint ]; then
+  echo "commit-msg: node_modules/.bin/commitlint is missing. Run npm ci, then commit again." >&2
+  exit 1
+fi
+exec node_modules/.bin/commitlint --edit "$1"

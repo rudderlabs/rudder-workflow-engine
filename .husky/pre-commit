@@ -1,2 +1,7 @@
 #!/usr/bin/env sh
-npm run lint-staged
+# Run the repo's own lint-staged, never a global or downloaded copy.
+if [ ! -x node_modules/.bin/lint-staged ]; then
+  echo "pre-commit: node_modules/.bin/lint-staged is missing. Run npm ci, then commit again." >&2
+  exit 1
+fi
+exec node_modules/.bin/lint-staged
