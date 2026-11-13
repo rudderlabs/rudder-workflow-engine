@@ -61,7 +61,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-sonarjs": "^0.23.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "jest": "^29.4.3",
     "jest-html-reporter": "^3.10.2",
     "lint-staged": "^15.2.10",
@@ -79,7 +79,11 @@
     "yaml": "^2.6.0"
   },
   "lint-staged": {
-    "*.(ts|json|yaml)": "prettier --write"
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.(json|yaml)": "prettier --write"
   },
   "files": [
     "build/**/*.[jt]s",
