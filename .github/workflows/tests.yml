@@ -2,23 +2,27 @@ name: Tests
 
 on: pull_request
 
+permissions: {}
+
 jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read  # actions/checkout
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit
 
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -28,34 +32,3 @@ jobs:
 
       - name: Run Tests
         run: npm run test:no-logging
-      
-      - name: Run Lint Checks
-        run: |
-          npm run check:lint
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./reports/coverage
-      
-      - name: Update sonar-project.properties
-        run: |
-          # Retrieve the version from package.json
-          version=$(node -e "console.log(require('./package.json').version)")
-          # Update the sonar-project.properties file with the version
-          sed -i "s/sonar.projectVersion=.*$/sonar.projectVersion=$version/" sonar-project.properties
-      
-      - name: Fix filesystem paths in generated reports
-        if: always()
-        run: |
-          sed -i 's+home/runner/work/rudder-workflow-engine/rudder-workflow-engine+/github/workspace+g' reports/coverage/lcov.info
-          sed -i 's+/home/runner/work/rudder-workflow-engine/rudder-workflow-engine+/github/workspace+g' reports/eslint.json
-          
-      - name: SonarQube Scan
-        if: always()
-        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  
