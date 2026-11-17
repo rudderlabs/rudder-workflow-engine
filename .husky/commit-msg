@@ -1,20 +1,7 @@
 #!/usr/bin/env sh
-# Git runs this hook when core.hooksPath is .husky (run `npm ci`, then
-# `npx husky install`, once per clone to set it). The hook does not need the
-# .husky/_ files, so it also runs in a new worktree. Without node_modules,
-# commitlint is skipped with a warning. CI checks only the PR title
-# (semantic-pr.yml). The repo merges by squash, so the title becomes the
-# commit subject.
-
-# husky.sh skipped every hook when HUSKY=0. Keep that switch.
-[ "${HUSKY:-}" = "0" ] && exit 0
-# husky.sh sourced ~/.huskyrc (for example, a Node version manager on PATH)
-# before errexit, so a failing line in it does not stop the commit.
-if [ -f ~/.huskyrc ]; then . ~/.huskyrc; fi
-set -e
-
-if [ -e node_modules/.bin/commitlint ]; then
-  npx commitlint --edit "$1"
-else
-  echo "commit-msg: commitlint is not installed (run npm ci); skipping. CI checks only the PR title." >&2
+# Run the repo's own commitlint, never a global or downloaded copy.
+if [ ! -x node_modules/.bin/commitlint ]; then
+  echo "commit-msg: node_modules/.bin/commitlint is missing. Run npm ci, then commit again." >&2
+  exit 1
 fi
+exec node_modules/.bin/commitlint --edit "$1"
