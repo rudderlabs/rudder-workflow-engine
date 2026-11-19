@@ -4,3 +4,42 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    # Keep default-days equal to min_age.value in .pinact.yaml.
+    cooldown:
+      default-days: 7
+      exclude:
+        - 'rudderlabs/*'
+    groups:
+      actions-security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+      actions:
+        patterns:
+          - '*'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
+      exclude:
+        - '@rudderlabs/*'
+        - '@rudderstack/*'
+    # No npm security group: the repo-level grouped security updates
+    # keep producing the existing npm_and_yarn PR.
+    groups:
+      # Major updates match no group, so each one gets its own PR.
+      npm-production:
+        applies-to: version-updates
+        dependency-type: 'production'
+        update-types:
+          - 'minor'
+          - 'patch'
+      npm-development:
+        applies-to: version-updates
+        dependency-type: 'development'
+        update-types:
+          - 'minor'
+          - 'patch'
